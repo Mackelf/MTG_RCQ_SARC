@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>RCQ 2 Mayo 2026 — Standing</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://unpkg.com/vue-router@4"></script>
+  <style>
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <!-- Router view principal -->
+    <router-view></router-view>
+  </div>
+
+  <footer>Mario Canto. 2026. PandaComboMtg</footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const { createApp, ref, computed, onMounted } = Vue;
+
+    // ── Store compartido (simple reactive state) ────────────────────────
+    const store = Vue.reactive({
+      players: [],
+      loaded: false,
+    });
+
+    async function loadData() {
+      if (store.loaded) return;
+      const res = await fetch("./assets/StandingRCQ.json");
+      store.players = await res.json();
+      store.loaded = true;
+    }
+
+    // ── Vista Standing ──────────────────────────────────────────────────
+    const Standing = {
+      template: `
+        `,
+
+
+      setup() {
+        onMounted(loadData);
+        return { store };
+      },
+    };
+
+    // ── Vista Metagame ──────────────────────────────────────────────────
+    const Metagame = {
+      template: `<div></div>`,
+      methods: {
+        badgeClass(badge) {
+          const map = {
+            "1st": "badge-gold",
+            "2nd": "badge-silver",
+            Top4: "badge-bronze",
+            Top8: "badge-green",
+          };
+          return map[badge] || "";
+        },
+      },
+      setup() {
+        onMounted(loadData);
+        return { store };
+      },
+    };
+
+    const Social = {
+      template: `<div></div>`,
+    };
+    // ── Vista Home ──────────────────────────────────────────────────────
+    const Home = {
+      template: `
+        <div class="container mt-5">
+          <h2 class="mb-4">Selecciona una Tienda</h2>
+          <div class="list-group">
+            <router-link to="/tienda/todo-freak/standing" class="list-group-item list-group-item-action d-flex align-items-center">
+              <i class="bi bi-shop me-3 fs-4"></i> Todo Freak
+            </router-link>
+            <router-link to="/tienda/blood-moon/standing" class="list-group-item list-group-item-action d-flex align-items-center">
+              <i class="bi bi-shop me-3 fs-4"></i> Blood Moon
+            </router-link>
+            <router-link to="/tienda/casa-de-juegos/standing" class="list-group-item list-group-item-action d-flex align-items-center">
+              <i class="bi bi-shop me-3 fs-4"></i> Casa de juegos
+            </router-link>
+          </div>
+        </div>
+      `
+    };
+
+    // ── Layout de Torneo ────────────────────────────────────────────────
+    const TournamentLayout = {
+      computed: {
+        logoSrc() {
+          const storeLogos = {
+            'todo-freak': './assets/LogoTodoFreak.jpg',
+            'blood-moon': './assets/LogoBloodMoon.jpg',
+            'casa-de-juegos': './assets/LogoCasaDeJuegos.jpg'
+          };
+          return storeLogos[this.$route.params.id] || '';
+        }
+      },
+      template: `
+        <div>
+          <div>
+            <img v-if="logoSrc" :src="logoSrc" alt="Logo Tienda" class="img-fluid" style="height: 100px; object-fit: contain; margin-left: 1rem;" />
+            <div v-else style="height: 100px; display: flex; align-items: center; padding-left: 1rem;">
+              <h2>{{ $route.params.id.replace(/-/g, ' ').toUpperCase() }}</h2>
+            </div>
+          </div>
+          <!-- Navbar -->
+          <nav class="navbar-custom">
+            <div class="container d-flex align-items-center justify-content-between">
+              <router-link class="navbar-brand-custom" to="/">Volver al Inicio</router-link>
+              <div class="d-flex gap-1">
+                <router-link class="nav-link-custom" :to="'/tienda/' + $route.params.id + '/standing'">
+                  <i class="bi bi-trophy me-1"></i>Standing
+                </router-link>
+                <router-link class="nav-link-custom" :to="'/tienda/' + $route.params.id + '/metagame'">
+                  <i class="bi bi-pie-chart me-1"></i>Metagame
+                </router-link>
+                <router-link class="nav-link-custom" :to="'/tienda/' + $route.params.id + '/social'">
+                  <i class="bi bi-people me-1"></i>Social
+                </router-link>
+              </div>
+            </div>
+          </nav>
+
+          <!-- Router view específico del torneo -->
+          <div class="main-container">
+            <router-view></router-view>
+          </div>
+        </div>
+      `
+    };
+
+    // ── Router ──────────────────────────────────────────────────────────
+    const routes = [
+      { path: "/", component: Home },
+      { 
+        path: "/tienda/:id", 
+        component: TournamentLayout,
+        children: [
+          { path: "", redirect: "standing" },
+          { path: "standing", component: Standing },
+          { path: "metagame", component: Metagame },
+          { path: "social", component: Social },
+        ]
+      }
+    ];
+
+    const router = VueRouter.createRouter({
+      history: VueRouter.createWebHashHistory(),
+      routes,
+    });
+
+    // ── App ──────────────────────────────────────────────────────────────
+    const app = createApp({});
+    app.use(router);
+    app.mount("#app");
+  </script>
+</body>
+
+</html>
