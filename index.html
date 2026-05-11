@@ -10,7 +10,7 @@
   <script src="https://unpkg.com/vue-router@4"></script>
   <style>
   </style>
-  <link rel="stylesheet" href="./styles.css">
+  <!--<link rel="stylesheet" href="./styles.css">-->
 </head>
 
 <body>
@@ -235,13 +235,13 @@
     };
 
     // ── Vista Social ────────────────────────────────────────────────────
-const Social = {
-  template: `<div></div>`,
-  setup() {
-    const filteredPlayers = Vue.inject('filteredPlayers', Vue.ref([]));
-    return { filteredPlayers };
-  }
-};
+    const Social = {
+      template: `<div></div>`,
+      setup() {
+        const filteredPlayers = Vue.inject('filteredPlayers', Vue.ref([]));
+        return { filteredPlayers };
+      }
+    };
     // ── Vista Home ──────────────────────────────────────────────────────
     const Home = {
       template: `
