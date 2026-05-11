@@ -1,0 +1,53 @@
+/* styles.css */
+
+/* ── Reset / Base ─────────────────────────────────────── */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    color: #212529;
+}
+
+/* ── Footer ───────────────────────────────────────────── */
+footer {
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.8rem;
+    color: #6c757d;
+    border-top: 1px solid #dee2e6;
+    margin-top: 2rem;
+}
+
+/* ── Navbar custom ────────────────────────────────────── */
+.navbar-custom {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+/* ── Badges de placement ──────────────────────────────── */
+.badge-gold {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.badge-silver {
+    background-color: #adb5bd;
+    color: #212529;
+}
+
+.badge-bronze {
+    background-color: #cd7f32;
+    color: #fff;
+}
+
+.badge-green {
+    background-color: #198754;
+    color: #fff;
+}
