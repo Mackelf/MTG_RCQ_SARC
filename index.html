@@ -99,32 +99,139 @@ const Standing = {
     };
 
     // ── Vista Metagame ──────────────────────────────────────────────────
-    const Metagame = {
-      template: `<div></div>`,
-      methods: {
-        badgeClass(badge) {
-          const map = {
-            "1st": "badge-gold",
-            "2nd": "badge-silver",
-            Top4: "badge-bronze",
-            Top8: "badge-green",
-          };
-          return map[badge] || "";
-        },
-      },
-      setup() {
-        const filteredPlayers = Vue.inject('filteredPlayers', ref([]));
-        return { filteredPlayers };
-      },
-    };
+   const Metagame = {
+  setup() {
+    const filteredPlayers = Vue.inject('filteredPlayers', Vue.ref([]));
 
-    const Social = {
-      template: `<div></div>`,
-      setup() {
-        const filteredPlayers = Vue.inject('filteredPlayers', ref([]));
-        return { filteredPlayers };
-      }
-    };
+    const archetypeStats = Vue.computed(() => {
+      const players = filteredPlayers.value;
+      if (!players.length) return [];
+
+      const total = players.length;
+      const map = {};
+
+      players.forEach(p => {
+        const key = p.Arquetipo;
+        if (!map[key]) {
+          map[key] = {
+            nombre: key,
+            imgUrl: p['IMG URL'] || '',
+            copies: 0,
+            wins: 0,
+            losses: 0,
+            draws: 0,
+            totalGames: 0,
+            badges: [],
+          };
+        }
+
+        const entry = map[key];
+        entry.copies++;
+
+        const v = parseInt(p.V) || 0;
+        const d = parseInt(p.D) || 0;
+        const e = parseInt(p.E) || 0;
+        entry.wins += v;
+        entry.losses += d;
+        entry.draws += e;
+        entry.totalGames += v + d + e;
+
+        // Badge: usa campo Badge del JSON si existe, si no, inferir por Puesto
+        const badge = p.Badge || inferBadge(p.Puesto);
+        if (badge) entry.badges.push(badge);
+      });
+
+      return Object.values(map)
+        .map(entry => ({
+          ...entry,
+          metaPct: ((entry.copies / total) * 100).toFixed(2) + '%',
+          winRate: entry.totalGames > 0
+            ? ((entry.wins / entry.totalGames) * 100).toFixed(1) + '%'
+            : 'N/A',
+        }))
+        .sort((a, b) => b.copies - a.copies);
+    });
+
+    function inferBadge(puesto) {
+      if (puesto === 1) return '1st';
+      if (puesto === 2) return '2nd';
+      if (puesto <= 4) return 'Top4';
+      if (puesto <= 8) return 'Top8';
+      return null;
+    }
+
+    function badgeClass(badge) {
+      const map = {
+        '1st': 'badge-gold',
+        '2nd': 'badge-silver',
+        'Top4': 'badge-bronze',
+        'Top8': 'badge-green',
+      };
+      return map[badge] || '';
+    }
+
+    return { archetypeStats, badgeClass };
+  },
+
+  template: `
+    <div class="row row-cols-1 row-cols-md-3 g-3">
+      <div class="col" v-for="arch in archetypeStats" :key="arch.nombre">
+        <div class="card h-100">
+
+          <!-- Imagen de cabecera -->
+          <img
+            v-if="arch.imgUrl"
+            :src="arch.imgUrl"
+            class="card-img-top"
+            style="height: 160px; object-fit: cover;"
+            :alt="arch.nombre"
+          />
+          <div
+            v-else
+            class="card-img-top bg-secondary d-flex align-items-center justify-content-center"
+            style="height: 160px;"
+          >
+            <span class="text-white text-muted small">Sin imagen</span>
+          </div>
+
+          <!-- Cuerpo -->
+          <div class="card-body">
+
+            <!-- Badges + Título -->
+            <div class="d-flex flex-wrap align-items-center gap-1 mb-1">
+              <span
+                v-for="(badge, i) in arch.badges"
+                :key="i"
+                class="badge"
+                :class="badgeClass(badge)"
+              >{{ badge }}</span>
+            </div>
+            <h6 class="card-title mb-3">{{ arch.nombre }}</h6>
+
+            <!-- Estadísticas -->
+            <p class="card-text mb-1">
+              <small class="text-muted">Copias jugadas</small>
+              <strong class="float-end">{{ arch.copies }}</strong>
+            </p>
+            <p class="card-text mb-1">
+              <small class="text-muted">META %</small>
+              <strong class="float-end">{{ arch.metaPct }}</strong>
+            </p>
+            <p class="card-text mb-1">
+              <small class="text-muted">WIN RATE</small>
+              <strong class="float-end">{{ arch.winRate }}</strong>
+            </p>
+            <p class="card-text mb-0">
+              <small class="text-muted">Partidas (V / D / E)</small>
+              <strong class="float-end">{{ arch.wins }} / {{ arch.losses }} / {{ arch.draws }}</strong>
+            </p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  `,
+};
     // ── Vista Home ──────────────────────────────────────────────────────
     const Home = {
       template: `
