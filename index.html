@@ -242,25 +242,30 @@
         return { filteredPlayers };
       }
     };
-    // ── Vista Home ──────────────────────────────────────────────────────
-    const Home = {
-      template: `
-        <div class="container mt-5">
-          <h2 class="mb-4">Selecciona una Tienda</h2>
-          <div class="list-group">
-            <router-link to="/tienda/todo-freak/standing" class="list-group-item list-group-item-action d-flex align-items-center">
-              <i class="bi bi-shop me-3 fs-4"></i> Todo Freak
-            </router-link>
-            <router-link to="/tienda/blood-moon/standing" class="list-group-item list-group-item-action d-flex align-items-center">
-              <i class="bi bi-shop me-3 fs-4"></i> Blood Moon
-            </router-link>
-            <router-link to="/tienda/casa-de-juegos/standing" class="list-group-item list-group-item-action d-flex align-items-center">
-              <i class="bi bi-shop me-3 fs-4"></i> Casa de juegos
-            </router-link>
-          </div>
+// ── Vista Home ──────────────────────────────────────────────────────
+const Home = {
+  template: `
+    <div class="home-container">
+      <div class="home-card">
+        <h1 class="home-title">Selecciona una Tienda</h1>
+        <div class="stores-list">
+          <router-link to="/tienda/todo-freak/standing" class="store-button">
+            <i class="bi bi-shop"></i>
+            <span>Todo Freak</span>
+          </router-link>
+          <router-link to="/tienda/blood-moon/standing" class="store-button">
+            <i class="bi bi-shop"></i>
+            <span>Blood Moon</span>
+          </router-link>
+          <router-link to="/tienda/casa-de-juegos/standing" class="store-button">
+            <i class="bi bi-shop"></i>
+            <span>Casa de juegos</span>
+          </router-link>
         </div>
-      `
-    };
+      </div>
+    </div>
+  `
+};
 
     // ── Layout de Torneo ────────────────────────────────────────────────
     const TournamentLayout = {
