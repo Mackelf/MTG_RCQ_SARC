@@ -291,3 +291,61 @@ footer {
     font-size: 2rem !important;
   }
 }
+
+/* ========== Home Page Styling ========== */
+.home-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #87CEEB 0%, #B0E0E6 100%);
+  padding: 2rem;
+}
+
+.home-card {
+  background: white !important;
+  border-radius: 24px !important;
+  padding: 3rem !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+  max-width: 600px;
+  width: 100%;
+}
+
+.home-title {
+  color: #000 !important;
+  font-weight: bold !important;
+  text-align: center;
+  margin-bottom: 2rem !important;
+}
+
+.stores-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.store-button {
+  display: flex !important;
+  align-items: center !important;
+  gap: 1rem !important;
+  padding: 20px 40px !important;
+  border: 2px solid #000 !important;
+  border-radius: 50px !important;
+  background: white !important;
+  color: #000 !important;
+  font-size: 2rem !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  transition: all 0.3s ease !important;
+}
+
+.store-button i {
+  font-size: 2rem !important;
+}
+
+.store-button:hover {
+  background-color: #87CEEB !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  color: #000 !important;
+}
