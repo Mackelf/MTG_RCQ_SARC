@@ -83,25 +83,31 @@
             <td>{{ player.D }}</td>
             <td>{{ player.E }}</td>
             <td>
-              <a v-if="player['URL Decklist']" :href="player['URL Decklist']" target="_blank" rel="noopener noreferrer">
-                {{ player.Arquetipo }}
-              </a>
-              <span v-else>{{ player.Arquetipo }}</span>
+            <a v-if="player['URL Decklist']" :href="player['URL Decklist']" target="_blank" rel="noopener noreferrer">
+            {{ stripPrefix(player.Arquetipo) }}
+            </a>
+            <span v-else>{{ stripPrefix(player.Arquetipo) }}</span>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
   `,
+
       setup() {
         const filteredPlayers = Vue.inject('filteredPlayers', ref([]));
-        return { filteredPlayers };
+        function stripPrefix(name) {
+          if (!name || name.length <= 4) return name
+          return name.slice(4)
+        }
+        return { filteredPlayers, stripPrefix };
       },
     };
 
     // ── Vista Metagame ──────────────────────────────────────────────────
     const Metagame = {
       setup() {
+
         const filteredPlayers = Vue.inject('filteredPlayers', Vue.ref([]));
 
         const archetypeStats = Vue.computed(() => {
@@ -170,8 +176,11 @@
           };
           return map[badge] || '';
         }
-
-        return { archetypeStats, badgeClass };
+        function stripPrefix(name) {
+          if (!name || name.length <= 4) return name
+          return name.slice(4)
+        }
+        return { archetypeStats, badgeClass, stripPrefix };
       },
 
       template: `
@@ -207,7 +216,7 @@
                 :class="badgeClass(badge)"
               >{{ badge }}</span>
             </div>
-            <h6 class="card-title mb-3">{{ arch.nombre }}</h6>
+            <h6 class="card-title mb-3">{{ stripPrefix(arch.nombre) }}</h6>
 
             <!-- Estadísticas -->
             <p class="card-text mb-1">
@@ -234,21 +243,21 @@
   `,
     };
 
-  // ── Vista Social ────────────────────────────────────────────────────
-const Social = {
-  setup() {
-    const filteredPlayers = Vue.inject('filteredPlayers', Vue.ref([]));
-    
-    const tournamentWinner = Vue.computed(() => {
-      const players = filteredPlayers.value;
-      if (!players.length) return null;
-      // Get the player in position 1
-      return players.find(p => p.Puesto === 1) || players[0];
-    });
-    
-    return { tournamentWinner };
-  },
-  template: `
+    // ── Vista Social ────────────────────────────────────────────────────
+    const Social = {
+      setup() {
+        const filteredPlayers = Vue.inject('filteredPlayers', Vue.ref([]));
+
+        const tournamentWinner = Vue.computed(() => {
+          const players = filteredPlayers.value;
+          if (!players.length) return null;
+          // Get the player in position 1
+          return players.find(p => p.Puesto === 1) || players[0];
+        });
+
+        return { tournamentWinner };
+      },
+      template: `
     <div v-if="tournamentWinner" class="social-container">
       <h3 class="mb-4">Ganador del Torneo</h3>
       
@@ -285,10 +294,10 @@ const Social = {
       <p class="text-muted">No hay datos disponibles</p>
     </div>
   `
-};
-// ── Vista Home ──────────────────────────────────────────────────────
-const Home = {
-  template: `
+    };
+    // ── Vista Home ──────────────────────────────────────────────────────
+    const Home = {
+      template: `
     <div class="home-container">
       <div class="home-card">
         <h1 class="home-title">Selecciona una Tienda</h1>
@@ -309,7 +318,7 @@ const Home = {
       </div>
     </div>
   `
-};
+    };
 
     // ── Layout de Torneo ────────────────────────────────────────────────
     const TournamentLayout = {
