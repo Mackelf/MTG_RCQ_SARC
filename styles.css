@@ -71,15 +71,7 @@ body {
 }
 
 
-/* ── Footer ───────────────────────────────────────────── */
-footer {
-    text-align: center;
-    padding: 1rem;
-    font-size: 0.8rem;
-    color: #6c757d;
-    border-top: 1px solid #dee2e6;
-    margin-top: 2rem;
-}
+
 
 /* ── Navbar custom ────────────────────────────────────── */
 .navbar-custom {
@@ -102,23 +94,149 @@ footer {
   color: #000;
 }
 
-/* ── Badges de placement ──────────────────────────────── */
+
+
+
+/* Date Selector */
+.navbar-custom .form-select {
+  border: 2px solid #000 !important;
+  border-radius: 25px !important;
+  font-weight: 500 !important;
+  padding: 8px 16px !important;
+}
+
+.navbar-custom .form-select:focus {
+  border-color: #87CEEB !important;
+  box-shadow: 0 0 0 0.2rem rgba(135, 206, 235, 0.25) !important;
+}
+
+
+/* Navigation Buttons (Standing, Metagame, Social) */
+.navbar-custom .btn-outline-primary {
+  border: 2px solid #87CEEB !important;
+  color: #000 !important;
+  background: white !important;
+  border-radius: 25px !important;
+  font-weight: 600 !important;
+  padding: 8px 20px !important;
+  transition: all 0.3s ease !important;
+}
+
+.navbar-custom .btn-outline-primary:hover {
+  background-color: #87CEEB !important;
+  border-color: #87CEEB !important;
+  color: #000 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(135, 206, 235, 0.3) !important;
+}
+
+/* Active state for router links */
+.navbar-custom .router-link-active {
+  background-color: #87CEEB !important;
+  border-color: #87CEEB !important;
+  color: #000 !important;
+}
+
+/* ========== Table Styling ========== */
+.main-container {
+  background: white !important;
+  border-radius: 16px !important;
+  padding: 2rem !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
+}
+
+.table {
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+}
+
+.table-dark {
+  background-color: #000 !important;
+  border-color: #000 !important;
+}
+
+.table-dark th {
+  color: white !important;
+  font-weight: 700 !important;
+  padding: 1rem !important;
+  border-color: #333 !important;
+}
+
+.table tbody tr {
+  transition: background-color 0.2s ease !important;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(135, 206, 235, 0.15) !important;
+}
+
+.table tbody td {
+  padding: 0.75rem 1rem !important;
+  vertical-align: middle !important;
+}
+
+.table tbody td a {
+  color: #87CEEB !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease !important;
+}
+
+.table tbody td a:hover {
+  color: #000 !important;
+  text-decoration: underline !important;
+}
+
+/* ========== Metagame Cards ========== */
+.card {
+  border: 2px solid #000 !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+  transition: all 0.3s ease !important;
+}
+
+.card:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+}
+
+.card-title {
+  color: #000 !important;
+  font-weight: 700 !important;
+}
+
+/* Badges */
 .badge-gold {
-    background-color: #ffc107;
-    color: #212529;
+  background-color: #FFD700 !important;
+  color: #000 !important;
+  font-weight: 700 !important;
 }
 
 .badge-silver {
-    background-color: #adb5bd;
-    color: #212529;
+  background-color: #C0C0C0 !important;
+  color: #000 !important;
+  font-weight: 700 !important;
 }
 
 .badge-bronze {
-    background-color: #cd7f32;
-    color: #fff;
+  background-color: #CD7F32 !important;
+  color: white !important;
+  font-weight: 700 !important;
 }
 
 .badge-green {
-    background-color: #198754;
-    color: #fff;
+  background-color: #87CEEB !important;
+  color: #000 !important;
+  font-weight: 700 !important;
+}
+
+/* ========== Footer ========== */
+footer {
+  background: transparent !important;
+  color: #000 !important;
+  font-weight: 600 !important;
+  text-align: center;
+  padding: 2rem !important;
+  margin-top: 2rem !important;
 }
