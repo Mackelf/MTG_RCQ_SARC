@@ -234,14 +234,58 @@
   `,
     };
 
-    // ── Vista Social ────────────────────────────────────────────────────
-    const Social = {
-      template: `<div></div>`,
-      setup() {
-        const filteredPlayers = Vue.inject('filteredPlayers', Vue.ref([]));
-        return { filteredPlayers };
-      }
-    };
+  // ── Vista Social ────────────────────────────────────────────────────
+const Social = {
+  setup() {
+    const filteredPlayers = Vue.inject('filteredPlayers', Vue.ref([]));
+    
+    const tournamentWinner = Vue.computed(() => {
+      const players = filteredPlayers.value;
+      if (!players.length) return null;
+      // Get the player in position 1
+      return players.find(p => p.Puesto === 1) || players[0];
+    });
+    
+    return { tournamentWinner };
+  },
+  template: `
+    <div v-if="tournamentWinner" class="social-container">
+      <h3 class="mb-4">Ganador del Torneo</h3>
+      
+      <div class="winner-card">
+        <div class="winner-card-left">
+          <div class="winner-photo-placeholder">
+            <i class="bi bi-trophy-fill"></i>
+          </div>
+        </div>
+        
+        <div class="winner-card-right">
+          <h2 class="winner-name">{{ tournamentWinner.Nombre }}</h2>
+          
+          <div class="winner-info">
+            <div class="info-row">
+              <span class="info-label">Played Deck:</span>
+              <span class="info-value">{{ tournamentWinner.Arquetipo }}</span>
+            </div>
+            
+            <div class="info-row">
+              <span class="info-label">Achievements:</span>
+              <div class="achievements">
+                <span class="achievement-badge">🏆 1st Place</span>
+                <span class="achievement-badge">{{ tournamentWinner.Puntos }} Puntos</span>
+                <span class="achievement-badge">{{ tournamentWinner.V }}-{{ tournamentWinner.D }}-{{ tournamentWinner.E }}</span>
+                <span class="achievement-badge">{{ tournamentWinner['%VPO'] }}% Win Rate</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div v-else class="text-center mt-5">
+      <p class="text-muted">No hay datos disponibles</p>
+    </div>
+  `
+};
 // ── Vista Home ──────────────────────────────────────────────────────
 const Home = {
   template: `
