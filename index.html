@@ -310,23 +310,57 @@
       };
       // ── Vista Home ──────────────────────────────────────────────────────
       const Home = {
+        setup() {
+          onMounted(loadData);
+
+          const storeGroups = Vue.computed(() => {
+            if (!store.loaded) return [];
+
+            const storeNames = {
+              "todo-freak": "Todo Freak",
+              "blood-moon": "Blood Moon",
+              "casa-de-juegos": "Casa de Juegos",
+            };
+
+            const map = {};
+            store.allPlayers.forEach((p) => {
+              const id = normalizeStoreId(p.STORE);
+              if (!map[id])
+                map[id] = {
+                  id,
+                  label: storeNames[id] || p.STORE,
+                  dates: new Set(),
+                };
+              if (p.Fecha) map[id].dates.add(p.Fecha);
+            });
+
+            return Object.values(map).map((s) => ({
+              ...s,
+              dates: [...s.dates].sort(),
+            }));
+          });
+
+          return { storeGroups, formatDateFriendly };
+        },
         template: `
     <div class="home-container">
       <div class="home-card">
         <h1 class="home-title">Selecciona una Tienda</h1>
+        <div v-if="!storeGroups.length" class="text-muted text-center">Cargando...</div>
         <div class="stores-list">
-          <router-link to="/tienda/todo-freak/standing" class="store-button">
-            <i class="bi bi-shop"></i>
-            <span>Todo Freak</span>
-          </router-link>
-          <router-link to="/tienda/blood-moon/standing" class="store-button">
-            <i class="bi bi-shop"></i>
-            <span>Blood Moon</span>
-          </router-link>
-          <router-link to="/tienda/casa-de-juegos/standing" class="store-button">
-            <i class="bi bi-shop"></i>
-            <span>Casa de juegos</span>
-          </router-link>
+          <div v-for="store in storeGroups" :key="store.id" class="store-group">
+            <div class="store-button store-button--header">
+              <i class="bi bi-shop"></i>
+              <span>{{ store.label }}</span>
+            </div>
+            <ul class="store-dates">
+              <li v-for="date in store.dates" :key="date">
+                <router-link :to="{ path: '/tienda/' + store.id + '/standing', query: { fecha: date } }">
+                  {{ formatDateFriendly(date) }}
+                </router-link>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -359,11 +393,12 @@
           Vue.watch(
             availableDates,
             (newDates) => {
-              if (
-                newDates.length > 0 &&
-                !newDates.includes(selectedDate.value)
-              ) {
-                selectedDate.value = newDates[newDates.length - 1]; // Default a la fecha más reciente
+              if (!newDates.length) return;
+              const queryFecha = route.query.fecha;
+              if (queryFecha && newDates.includes(queryFecha)) {
+                selectedDate.value = queryFecha;
+              } else if (!newDates.includes(selectedDate.value)) {
+                selectedDate.value = newDates[newDates.length - 1];
               }
             },
             { immediate: true },
