@@ -316,21 +316,33 @@
           const storeGroups = Vue.computed(() => {
             if (!store.loaded) return [];
 
-            const storeNames = {
-              "todo-freak": "Todo Freak",
-              "blood-moon": "Blood Moon",
-              "casa-de-juegos": "Casa de Juegos",
+            const storeMeta = {
+              "todo-freak": {
+                label: "Todo Freak",
+                social: "https://www.instagram.com/todofreakstore/",
+              },
+              "blood-moon": {
+                label: "Blood Moon",
+                social: "https://www.instagram.com/tiendabloodmoon/",
+              },
+              "casa-de-juegos": {
+                label: "Casa de Juegos",
+                social: "https://www.instagram.com/casadejuegoscl/",
+              },
             };
 
             const map = {};
             store.allPlayers.forEach((p) => {
               const id = normalizeStoreId(p.STORE);
-              if (!map[id])
+              if (!map[id]) {
+                const meta = storeMeta[id] || { label: p.STORE, social: "" };
                 map[id] = {
                   id,
-                  label: storeNames[id] || p.STORE,
+                  label: meta.label,
+                  social: meta.social,
                   dates: new Set(),
                 };
+              }
               if (p.Fecha) map[id].dates.add(p.Fecha);
             });
 
@@ -348,11 +360,19 @@
         <h1 class="home-title">Reportes RCQ - MODERN</h1>
         <div v-if="!storeGroups.length" class="text-muted text-center">Cargando...</div>
         <div class="stores-list">
-          <div v-for="store in storeGroups" :key="store.id" class="store-group">
-            <div class="store-button store-button--header">
-              <i class="bi bi-shop"></i>
-              <span>{{ store.label }}</span>
-            </div>
+          <div   v-if="store.social"
+            :href="store.social"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="store-button store-button--header"
+          >
+            <i class="bi bi-instagram"></i>
+            <span>{{ store.label }}</span>
+          </a>
+          <div v-else class="store-button store-button--header">
+            <i class="bi bi-shop"></i>
+            <span>{{ store.label }}</span>
+          </div>
             <ul class="store-dates">
               <li v-for="date in store.dates" :key="date">
                 <router-link :to="{ path: '/tienda/' + store.id + '/standing', query: { fecha: date } }">
