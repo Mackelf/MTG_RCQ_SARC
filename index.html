@@ -129,6 +129,7 @@
                 map[key] = {
                   nombre: key,
                   imgUrl: p["IMG URL"] || "",
+                  decklistUrl: p["URL Decklist"] || "",
                   copies: 0,
                   wins: 0,
                   losses: 0,
@@ -223,7 +224,12 @@
                 :class="badgeClass(badge)"
               >{{ badge }}</span>
             </div>
-            <h6 class="card-title mb-3">{{ stripPrefix(arch.nombre) }}</h6>
+            <h6 class="card-title mb-3">
+              <a v-if="arch.decklistUrl" :href="arch.decklistUrl" target="_blank" rel="noopener noreferrer">
+                {{ stripPrefix(arch.nombre) }}
+              </a>
+              <span v-else>{{ stripPrefix(arch.nombre) }}</span>
+            </h6>
 
             <!-- Estadísticas -->
             <p class="card-text mb-1">
@@ -280,12 +286,12 @@
           
           <div class="winner-info">
             <div class="info-row">
-              <span class="info-label">Played Deck:</span>
+              <span class="info-label">Mazo Jugado:</span>
               <span class="info-value">{{ tournamentWinner.Arquetipo }}</span>
             </div>
             
             <div class="info-row">
-              <span class="info-label">Achievements:</span>
+              <span class="info-label">Logros:</span>
               <div class="achievements">
                 <span class="achievement-badge">🏆 1st Place</span>
                 <span class="achievement-badge">{{ tournamentWinner.Puntos }} Puntos</span>
