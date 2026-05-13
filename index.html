@@ -355,36 +355,39 @@
           return { storeGroups, formatDateFriendly };
         },
         template: `
-    <div class="home-container">
-      <div class="home-card">
-        <h1 class="home-title">Reportes RCQ - MODERN</h1>
-        <div v-if="!storeGroups.length" class="text-muted text-center">Cargando...</div>
-       <div class="stores-list" v-if="storeGroups.length">
-  <div v-for="s in storeGroups" :key="s.id" class="store-group">
-    <template v-if="s.social">
-      <a :href="s.social" target="_blank" rel="noopener noreferrer" class="store-button store-button--header">
-        <i class="bi bi-instagram"></i>
-        <span>{{ s.label }}</span>
-      </a>
-    </template>
-    <template v-else>
-      <div class="store-button store-button--header">
-        <i class="bi bi-shop"></i>
-        <span>{{ s.label }}</span>
+  <div class="home-container">
+    <div class="home-card">
+      <h1 class="home-title">Reportes RCQ - MODERN</h1>
+
+      <div v-if="storeGroups.length" class="stores-list">
+        <div v-for="s in storeGroups" :key="s.id" class="store-group">
+          <template v-if="s.social">
+            <a :href="s.social" target="_blank" rel="noopener noreferrer" class="store-button store-button--header">
+              <i class="bi bi-instagram"></i>
+              <span>{{ s.label }}</span>
+            </a>
+          </template>
+          <template v-else>
+            <div class="store-button store-button--header">
+              <i class="bi bi-shop"></i>
+              <span>{{ s.label }}</span>
+            </div>
+          </template>
+          <ul class="store-dates">
+            <li v-for="date in s.dates" :key="date">
+              <router-link :to="{ path: '/tienda/' + s.id + '/standing', query: { fecha: date } }">
+                {{ formatDateFriendly(date) }}
+              </router-link>
+            </li>
+          </ul>
+        </div>
       </div>
-    </template>
-    <ul class="store-dates">
-      <li v-for="date in s.dates" :key="date">
-        <router-link :to="{ path: '/tienda/' + s.id + '/standing', query: { fecha: date } }">
-          {{ formatDateFriendly(date) }}
-        </router-link>
-      </li>
-    </ul>
-  </div>
-</div>
-<div v-else class="text-muted text-center">Cargando...</div>
+
+      <div v-else class="text-muted text-center">Cargando...</div>
+
     </div>
-  `,
+  </div>
+`,
       };
 
       // ── Layout de Torneo ────────────────────────────────────────────────
