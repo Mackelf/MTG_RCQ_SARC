@@ -349,3 +349,34 @@ footer {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
   color: #000 !important;
 }
+
+/* Store Grouping */
+.store-group {
+  margin-bottom: 1rem;
+}
+
+.store-button--header {
+  cursor: default;
+  pointer-events: none;
+  opacity: 1;
+}
+
+.store-dates {
+  list-style: none;
+  padding: 0.25rem 0 0 2rem;
+  margin: 0;
+}
+
+.store-dates li {
+  padding: 0.2rem 0;
+}
+
+.store-dates a {
+  color: var(--bs-primary);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.store-dates a:hover {
+  text-decoration: underline;
+}
