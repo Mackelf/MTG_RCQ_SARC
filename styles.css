@@ -356,9 +356,8 @@ footer {
 }
 
 .store-button--header {
-  cursor: default;
-  pointer-events: none;
-  opacity: 1;
+  cursor: pointer;
+  pointer-events: auto;
 }
 
 .store-dates {
