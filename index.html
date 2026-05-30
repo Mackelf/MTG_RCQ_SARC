@@ -332,7 +332,7 @@
               "posada-del-dado": {
                 label: "Posada del Dado",
                 social: "https://www.instagram.com/laposadadeldado/",
-              }
+              },
             };
 
             const map = {};
@@ -347,12 +347,22 @@
                   dates: new Set(),
                 };
               }
-              if (p.Fecha) map[id].dates.add(p.Fecha);
+
+              if (p.Fecha && !map[id].dates.has(p.Fecha)) {
+                map[id].dates.set(p.Fecha, {
+                  store: p.STORE,
+                  formato: p.FORMATO,
+                  idLabel: p.ID || "",
+                });
+              }
             });
 
             return Object.values(map).map((s) => ({
               ...s,
-              dates: [...s.dates].sort(),
+
+              dates: [...s.dates.entries()]
+                .sort(([a], [b]) => a.localeCompare(b))
+                .map(([fecha, meta]) => ({ fecha, ...meta })),
             }));
           });
 
@@ -377,13 +387,16 @@
               <span>{{ s.label }}</span>
             </div>
           </template>
-          <ul class="store-dates">
-            <li v-for="date in s.dates" :key="date">
-              <router-link :to="{ path: '/tienda/' + s.id + '/standing', query: { fecha: date } }">
-                {{ formatDateFriendly(date) }}
-              </router-link>
-            </li>
-          </ul>
+         <ul class="store-dates">
+  <li v-for="d in s.dates" :key="d.fecha">
+    <router-link :to="{ path: '/tienda/' + s.id + '/standing', query: { fecha: d.fecha } }">
+      {{ formatDateFriendly(d.fecha) }}
+    </router-link>
+    <span class="store-date__meta">
+      — {{ d.store }} · {{ d.formato }}<template v-if="d.idLabel"> · {{ d.idLabel }}</template>
+    </span>
+  </li>
+</ul>
         </div>
       </div>
 

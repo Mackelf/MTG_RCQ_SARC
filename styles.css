@@ -379,3 +379,8 @@ footer {
 .store-dates a:hover {
   text-decoration: underline;
 }
+.store-date__meta {
+  color: #6c757d;
+  font-size: 0.85rem;
+  margin-left: 0.25rem;
+}
