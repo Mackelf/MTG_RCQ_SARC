@@ -385,16 +385,16 @@
               <span>{{ s.label }}</span>
             </div>
           </template>
-         <ul class="store-dates">
-  <li v-for="d in s.dates" :key="d.fecha">
-    <router-link :to="{ path: '/tienda/' + s.id + '/standing', query: { fecha: d.fecha } }">
-      {{ formatDateFriendly(d.fecha) }}
-    </router-link>
-    <span class="store-date__meta">
-      — {{ d.store }} · {{ d.formato }}<template v-if="d.idLabel"> · {{ d.idLabel }}</template>
-    </span>
-  </li>
-</ul>
+            <ul class="store-dates">
+              <li v-for="d in s.dates" :key="d.fecha">
+                  <router-link :to="{ path: '/tienda/' + s.id + '/standing', query: { fecha: d.fecha } }">
+                    {{ formatDateFriendly(d.fecha) }}
+                  </router-link>
+                    <span class="store-date__meta">
+                      — {{ d.store }} · {{ d.formato }}<template v-if="d.idLabel"> · {{ d.idLabel }}</template>
+                    </span>
+              </li>
+          </ul>
         </div>
       </div>
 
