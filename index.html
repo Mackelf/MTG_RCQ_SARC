@@ -344,23 +344,21 @@
                   id,
                   label: meta.label,
                   social: meta.social,
-                  dates: new Set(),
+                  dates: {}, // ← objeto plano, clave = fecha
                 };
               }
-
-              if (p.Fecha && !map[id].dates.has(p.Fecha)) {
-                map[id].dates.set(p.Fecha, {
+              if (p.Fecha && !map[id].dates[p.Fecha]) {
+                map[id].dates[p.Fecha] = {
                   store: p.STORE,
                   formato: p.FORMATO,
                   idLabel: p.ID || "",
-                });
+                };
               }
             });
 
             return Object.values(map).map((s) => ({
               ...s,
-
-              dates: [...s.dates.entries()]
+              dates: Object.entries(s.dates)
                 .sort(([a], [b]) => a.localeCompare(b))
                 .map(([fecha, meta]) => ({ fecha, ...meta })),
             }));
