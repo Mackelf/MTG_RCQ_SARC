@@ -384,3 +384,8 @@ footer {
   font-size: 0.85rem;
   margin-left: 0.25rem;
 }
+
+.badge-gold   { background-color: #d4af37; color: #000; }
+.badge-silver { background-color: #a8a9ad; color: #000; }
+.badge-bronze { background-color: #cd7f32; color: #fff; }
+.badge-green  { background-color: #198754; color: #fff; }

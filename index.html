@@ -81,7 +81,12 @@
         <tbody>
           <tr v-for="player in filteredPlayers" :key="player.Puesto + player.Nombre">
             <td>{{ player.Puesto }}</td>
-            <td>{{ player.Nombre }}</td>
+            <td>  <span
+              v-if="player.Badge || inferBadge(player.Puesto)"
+              class="badge me-1"
+              :class="badgeClass(player.Badge || inferBadge(player.Puesto))"
+            >{{ player.Badge || inferBadge(player.Puesto) }}</span>
+            {{ player.Nombre }}</td>
             <td>{{ player.Puntos }}</td>
             <td>{{ player['%VPO'] }}</td>
             <td>{{ player['%JG'] }}</td>
@@ -107,8 +112,26 @@
             if (!name || name.length <= 4) return name;
             return name.slice(4);
           }
-          return { filteredPlayers, stripPrefix };
-        },
+    function inferBadge(puesto) {
+    if (puesto === 1) return "1st";
+    if (puesto === 2) return "2nd";
+    if (puesto <= 4) return "Top4";
+    if (puesto <= 8) return "Top8";
+    return null;
+  }
+
+  function badgeClass(badge) {
+    const map = {
+      "1st": "badge-gold",
+      "2nd": "badge-silver",
+      "Top4": "badge-bronze",
+      "Top8": "badge-green",
+    };
+    return map[badge] || "";
+  }
+
+  return { filteredPlayers, stripPrefix, inferBadge, badgeClass };
+},
       };
 
       // ── Vista Metagame ──────────────────────────────────────────────────
