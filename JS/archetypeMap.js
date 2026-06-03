@@ -65,8 +65,15 @@ export async function getScryfallImage(cardName) {
   if (cached) return cached;
   try {
     const res = await fetch(
-      `https://api.scryfall.com/cards/named?exact=${encodeURIComponent(cardName)}&format=json`
+      `https://api.scryfall.com/cards/named?exact=${encodeURIComponent(cardName)}&format=json`,
+    {
+        headers: {
+            "User-Agent": "RCQ Reporter/1.0",
+            "Accept": "Application/json"
+        }
+        } 
     );
+
     if (!res.ok) return null;
     const data = await res.json();
     const imgUrl =
