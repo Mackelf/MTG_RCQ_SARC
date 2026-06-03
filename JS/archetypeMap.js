@@ -10,7 +10,7 @@ export const ARCHETYPE_CARD_MAP = {
   "MOD-Boros Energy": "Guide of Souls",
   "MOD-Boros LD": "Price of Freedom",
   "MOD-Dimir Midrange": "Psychic Frog",
-  "MOD-Dimir Oculus": "Abhorrent Oculus",
+  "MOD-Dimir Oculus": "Oculus",
   "MOD-Domain Zoo": "Leyline Binding",
   "MOD-Eldrazi Ramp": "Sowing Mycospawn",
   "MOD-Eldrazi Tron": "Thought-Knot Seer",
