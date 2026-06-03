@@ -13,6 +13,12 @@
     />
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://unpkg.com/vue-router@4"></script>
+    <script type="module">
+      import {
+        ARCHETYPE_CARD_MAP,
+        getScryfallImage,
+      } from "./js/archetypeMap.js";
+    </script>
     <style></style>
     <link rel="stylesheet" href="./styles.css" />
   </head>
@@ -112,32 +118,45 @@
             if (!name || name.length <= 4) return name;
             return name.slice(4);
           }
-    function inferBadge(puesto) {
-    if (puesto === 1) return "1st";
-    if (puesto === 2) return "2nd";
-    if (puesto <= 4) return "T4";
-    if (puesto <= 8) return "T8";
-    return null;
-  }
+          function inferBadge(puesto) {
+            if (puesto === 1) return "1st";
+            if (puesto === 2) return "2nd";
+            if (puesto <= 4) return "T4";
+            if (puesto <= 8) return "T8";
+            return null;
+          }
 
-  function badgeClass(badge) {
-    const map = {
-      "1st": "badge-gold",
-      "2nd": "badge-silver",
-      "T4": "badge-bronze",
-      "T8": "badge-green",
-    };
-    return map[badge] || "";
-  }
+          function badgeClass(badge) {
+            const map = {
+              "1st": "badge-gold",
+              "2nd": "badge-silver",
+              T4: "badge-bronze",
+              T8: "badge-green",
+            };
+            return map[badge] || "";
+          }
 
-  return { filteredPlayers, stripPrefix, inferBadge, badgeClass };
-},
+          return { filteredPlayers, stripPrefix, inferBadge, badgeClass };
+        },
       };
 
       // ── Vista Metagame ──────────────────────────────────────────────────
       const Metagame = {
         setup() {
           const filteredPlayers = Vue.inject("filteredPlayers", Vue.ref([]));
+
+          const archetypeImages = Vue.ref({});
+          Vue.onMounted(async () => {
+            for (const arch of archetypeStats.value) {
+              const cardName = ARCHETYPE_CARD_MAP[arch.nombre];
+              if (cardName) {
+                const url = await getScryfallImage(cardName);
+                if (url) archetypeImages.value[arch.nombre] = url;
+              }
+              // Respetar rate limit de Scryfall: max 10 req/s
+              await new Promise((r) => setTimeout(r, 110));
+            }
+          });
 
           const archetypeStats = Vue.computed(() => {
             const players = filteredPlayers.value;
@@ -151,7 +170,7 @@
               if (!map[key]) {
                 map[key] = {
                   nombre: key,
-                  imgUrl: p["IMG URL"] || "",
+                  
                   decklistUrl: p["URL Decklist"] || "",
                   copies: 0,
                   wins: 0,
@@ -211,7 +230,7 @@
             if (!name || name.length <= 4) return name;
             return name.slice(4);
           }
-          return { archetypeStats, badgeClass, stripPrefix };
+          return { archetypeStats, badgeClass, stripPrefix, archetypeImages };
         },
 
         template: `
@@ -220,12 +239,10 @@
         <div class="card h-100">
 
           <!-- Imagen de cabecera -->
-          <img
-            v-if="arch.imgUrl"
-            :src="arch.imgUrl"
+         <img
+            v-if="archetypeImages[arch.nombre]"
+            :src="archetypeImages[arch.nombre]"
             class="card-img-top"
-            style="height: 160px; object-fit: cover;"
-            :alt="arch.nombre"
           />
           <div
             v-else
