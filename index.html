@@ -1,70 +1,65 @@
 <!doctype html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <title>RCQ 2 Mayo 2026 — Standing</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-    />
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="https://unpkg.com/vue-router@4"></script>
- 
-    <style></style>
-    <link rel="stylesheet" href="./styles.css" />
-  </head>
 
-  <body>
-    <div id="app">
-      <!-- Router view principal -->
-      <router-view></router-view>
-    </div>
+<head>
+  <meta charset="UTF-8" />
+  <title>RCQ 2 Mayo 2026 — Standing</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://unpkg.com/vue-router@4"></script>
 
-    <footer>Mario Canto. 2026. PandaComboMtg</footer>
+  <style></style>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <script type="module">
-      import { ARCHETYPE_CARD_MAP, getScryfallImage } from "./JS/archetypeMap.js";  
-      const { createApp, ref, computed, onMounted } = Vue;
-      const { createRouter, createWebHashHistory, routerView, RouterLink } = VueRouter; 
+<body>
+  <div id="app">
+    <!-- Router view principal -->
+    <router-view></router-view>
+  </div>
 
-      // ── Store compartido (simple reactive state) ────────────────────────
-      const store = Vue.reactive({
-        allPlayers: [],
-        loaded: false,
+  <footer>Mario Canto. 2026. PandaComboMtg</footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <script type="module">
+    import { ARCHETYPE_CARD_MAP, getScryfallImage } from "./JS/archetypeMap.js";
+    const { createApp, ref, computed, onMounted } = Vue;
+    const { createRouter, createWebHashHistory, routerView, RouterLink } = VueRouter;
+
+    // ── Store compartido (simple reactive state) ────────────────────────
+    const store = Vue.reactive({
+      allPlayers: [],
+      loaded: false,
+    });
+
+    async function loadData() {
+      if (store.loaded) return;
+      const res = await fetch("./Data/MAIN_RCQ_SC_JSON.json");
+      store.allPlayers = await res.json();
+      store.loaded = true;
+    }
+
+    // Función para normalizar nombres de tienda (ej: 'Casa de Juegos' -> 'casa-de-juegos')
+    function normalizeStoreId(storeName) {
+      if (!storeName) return "";
+      return storeName.toLowerCase().replace(/[\s_]+/g, "-");
+    }
+
+    // Función para formatear la fecha de ISO a amigable
+    function formatDateFriendly(dateString) {
+      if (!dateString) return "";
+      const options = { year: "numeric", month: "long", day: "numeric" };
+      const date = new Date(dateString);
+      return date.toLocaleDateString("es-ES", {
+        ...options,
+        timeZone: "UTC",
       });
+    }
 
-      async function loadData() {
-        if (store.loaded) return;
-        const res = await fetch("./Data/MAIN_RCQ_SC_JSON.json");
-        store.allPlayers = await res.json();
-        store.loaded = true;
-      }
-
-      // Función para normalizar nombres de tienda (ej: 'Casa de Juegos' -> 'casa-de-juegos')
-      function normalizeStoreId(storeName) {
-        if (!storeName) return "";
-        return storeName.toLowerCase().replace(/[\s_]+/g, "-");
-      }
-
-      // Función para formatear la fecha de ISO a amigable
-      function formatDateFriendly(dateString) {
-        if (!dateString) return "";
-        const options = { year: "numeric", month: "long", day: "numeric" };
-        const date = new Date(dateString);
-        return date.toLocaleDateString("es-ES", {
-          ...options,
-          timeZone: "UTC",
-        });
-      }
-
-      // ── Vista Standing ──────────────────────────────────────────────────
-      const Standing = {
-        template: `
+    // ── Vista Standing ──────────────────────────────────────────────────
+    const Standing = {
+      template: `
     <div>
       <table class="table table-sm table-bordered table-hover align-middle">
         <thead class="table-dark">
@@ -109,128 +104,135 @@
     </div>
   `,
 
-        setup() {
-          const filteredPlayers = Vue.inject("filteredPlayers", ref([]));
-          function stripPrefix(name) {
-            if (!name || name.length <= 4) return name;
-            return name.slice(4);
-          }
-          function inferBadge(puesto) {
-            if (puesto === 1) return "1st";
-            if (puesto === 2) return "2nd";
-            if (puesto <= 4) return "T4";
-            if (puesto <= 8) return "T8";
-            return null;
-          }
+      setup() {
+        const filteredPlayers = Vue.inject("filteredPlayers", ref([]));
+        function stripPrefix(name) {
+          if (!name || name.length <= 4) return name;
+          return name.slice(4);
+        }
+        function inferBadge(puesto) {
+          if (puesto === 1) return "1st";
+          if (puesto === 2) return "2nd";
+          if (puesto <= 4) return "T4";
+          if (puesto <= 8) return "T8";
+          return null;
+        }
 
-          function badgeClass(badge) {
-            const map = {
-              "1st": "badge-gold",
-              "2nd": "badge-silver",
-              T4: "badge-bronze",
-              T8: "badge-green",
-            };
-            return map[badge] || "";
-          }
+        function badgeClass(badge) {
+          const map = {
+            "1st": "badge-gold",
+            "2nd": "badge-silver",
+            T4: "badge-bronze",
+            T8: "badge-green",
+          };
+          return map[badge] || "";
+        }
 
-          return { filteredPlayers, stripPrefix, inferBadge, badgeClass };
-        },
-      };
+        return { filteredPlayers, stripPrefix, inferBadge, badgeClass };
+      },
+    };
 
-      // ── Vista Metagame ──────────────────────────────────────────────────
-      const Metagame = {
-        setup() {
-          const filteredPlayers = Vue.inject("filteredPlayers", Vue.ref([]));
+    // ── Vista Metagame ──────────────────────────────────────────────────
+    const Metagame = {
+      setup() {
+        const filteredPlayers = Vue.inject("filteredPlayers", Vue.ref([]));
 
-          const archetypeImages = Vue.ref({});
-          Vue.onMounted(async () => {
-            for (const arch of archetypeStats.value) {
-              const cardName = ARCHETYPE_CARD_MAP[arch.nombre];
-              if (cardName) {
+        const archetypeImages = Vue.ref({});
+
+        Vue.onMounted(async () => {
+          const archs = archetypeStats.value;
+          const BATCH = 8;
+          for (let i = 0; i < archs.length; i += BATCH) {
+            const batch = archs.slice(i, i + BATCH);
+            await Promise.all(
+              batch.map(async (arch) => {
+                const cardName = ARCHETYPE_CARD_MAP[arch.nombre];
+                if (!cardName) return;
                 const url = await getScryfallImage(cardName);
                 if (url) archetypeImages.value[arch.nombre] = url;
-              }
-              // Respetar rate limit de Scryfall: max 10 req/s
-              await new Promise((r) => setTimeout(r, 110));
+              })
+            );
+            // Pausa entre batches, no entre cada carta
+            if (i + BATCH < archs.length) await new Promise(r => setTimeout(r, 200));
+          }
+        });
+
+        const archetypeStats = Vue.computed(() => {
+          const players = filteredPlayers.value;
+          if (!players.length) return [];
+
+          const total = players.length;
+          const map = {};
+
+          players.forEach((p) => {
+            const key = p.Arquetipo;
+            if (!map[key]) {
+              map[key] = {
+                nombre: key,
+
+                decklistUrl: p["URL Decklist"] || "",
+                copies: 0,
+                wins: 0,
+                losses: 0,
+                draws: 0,
+                totalGames: 0,
+                badges: [],
+              };
             }
+
+            const entry = map[key];
+            entry.copies++;
+
+            const v = parseInt(p.V) || 0;
+            const d = parseInt(p.D) || 0;
+            const e = parseInt(p.E) || 0;
+            entry.wins += v;
+            entry.losses += d;
+            entry.draws += e;
+            entry.totalGames += v + d + e;
+
+            // Badge: usa campo Badge del JSON si existe, si no, inferir por Puesto
+            const badge = p.Badge || inferBadge(p.Puesto);
+            if (badge) entry.badges.push(badge);
           });
 
-          const archetypeStats = Vue.computed(() => {
-            const players = filteredPlayers.value;
-            if (!players.length) return [];
+          return Object.values(map)
+            .map((entry) => ({
+              ...entry,
+              metaPct: ((entry.copies / total) * 100).toFixed(2) + "%",
+              winRate:
+                entry.totalGames > 0
+                  ? ((entry.wins / entry.totalGames) * 100).toFixed(1) + "%"
+                  : "N/A",
+            }))
+            .sort((a, b) => b.copies - a.copies);
+        });
 
-            const total = players.length;
-            const map = {};
+        function inferBadge(puesto) {
+          if (puesto === 1) return "1st";
+          if (puesto === 2) return "2nd";
+          if (puesto <= 4) return "Top4";
+          if (puesto <= 8) return "Top8";
+          return null;
+        }
 
-            players.forEach((p) => {
-              const key = p.Arquetipo;
-              if (!map[key]) {
-                map[key] = {
-                  nombre: key,
-                  
-                  decklistUrl: p["URL Decklist"] || "",
-                  copies: 0,
-                  wins: 0,
-                  losses: 0,
-                  draws: 0,
-                  totalGames: 0,
-                  badges: [],
-                };
-              }
+        function badgeClass(badge) {
+          const map = {
+            "1st": "badge-gold",
+            "2nd": "badge-silver",
+            Top4: "badge-bronze",
+            Top8: "badge-green",
+          };
+          return map[badge] || "";
+        }
+        function stripPrefix(name) {
+          if (!name || name.length <= 4) return name;
+          return name.slice(4);
+        }
+        return { archetypeStats, badgeClass, stripPrefix, archetypeImages };
+      },
 
-              const entry = map[key];
-              entry.copies++;
-
-              const v = parseInt(p.V) || 0;
-              const d = parseInt(p.D) || 0;
-              const e = parseInt(p.E) || 0;
-              entry.wins += v;
-              entry.losses += d;
-              entry.draws += e;
-              entry.totalGames += v + d + e;
-
-              // Badge: usa campo Badge del JSON si existe, si no, inferir por Puesto
-              const badge = p.Badge || inferBadge(p.Puesto);
-              if (badge) entry.badges.push(badge);
-            });
-
-            return Object.values(map)
-              .map((entry) => ({
-                ...entry,
-                metaPct: ((entry.copies / total) * 100).toFixed(2) + "%",
-                winRate:
-                  entry.totalGames > 0
-                    ? ((entry.wins / entry.totalGames) * 100).toFixed(1) + "%"
-                    : "N/A",
-              }))
-              .sort((a, b) => b.copies - a.copies);
-          });
-
-          function inferBadge(puesto) {
-            if (puesto === 1) return "1st";
-            if (puesto === 2) return "2nd";
-            if (puesto <= 4) return "Top4";
-            if (puesto <= 8) return "Top8";
-            return null;
-          }
-
-          function badgeClass(badge) {
-            const map = {
-              "1st": "badge-gold",
-              "2nd": "badge-silver",
-              Top4: "badge-bronze",
-              Top8: "badge-green",
-            };
-            return map[badge] || "";
-          }
-          function stripPrefix(name) {
-            if (!name || name.length <= 4) return name;
-            return name.slice(4);
-          }
-          return { archetypeStats, badgeClass, stripPrefix, archetypeImages };
-        },
-
-        template: `
+      template: `
     <div class="row row-cols-1 row-cols-md-3 g-3">
       <div class="col" v-for="arch in archetypeStats" :key="arch.nombre">
         <div class="card h-100">
@@ -291,23 +293,23 @@
       </div>
     </div>
   `,
-      };
+    };
 
-      // ── Vista Social ────────────────────────────────────────────────────
-      const Social = {
-        setup() {
-          const filteredPlayers = Vue.inject("filteredPlayers", Vue.ref([]));
+    // ── Vista Social ────────────────────────────────────────────────────
+    const Social = {
+      setup() {
+        const filteredPlayers = Vue.inject("filteredPlayers", Vue.ref([]));
 
-          const tournamentWinner = Vue.computed(() => {
-            const players = filteredPlayers.value;
-            if (!players.length) return null;
-            // Get the player in position 1
-            return players.find((p) => p.Puesto === 1) || players[0];
-          });
+        const tournamentWinner = Vue.computed(() => {
+          const players = filteredPlayers.value;
+          if (!players.length) return null;
+          // Get the player in position 1
+          return players.find((p) => p.Puesto === 1) || players[0];
+        });
 
-          return { tournamentWinner };
-        },
-        template: `
+        return { tournamentWinner };
+      },
+      template: `
     <div v-if="tournamentWinner" class="social-container">
       <h3 class="mb-4">Ganador del Torneo</h3>
       
@@ -344,70 +346,70 @@
       <p class="text-muted">No hay datos disponibles</p>
     </div>
   `,
-      };
-      // ── Vista Home ──────────────────────────────────────────────────────
-      const Home = {
-        setup() {
-          onMounted(loadData);
+    };
+    // ── Vista Home ──────────────────────────────────────────────────────
+    const Home = {
+      setup() {
+        onMounted(loadData);
 
-          const storeGroups = Vue.computed(() => {
-            if (!store.loaded) return [];
+        const storeGroups = Vue.computed(() => {
+          if (!store.loaded) return [];
 
-            const storeMeta = {
-              "todo-freak": {
-                label: "Todo Freak",
-                social: "https://www.instagram.com/todofreakstore/",
-              },
-              "blood-moon": {
-                label: "Blood Moon",
-                social: "https://www.instagram.com/tiendabloodmoon/",
-              },
-              "casa-de-juegos": {
-                label: "Casa de Juegos",
-                social: "https://www.instagram.com/casadejuegoscl/",
-              },
-              "posada-del-dado": {
-                label: "Posada del Dado",
-                social: "https://www.instagram.com/laposadadeldado/",
-              },
-              "command-center": {
-                label: "Command Center",
-                social: "https://www.instagram.com/tienda_command_center/",
-              },
-            };
+          const storeMeta = {
+            "todo-freak": {
+              label: "Todo Freak",
+              social: "https://www.instagram.com/todofreakstore/",
+            },
+            "blood-moon": {
+              label: "Blood Moon",
+              social: "https://www.instagram.com/tiendabloodmoon/",
+            },
+            "casa-de-juegos": {
+              label: "Casa de Juegos",
+              social: "https://www.instagram.com/casadejuegoscl/",
+            },
+            "posada-del-dado": {
+              label: "Posada del Dado",
+              social: "https://www.instagram.com/laposadadeldado/",
+            },
+            "command-center": {
+              label: "Command Center",
+              social: "https://www.instagram.com/tienda_command_center/",
+            },
+          };
 
-            const map = {};
-            store.allPlayers.forEach((p) => {
-              const id = normalizeStoreId(p.STORE);
-              if (!map[id]) {
-                const meta = storeMeta[id] || { label: p.STORE, social: "" };
-                map[id] = {
-                  id,
-                  label: meta.label,
-                  social: meta.social,
-                  dates: {}, // ← objeto plano, clave = fecha
-                };
-              }
-              if (p.Fecha && !map[id].dates[p.Fecha]) {
-                map[id].dates[p.Fecha] = {
-                  store: p.STORE,
-                  formato: p.FORMATO,
-                  idLabel: p.ID || "",
-                };
-              }
-            });
-
-            return Object.values(map).map((s) => ({
-              ...s,
-              dates: Object.entries(s.dates)
-                .sort(([a], [b]) => a.localeCompare(b))
-                .map(([fecha, meta]) => ({ fecha, ...meta })),
-            }));
+          const map = {};
+          store.allPlayers.forEach((p) => {
+            const id = normalizeStoreId(p.STORE);
+            if (!map[id]) {
+              const meta = storeMeta[id] || { label: p.STORE, social: "" };
+              map[id] = {
+                id,
+                label: meta.label,
+                social: meta.social,
+                dates: {}, // ← objeto plano, clave = fecha
+              };
+            }
+            if (p.Fecha && !map[id].dates[p.Fecha]) {
+              map[id].dates[p.Fecha] = {
+                store: p.STORE,
+                formato: p.FORMATO,
+                idLabel: p.ID || "",
+              };
+            }
           });
 
-          return { storeGroups, formatDateFriendly };
-        },
-        template: `
+          return Object.values(map).map((s) => ({
+            ...s,
+            dates: Object.entries(s.dates)
+              .sort(([a], [b]) => a.localeCompare(b))
+              .map(([fecha, meta]) => ({ fecha, ...meta })),
+          }));
+        });
+
+        return { storeGroups, formatDateFriendly };
+      },
+      template: `
   <div class="home-container">
     <div class="home-card">
       <h1 class="home-title">Reportes RCQ - MODERN</h1>
@@ -445,70 +447,70 @@
  
   </div>
 `,
-      };
+    };
 
-      // ── Layout de Torneo ────────────────────────────────────────────────
-      const TournamentLayout = {
-        setup() {
-          onMounted(loadData);
-          const route = VueRouter.useRoute();
-          const selectedDate = ref(null);
+    // ── Layout de Torneo ────────────────────────────────────────────────
+    const TournamentLayout = {
+      setup() {
+        onMounted(loadData);
+        const route = VueRouter.useRoute();
+        const selectedDate = ref(null);
 
-          const storePlayers = computed(() => {
-            if (!store.loaded) return [];
-            const storeId = route.params.id;
-            return store.allPlayers.filter(
-              (p) => normalizeStoreId(p.STORE) === storeId,
-            );
-          });
-
-          const availableDates = computed(() => {
-            const dates = storePlayers.value
-              .map((p) => p.Fecha)
-              .filter(Boolean);
-            const uniqueDates = [...new Set(dates)].sort();
-            return uniqueDates;
-          });
-
-          Vue.watch(
-            availableDates,
-            (newDates) => {
-              if (!newDates.length) return;
-              const queryFecha = route.query.fecha;
-              if (queryFecha && newDates.includes(queryFecha)) {
-                selectedDate.value = queryFecha;
-              } else if (!newDates.includes(selectedDate.value)) {
-                selectedDate.value = newDates[newDates.length - 1];
-              }
-            },
-            { immediate: true },
+        const storePlayers = computed(() => {
+          if (!store.loaded) return [];
+          const storeId = route.params.id;
+          return store.allPlayers.filter(
+            (p) => normalizeStoreId(p.STORE) === storeId,
           );
+        });
 
-          const filteredPlayers = computed(() => {
-            if (!selectedDate.value) return [];
-            return storePlayers.value.filter(
-              (p) => p.Fecha === selectedDate.value,
-            );
-          });
+        const availableDates = computed(() => {
+          const dates = storePlayers.value
+            .map((p) => p.Fecha)
+            .filter(Boolean);
+          const uniqueDates = [...new Set(dates)].sort();
+          return uniqueDates;
+        });
 
-          // Proveemos los jugadores filtrados a los componentes hijos
-          Vue.provide("filteredPlayers", filteredPlayers);
-
-          return { selectedDate, availableDates, formatDateFriendly };
-        },
-        computed: {
-          logoSrc() {
-            const storeLogos = {
-              "todo-freak": "./assets/LogoTodoFreak.jpg",
-              "blood-moon": "./assets/LogoBloodMoon.jpg",
-              "casa-de-juegos": "./assets/LogoCasaDeJuegos.jpg",
-              "posada-del-dado": "./assets/LogoPosadaDelDado.png",
-              "command-center": "./assets/LogoCommandCenter.webp",
-            };
-            return storeLogos[this.$route.params.id] || "";
+        Vue.watch(
+          availableDates,
+          (newDates) => {
+            if (!newDates.length) return;
+            const queryFecha = route.query.fecha;
+            if (queryFecha && newDates.includes(queryFecha)) {
+              selectedDate.value = queryFecha;
+            } else if (!newDates.includes(selectedDate.value)) {
+              selectedDate.value = newDates[newDates.length - 1];
+            }
           },
+          { immediate: true },
+        );
+
+        const filteredPlayers = computed(() => {
+          if (!selectedDate.value) return [];
+          return storePlayers.value.filter(
+            (p) => p.Fecha === selectedDate.value,
+          );
+        });
+
+        // Proveemos los jugadores filtrados a los componentes hijos
+        Vue.provide("filteredPlayers", filteredPlayers);
+
+        return { selectedDate, availableDates, formatDateFriendly };
+      },
+      computed: {
+        logoSrc() {
+          const storeLogos = {
+            "todo-freak": "./assets/LogoTodoFreak.jpg",
+            "blood-moon": "./assets/LogoBloodMoon.jpg",
+            "casa-de-juegos": "./assets/LogoCasaDeJuegos.jpg",
+            "posada-del-dado": "./assets/LogoPosadaDelDado.png",
+            "command-center": "./assets/LogoCommandCenter.webp",
+          };
+          return storeLogos[this.$route.params.id] || "";
         },
-        template: `
+      },
+      template: `
         <div>
           <div>
             <img v-if="logoSrc" :src="logoSrc" alt="Logo Tienda" class="img-fluid" style="height: 100px; object-fit: contain; margin-left: 1rem;" />
@@ -554,32 +556,33 @@
           </div>
         </div>
       `,
-      };
+    };
 
-      // ── Router ──────────────────────────────────────────────────────────
-      const routes = [
-        { path: "/", component: Home },
-        {
-          path: "/tienda/:id",
-          component: TournamentLayout,
-          children: [
-            { path: "", redirect: "standing" },
-            { path: "standing", component: Standing },
-            { path: "metagame", component: Metagame },
-            { path: "social", component: Social },
-          ],
-        },
-      ];
+    // ── Router ──────────────────────────────────────────────────────────
+    const routes = [
+      { path: "/", component: Home },
+      {
+        path: "/tienda/:id",
+        component: TournamentLayout,
+        children: [
+          { path: "", redirect: "standing" },
+          { path: "standing", component: Standing },
+          { path: "metagame", component: Metagame },
+          { path: "social", component: Social },
+        ],
+      },
+    ];
 
-      const router = VueRouter.createRouter({
-        history: VueRouter.createWebHashHistory(),
-        routes,
-      });
+    const router = VueRouter.createRouter({
+      history: VueRouter.createWebHashHistory(),
+      routes,
+    });
 
-      // ── App ──────────────────────────────────────────────────────────────
-      const app = createApp({});
-      app.use(router);
-      app.mount("#app");
-    </script>
-  </body>
+    // ── App ──────────────────────────────────────────────────────────────
+    const app = createApp({});
+    app.use(router);
+    app.mount("#app");
+  </script>
+</body>
+
 </html>
