@@ -68,22 +68,26 @@ export async function getScryfallImage(cardName) {
       `https://api.scryfall.com/cards/named?exact=${encodeURIComponent(cardName)}&format=json`,
       {
         headers: {
-          "User-Agent": "RCQ Reporter/1.0",
-          Accept: "Application/json",
+          "User-Agent": "RCQ-Reporter/1.0",
+          "Accept": "application/json",
         },
       },
     );
-
-    if (!res.ok) return null;
+    if (!res.ok) {
+      console.warn(`[Scryfall] ${res.status} para "${cardName}"`);
+      return null;
+    }
     const data = await res.json();
+    console.log(`[Scryfall] "${cardName}"`, data.image_uris); // ← LOG
     const imgUrl =
       data.image_uris?.art_crop ??
       data.card_faces?.[0]?.image_uris?.art_crop ??
       null;
+    console.log(`[Scryfall] imgUrl:`, imgUrl); // ← LOG
     if (imgUrl) localStorage.setItem(cacheKey, imgUrl);
     return imgUrl;
   } catch (e) {
-    console.warn(`[Scryfall] Error fetching "${cardName}":`, e);
+    console.error(`[Scryfall] Error fetching "${cardName}":`, e);
     return null;
   }
 }
