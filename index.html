@@ -140,6 +140,7 @@
         const archetypeImages = Vue.ref({});
 
         Vue.onMounted(async () => {
+          console.log('[onMounted] archetypeStats:', archetypeStats.value?.length);
           const archs = archetypeStats.value;
           const BATCH = 8;
           for (let i = 0; i < archs.length; i += BATCH) {
@@ -147,12 +148,13 @@
             await Promise.all(
               batch.map(async (arch) => {
                 const cardName = ARCHETYPE_CARD_MAP[arch.nombre];
+                console.log('[arch]', arch.nombre, '→', cardName); // ← LOG
                 if (!cardName) return;
                 const url = await getScryfallImage(cardName);
+                console.log('[url]', url); // ← LOG
                 if (url) archetypeImages.value[arch.nombre] = url;
               })
             );
-            // Pausa entre batches, no entre cada carta
             if (i + BATCH < archs.length) await new Promise(r => setTimeout(r, 200));
           }
         });
