@@ -192,7 +192,7 @@
             .sort((a, b) => b.copies - a.copies);
         });
 
-        const tournamentMeta = vue.computed(() => {
+        const tournamentMeta = Vue.computed(() => {
           const players = filteredPlayers.value;
           if (!players.length) return null;
           const p = players[0];
