@@ -139,27 +139,7 @@
 
         const archetypeImages = Vue.ref({});
 
-        // Reemplaza el onMounted completo por esto:
-        Vue.watch(
-          archetypeStats,
-          async (stats) => {
-            if (!stats?.length) return;
-            const BATCH = 8;
-            for (let i = 0; i < stats.length; i += BATCH) {
-              const batch = stats.slice(i, i + BATCH);
-              await Promise.all(
-                batch.map(async (arch) => {
-                  const cardName = ARCHETYPE_CARD_MAP[arch.nombre];
-                  if (!cardName) return;
-                  const url = await getScryfallImage(cardName);
-                  if (url) archetypeImages.value[arch.nombre] = url;
-                })
-              );
-              if (i + BATCH < stats.length) await new Promise(r => setTimeout(r, 200));
-            }
-          },
-          { immediate: true }
-        );
+
 
         const archetypeStats = Vue.computed(() => {
           const players = filteredPlayers.value;
@@ -211,12 +191,32 @@
             }))
             .sort((a, b) => b.copies - a.copies);
         });
-
+        // Reemplaza el onMounted completo por esto:
+        Vue.watch(
+          archetypeStats,
+          async (stats) => {
+            if (!stats?.length) return;
+            const BATCH = 8;
+            for (let i = 0; i < stats.length; i += BATCH) {
+              const batch = stats.slice(i, i + BATCH);
+              await Promise.all(
+                batch.map(async (arch) => {
+                  const cardName = ARCHETYPE_CARD_MAP[arch.nombre];
+                  if (!cardName) return;
+                  const url = await getScryfallImage(cardName);
+                  if (url) archetypeImages.value[arch.nombre] = url;
+                })
+              );
+              if (i + BATCH < stats.length) await new Promise(r => setTimeout(r, 200));
+            }
+          },
+          { immediate: true }
+        );
         function inferBadge(puesto) {
           if (puesto === 1) return "1st";
           if (puesto === 2) return "2nd";
-          if (puesto <= 4) return "Top4";
-          if (puesto <= 8) return "Top8";
+          if (puesto <= 4) return "T4";
+          if (puesto <= 8) return "T8";
           return null;
         }
 
@@ -224,8 +224,8 @@
           const map = {
             "1st": "badge-gold",
             "2nd": "badge-silver",
-            Top4: "badge-bronze",
-            Top8: "badge-green",
+            "T4": "badge-bronze",
+            "T8": "badge-green",
           };
           return map[badge] || "";
         }
