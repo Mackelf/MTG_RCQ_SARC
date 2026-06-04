@@ -37,6 +37,7 @@ export const ARCHETYPE_CARD_MAP = {
   "MOD-Sultai Midrange": "Psychic Frog",
   "MOD-Temur Prowess": "Coram, the Undertaker",
   "MOD-Zoo Reanimator": "Leyline Binding",
+  "MOD-Temur Cascade": "Crashing Footfalls",
   // STANDARD
   "STD-4c Control": "Jeskai Revelation",
   "STD-5c Elementals": "Sunderflock",
