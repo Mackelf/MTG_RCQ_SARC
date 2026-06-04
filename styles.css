@@ -58,6 +58,11 @@ body {
   box-shadow: 0 4px 12px rgba(135, 206, 235, 0.3);
 }
 
+.badge-gold   { background-color: #d4af37; color: #000; }
+.badge-silver { background-color: #a8a9ad; color: #000; }
+.badge-bronze { background-color: #cd7f32; color: #fff; }
+.badge-green  { background-color: #198754; color: #fff; }
+
 /* ========== Table Styling ========== */
 .main-container {
   background: white;
@@ -385,7 +390,3 @@ footer {
   margin-left: 0.25rem;
 }
 
-.badge-gold   { background-color: #d4af37; color: #000; }
-.badge-silver { background-color: #a8a9ad; color: #000; }
-.badge-bronze { background-color: #cd7f32; color: #fff; }
-.badge-green  { background-color: #198754; color: #fff; }

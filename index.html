@@ -191,6 +191,22 @@
             }))
             .sort((a, b) => b.copies - a.copies);
         });
+
+        const tournamentMeta = vue.computed(() => {
+          const players = filteredPlayers.value;
+          if (!players.length) return null;
+          const p = players[0];
+          return {
+            store: p.STORE || "",
+            formato: p.FORMATO || "",
+            idLabel: p.IDLABEL || "",
+            fecha: p.Fecha ? formatDateFriendly(p.Fecha) : "",
+
+          };
+        }
+        );
+
+
         // Reemplaza el onMounted completo por esto:
         Vue.watch(
           archetypeStats,
@@ -233,7 +249,7 @@
           if (!name || name.length <= 4) return name;
           return name.slice(4);
         }
-        return { archetypeStats, badgeClass, stripPrefix, archetypeImages };
+        return { archetypeStats, badgeClass, stripPrefix, archetypeImages, tournamentMeta };
       },
 
       template: `
@@ -255,6 +271,12 @@
             <span class="text-white text-muted small">Sin imagen</span>
           </div>
 
+          <h2 v-if="tournamentMeta" class="mb-3">
+            {{ tournamentMeta.store }} · {{ tournamentMeta.formato }}
+            <template v-if="tournamentMeta.idLabel"> · {{ tournamentMeta.idLabel }}</template>
+            <small class="text-muted ms-2 fs-6">{{ tournamentMeta.fecha }}</small>
+          </h2>
+          
           <!-- Cuerpo -->
           <div class="card-body">
 
