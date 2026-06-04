@@ -139,25 +139,27 @@
 
         const archetypeImages = Vue.ref({});
 
-        Vue.onMounted(async () => {
-          console.log('[onMounted] archetypeStats:', archetypeStats.value?.length);
-          const archs = archetypeStats.value;
-          const BATCH = 8;
-          for (let i = 0; i < archs.length; i += BATCH) {
-            const batch = archs.slice(i, i + BATCH);
-            await Promise.all(
-              batch.map(async (arch) => {
-                const cardName = ARCHETYPE_CARD_MAP[arch.nombre];
-                console.log('[arch]', arch.nombre, '→', cardName); // ← LOG
-                if (!cardName) return;
-                const url = await getScryfallImage(cardName);
-                console.log('[url]', url); // ← LOG
-                if (url) archetypeImages.value[arch.nombre] = url;
-              })
-            );
-            if (i + BATCH < archs.length) await new Promise(r => setTimeout(r, 200));
-          }
-        });
+        // Reemplaza el onMounted completo por esto:
+        Vue.watch(
+          archetypeStats,
+          async (stats) => {
+            if (!stats?.length) return;
+            const BATCH = 8;
+            for (let i = 0; i < stats.length; i += BATCH) {
+              const batch = stats.slice(i, i + BATCH);
+              await Promise.all(
+                batch.map(async (arch) => {
+                  const cardName = ARCHETYPE_CARD_MAP[arch.nombre];
+                  if (!cardName) return;
+                  const url = await getScryfallImage(cardName);
+                  if (url) archetypeImages.value[arch.nombre] = url;
+                })
+              );
+              if (i + BATCH < stats.length) await new Promise(r => setTimeout(r, 200));
+            }
+          },
+          { immediate: true }
+        );
 
         const archetypeStats = Vue.computed(() => {
           const players = filteredPlayers.value;
