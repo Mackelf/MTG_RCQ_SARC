@@ -36,6 +36,7 @@ export const ARCHETYPE_CARD_MAP = {
   "MOD-Samwise Combo": { main: "Samwise Gamgee", key: "Rosie Cotton of South Lane" },
   "MOD-Sultai Midrange": { main: "Psychic Frog", key: "Tarmogoyf" },
   "MOD-Temur Prowess": { main: "Coram, the Undertaker", key: "Monastery Swiftspear" },
+  "MOD-Temur Cascade": { main: "Crashing Footfalls", key: "Crashing Footfalls" },
   "MOD-Zoo Reanimator": { main: "Leyline Binding", key: "Atraxa, Grand Unifier" },
   // STANDARD
   "STD-4c Control": { main: "Jeskai Revelation", key: "Atraxa, Grand Unifier" },
