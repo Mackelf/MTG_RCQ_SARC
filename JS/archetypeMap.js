@@ -14,7 +14,7 @@ export const ARCHETYPE_CARD_MAP = {
   "MOD-Domain Zoo":                     { main: "Leyline Binding",             key: "Territorial Kavu" },
   "MOD-Eldrazi Ramp":                   { main: "Sowing Mycospawn",            key: "Ulamog, the Infinite Gyre" },
   "MOD-Eldrazi Tron":                   { main: "Thought-Knot Seer",           key: "Karn, the Great Creator" },
-  "MOD-Esper Blink":                    { main: "Phelia, Exuberant Shepherd",  key: "Overlord of the Haemtusk" },
+  "MOD-Esper Blink":                    { main: "Phelia, Exuberant Shepherd",  key: "Phelia, Exuberant Shepherd" },
   "MOD-Esper Control":                  { main: "Psychic Frog",                key: "Teferi, Hero of Dominaria" },
   "MOD-Goryo's Vengeance":              { main: "Goryo's Vengeance",           key: "Griselbrand" },
   "MOD-Grixis Phoenix":                 { main: "Arclight Phoenix",            key: "Preordain" },
