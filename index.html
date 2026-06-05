@@ -224,12 +224,18 @@
                 batch.map(async (arch) => {
                   const entry = ARCHETYPE_CARD_MAP[arch.nombre];
                   if (!entry) return;
-                  const [mainUrl, keyUrl] = await Promise.all([
+                  const [mainImgs, keyImgs] = await Promise.all([
                     getScryfallImage(entry.main),
                     getScryfallImage(entry.key),
                   ]);
-                  if (mainUrl) archetypeImages.value[arch.nombre] = mainUrl;
-                  if (keyUrl) archetypeImages.value[arch.nombre + '__key'] = keyUrl;
+                  if (mainImgs) {
+                    archetypeImages.value[arch.nombre] = mainImgs.art_crop;
+                    archetypeImages.value[arch.nombre + '__normal'] = mainImgs.normal;
+                  }
+                  if (keyImgs) {
+                    archetypeImages.value[arch.nombre + '__key'] = keyImgs.art_crop;
+                    archetypeImages.value[arch.nombre + '__key_normal'] = keyImgs.normal;
+                  }
                 })
               );
               if (i + BATCH < stats.length) await new Promise(r => setTimeout(r, 200));
@@ -353,32 +359,22 @@
         <td class="text-center">{{ arch.copies }}</td>
         <td class="text-center">{{ arch.winRate }}</td>
         <td>
-          <div class="d-flex gap-2 align-items-center">
-            <div class="text-center" style="width: 80px;">
-              <img
-                v-if="archetypeImages[arch.nombre]"
-                :src="archetypeImages[arch.nombre]"
-                :title="ARCHETYPE_CARD_MAP[arch.nombre]?.main"
-                class="rounded"
-                style="width: 80px; height: 55px; object-fit: cover; object-position: center top;"
-              />
-              <small class="d-block text-muted" style="font-size: 0.65rem; line-height: 1.1;">
-                {{ ARCHETYPE_CARD_MAP[arch.nombre]?.main }}
-              </small>
-            </div>
-            <div class="text-center" style="width: 80px;">
-              <img
-                v-if="archetypeImages[arch.nombre + '__key']"
-                :src="archetypeImages[arch.nombre + '__key']"
-                :title="ARCHETYPE_CARD_MAP[arch.nombre]?.key"
-                class="rounded"
-                style="width: 80px; height: 55px; object-fit: cover; object-position: center top;"
-              />
-              <small class="d-block text-muted" style="font-size: 0.65rem; line-height: 1.1;">
-                {{ ARCHETYPE_CARD_MAP[arch.nombre]?.key }}
-              </small>
-            </div>
-          </div>
+   <div class="d-flex gap-2 align-items-center">
+  <img
+    v-if="archetypeImages[arch.nombre + '__normal']"
+    :src="archetypeImages[arch.nombre + '__normal']"
+    :title="ARCHETYPE_CARD_MAP[arch.nombre]?.main"
+    class="rounded"
+    style="width: 72px; height: 22px; object-fit: cover; object-position: top;"
+  />
+  <img
+    v-if="archetypeImages[arch.nombre + '__key_normal']"
+    :src="archetypeImages[arch.nombre + '__key_normal']"
+    :title="ARCHETYPE_CARD_MAP[arch.nombre]?.key"
+    class="rounded"
+    style="width: 72px; height: 22px; object-fit: cover; object-position: top;"
+  />
+</div>
         </td>
       </tr>
     </tbody>
