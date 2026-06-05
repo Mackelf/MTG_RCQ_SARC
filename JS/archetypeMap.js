@@ -1,7 +1,7 @@
 export const ARCHETYPE_CARD_MAP = {
   // MODERN
   "MOD-Amulet Titan":                   { main: "Amulet of Vigor",            key: "Primeval Titan" },
-  "MOD-Azorius Blink":                  { main: "Phelia, Exuberant Shepherd",  key: "Overlord of the Haemtusk" },
+  "MOD-Azorius Blink":                  { main: "Phelia, Exuberant Shepherd",  key: "Phelia, Exuberant Shepherd" },
   "MOD-Azorius Control":                { main: "Teferi, Hero of Dominaria",   key: "Solitude" },
   "MOD-Azorius Scepter":                { main: "Isochron Scepter",            key: "Orim's Chant" },
   "MOD-Belcher":                        { main: "Goblin Charbelcher",          key: "Tinder Wall" },
