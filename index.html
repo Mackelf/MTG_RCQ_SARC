@@ -139,7 +139,13 @@
 
         const archetypeImages = Vue.ref({});
 
-
+        function bestBadge(badges) {
+          const order = ["1st", "2nd", "T4", "T8"];
+          for (const b of order) {
+            if (badges.includes(b)) return b;
+          }
+          return null;
+        }
 
         const archetypeStats = Vue.computed(() => {
           const players = filteredPlayers.value;
@@ -207,7 +213,6 @@
         );
 
 
-        // Reemplaza el onMounted completo por esto:
         Vue.watch(
           archetypeStats,
           async (stats) => {
@@ -217,10 +222,14 @@
               const batch = stats.slice(i, i + BATCH);
               await Promise.all(
                 batch.map(async (arch) => {
-                  const cardName = ARCHETYPE_CARD_MAP[arch.nombre];
-                  if (!cardName) return;
-                  const url = await getScryfallImage(cardName);
-                  if (url) archetypeImages.value[arch.nombre] = url;
+                  const entry = ARCHETYPE_CARD_MAP[arch.nombre];
+                  if (!entry) return;
+                  const [mainUrl, keyUrl] = await Promise.all([
+                    getScryfallImage(entry.main),
+                    getScryfallImage(entry.key),
+                  ]);
+                  if (mainUrl) archetypeImages.value[arch.nombre] = mainUrl;
+                  if (keyUrl) archetypeImages.value[arch.nombre + '__key'] = keyUrl;
                 })
               );
               if (i + BATCH < stats.length) await new Promise(r => setTimeout(r, 200));
@@ -314,6 +323,67 @@
         </div>
       </div>
     </div>
+
+    <!-- Tabla resumen -->
+<div class="table-responsive mt-4">
+  <table class="table table-sm table-hover align-middle">
+    <thead class="table-dark">
+      <tr>
+        <th>Lugar</th>
+        <th>Arquetipo</th>
+        <th class="text-center">Copias</th>
+        <th class="text-center">Winrate</th>
+        <th>Cartas Clave</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="arch in archetypeStats" :key="arch.nombre">
+        <td>
+          <span v-if="bestBadge(arch.badges)" :class="['badge', badgeClass(bestBadge(arch.badges))]">
+            {{ bestBadge(arch.badges) }}
+          </span>
+          <span v-else class="text-muted">—</span>
+        </td>
+        <td>
+          <a v-if="arch.decklistUrl" :href="arch.decklistUrl" target="_blank" class="fw-semibold text-decoration-none">
+            {{ stripPrefix(arch.nombre) }}
+          </a>
+          <span v-else class="fw-semibold">{{ stripPrefix(arch.nombre) }}</span>
+        </td>
+        <td class="text-center">{{ arch.copies }}</td>
+        <td class="text-center">{{ arch.winRate }}</td>
+        <td>
+          <div class="d-flex gap-2 align-items-center">
+            <div class="text-center" style="width: 80px;">
+              <img
+                v-if="archetypeImages[arch.nombre]"
+                :src="archetypeImages[arch.nombre]"
+                :title="ARCHETYPE_CARD_MAP[arch.nombre]?.main"
+                class="rounded"
+                style="width: 80px; height: 55px; object-fit: cover; object-position: center top;"
+              />
+              <small class="d-block text-muted" style="font-size: 0.65rem; line-height: 1.1;">
+                {{ ARCHETYPE_CARD_MAP[arch.nombre]?.main }}
+              </small>
+            </div>
+            <div class="text-center" style="width: 80px;">
+              <img
+                v-if="archetypeImages[arch.nombre + '__key']"
+                :src="archetypeImages[arch.nombre + '__key']"
+                :title="ARCHETYPE_CARD_MAP[arch.nombre]?.key"
+                class="rounded"
+                style="width: 80px; height: 55px; object-fit: cover; object-position: center top;"
+              />
+              <small class="d-block text-muted" style="font-size: 0.65rem; line-height: 1.1;">
+                {{ ARCHETYPE_CARD_MAP[arch.nombre]?.key }}
+              </small>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
   `,
     };
 

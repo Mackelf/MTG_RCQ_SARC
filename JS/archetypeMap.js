@@ -1,62 +1,61 @@
 export const ARCHETYPE_CARD_MAP = {
   // MODERN
-  "MOD-Amulet Titan": "Amulet of Vigor",
-  "MOD-Azorius Blink": "Phelia, Exuberant Shepherd",
-  "MOD-Azorius Control": "Teferi, Hero of Dominaria",
-  "MOD-Azorius Scepter": "Isochron Scepter",
-  "MOD-Belcher": "Goblin Charbelcher",
-  "MOD-Boros Belcher": "Goblin Charbelcher",
-  "MOD-Boros Burn": "Boros Charm",
-  "MOD-Boros Energy": "Guide of Souls",
-  "MOD-Boros LD": "Price of Freedom",
-  "MOD-Dimir Midrange": "Psychic Frog",
-  "MOD-Dimir Oculus": "Abhorrent Oculus",
-  "MOD-Domain Zoo": "Leyline Binding",
-  "MOD-Eldrazi Ramp": "Sowing Mycospawn",
-  "MOD-Eldrazi Tron": "Thought-Knot Seer",
-  "MOD-Esper Blink": "Phelia, Exuberant Shepherd",
-  "MOD-Esper Control": "Psychic Frog",
-  "MOD-Goryo's Vengeance": "Goryo's Vengeance",
-  "MOD-Grixis Phoenix": "Arclight Phoenix",
-  "MOD-Grixis Reanimator": "Archon of Cruelty",
-  "MOD-Gruul Basking Broodscale Combo": "Basking Broodscale",
-  "MOD-Hammer Time": "Colossus Hammer",
-  "MOD-Izzet Affinity": "Kappa Cannoneer",
-  "MOD-Izzet Prowess": "Slickshot Show-Off",
-  "MOD-Jeskai Blink": "Phelia, Exuberant Shepherd",
-  "MOD-Jeskai Energy": "Wrath of the Skies",
-  "MOD-Living End": "Living End",
-  "MOD-Merfolk": "Lord of Atlantis",
-  "MOD-Mono Black Midrange": "Necropotence",
-  "MOD-Mono Blue Belcher": "Goblin Charbelcher",
-  "MOD-Mono White Control": "Solitude",
-  "MOD-Neobrand": "Neoform",
-  "MOD-Rakdos Midrange": "Kroxa, Titan of Death's Hunger",
-  "MOD-Ruby Storm": "Ral, Monsoon Mage",
-  "MOD-Samwise Combo": "Samwise Gamgee",
-  "MOD-Sultai Midrange": "Psychic Frog",
-  "MOD-Temur Prowess": "Coram, the Undertaker",
-  "MOD-Zoo Reanimator": "Leyline Binding",
-  "MOD-Temur Cascade": "Crashing Footfalls",
+  "MOD-Amulet Titan":                   { main: "Amulet of Vigor",            key: "Primeval Titan" },
+  "MOD-Azorius Blink":                  { main: "Phelia, Exuberant Shepherd",  key: "Overlord of the Haemtusk" },
+  "MOD-Azorius Control":                { main: "Teferi, Hero of Dominaria",   key: "Solitude" },
+  "MOD-Azorius Scepter":                { main: "Isochron Scepter",            key: "Orim's Chant" },
+  "MOD-Belcher":                        { main: "Goblin Charbelcher",          key: "Tinder Wall" },
+  "MOD-Boros Belcher":                  { main: "Goblin Charbelcher",          key: "Leyline of Resonance" },
+  "MOD-Boros Burn":                     { main: "Boros Charm",                 key: "Eidolon of the Great Revel" },
+  "MOD-Boros Energy":                   { main: "Guide of Souls",              key: "Ajani, Nacatl Pariah" },
+  "MOD-Boros LD":                       { main: "Price of Freedom",            key: "Jokulhaups" },
+  "MOD-Dimir Midrange":                 { main: "Psychic Frog",                key: "Sneaky Snacker" },
+  "MOD-Dimir Oculus":                   { main: "Oculus",                      key: "Archmage's Charm" },
+  "MOD-Domain Zoo":                     { main: "Leyline Binding",             key: "Territorial Kavu" },
+  "MOD-Eldrazi Ramp":                   { main: "Sowing Mycospawn",            key: "Ulamog, the Infinite Gyre" },
+  "MOD-Eldrazi Tron":                   { main: "Thought-Knot Seer",           key: "Karn, the Great Creator" },
+  "MOD-Esper Blink":                    { main: "Phelia, Exuberant Shepherd",  key: "Overlord of the Haemtusk" },
+  "MOD-Esper Control":                  { main: "Psychic Frog",                key: "Teferi, Hero of Dominaria" },
+  "MOD-Goryo's Vengeance":              { main: "Goryo's Vengeance",           key: "Griselbrand" },
+  "MOD-Grixis Phoenix":                 { main: "Arclight Phoenix",            key: "Preordain" },
+  "MOD-Grixis Reanimator":              { main: "Archon of Cruelty",           key: "Persist" },
+  "MOD-Gruul Basking Broodscale Combo": { main: "Basking Broodscale",          key: "Disciple of the Vault" },
+  "MOD-Hammer Time":                    { main: "Colossus Hammer",             key: "Puresteel Paladin" },
+  "MOD-Izzet Affinity":                 { main: "Kappa Cannoneer",             key: "Thought Monitor" },
+  "MOD-Izzet Prowess":                  { main: "Slickshot Show-Off",          key: "Murmuring Mystic" },
+  "MOD-Jeskai Blink":                   { main: "Phelia, Exuberant Shepherd",  key: "Teferi, Time Raveler" },
+  "MOD-Jeskai Energy":                  { main: "Wrath of the Skies",          key: "Ocelot Pride" },
+  "MOD-Living End":                     { main: "Living End",                  key: "Grief" },
+  "MOD-Merfolk":                        { main: "Lord of Atlantis",            key: "Svyelun of Sea and Sky" },
+  "MOD-Mono Black Midrange":            { main: "Necropotence",                key: "Sheoldred, the Apocalypse" },
+  "MOD-Mono Blue Belcher":              { main: "Goblin Charbelcher",          key: "Emry, Lurker of the Loch" },
+  "MOD-Mono White Control":             { main: "Solitude",                    key: "The Wandering Emperor" },
+  "MOD-Neobrand":                       { main: "Neoform",                     key: "Griselbrand" },
+  "MOD-Rakdos Midrange":                { main: "Kroxa, Titan of Death's Hunger", key: "Sheoldred, the Apocalypse" },
+  "MOD-Ruby Storm":                     { main: "Ral, Monsoon Mage",           key: "Baral, Chief of Compliance" },
+  "MOD-Samwise Combo":                  { main: "Samwise Gamgee",              key: "Rosie Cotton of South Lane" },
+  "MOD-Sultai Midrange":                { main: "Psychic Frog",                key: "Tarmogoyf" },
+  "MOD-Temur Prowess":                  { main: "Coram, the Undertaker",       key: "Monastery Swiftspear" },
+  "MOD-Zoo Reanimator":                 { main: "Leyline Binding",             key: "Atraxa, Grand Unifier" },
   // STANDARD
-  "STD-4c Control": "Jeskai Revelation",
-  "STD-5c Elementals": "Sunderflock",
-  "STD-Azorius Tempo": "Aang, Swift Savior",
-  "STD-Bant Tortuga": "Smuggler's Surprise",
-  "STD-Boros Burn": "Boros Charm",
-  "STD-Boros Dragons": "Sarkhan, Dragon Ascendant",
-  "STD-Dimir Excruciator": "Doomsday Excruciator",
-  "STD-Izzet Prowess": "Stormchaser's Talent",
-  "STD-Izzet Spellementals": "Eddymurk Crab",
-  "STD-Jeskai Control": "Jeskai Revelation",
-  "STD-Mardu Discard": "Marauding Mako",
-  "STD-Mono Green Landfall": "Sazh's Chocobo",
-  "STD-Mono Red Aggro": "Nova Hellkite",
-  "STD-MonoRedU": "Scalding Viper",
-  "STD-Naya Yuna": "Yuna, Hope of Spira",
-  "STD-Orzhov Ketramose": "Ketramose, the New Dawn",
-  "STD-Selesnya Landfall": "Dyadrine, Synthesis Amalgam",
-  "STD-Selesnya Ouroboroid": "Ouroboroid",
+  "STD-4c Control":          { main: "Jeskai Revelation",        key: "Atraxa, Grand Unifier" },
+  "STD-5c Elementals":       { main: "Sunderflock",              key: "Omnath, Locus of Creation" },
+  "STD-Azorius Tempo":       { main: "Aang, Swift Savior",       key: "Loran of the Third Path" },
+  "STD-Bant Tortuga":        { main: "Smuggler's Surprise",      key: "Overlord of the Haemtusk" },
+  "STD-Boros Burn":          { main: "Boros Charm",              key: "Eidolon of the Great Revel" },
+  "STD-Boros Dragons":       { main: "Sarkhan, Dragon Ascendant",key: "Tyrrant's Scorn" },
+  "STD-Dimir Excruciator":   { main: "Doomsday Excruciator",     key: "Psychic Frog" },
+  "STD-Izzet Prowess":       { main: "Stormchaser's Talent",     key: "Slickshot Show-Off" },
+  "STD-Izzet Spellementals": { main: "Eddymurk Crab",            key: "Risen Wetlands" },
+  "STD-Jeskai Control":      { main: "Jeskai Revelation",        key: "Sunfall" },
+  "STD-Mardu Discard":       { main: "Marauding Mako",           key: "Orcish Bowmasters" },
+  "STD-Mono Green Landfall": { main: "Sazh's Chocobo",           key: "Ashaya, Soul of the Wild" },
+  "STD-Mono Red Aggro":      { main: "Nova Hellkite",            key: "Witchstalker Frenzy" },
+  "STD-MonoRedU":            { main: "Scalding Viper",           key: "Slickshot Show-Off" },
+  "STD-Naya Yuna":           { main: "Yuna, Hope of Spira",      key: "Jetmir, Nexus of Revels" },
+  "STD-Orzhov Ketramose":    { main: "Ketramose, the New Dawn",  key: "Sheoldred, the Apocalypse" },
+  "STD-Selesnya Landfall":   { main: "Dyadrine, Synthesis Amalgam", key: "Ashaya, Soul of the Wild" },
+  "STD-Selesnya Ouroboroid": { main: "Ouroboroid",               key: "Deeproot Champion" },
 };
 
 export async function getScryfallImage(cardName) {
@@ -70,25 +69,20 @@ export async function getScryfallImage(cardName) {
       {
         headers: {
           "User-Agent": "RCQ-Reporter/1.0",
-          "Accept": "application/json",
-        },
-      },
+          "Accept": "application/json"
+        }
+      }
     );
-    if (!res.ok) {
-      console.warn(`[Scryfall] ${res.status} para "${cardName}"`);
-      return null;
-    }
+    if (!res.ok) return null;
     const data = await res.json();
-    console.log(`[Scryfall] "${cardName}"`, data.image_uris); // ← LOG
     const imgUrl =
       data.image_uris?.art_crop ??
       data.card_faces?.[0]?.image_uris?.art_crop ??
       null;
-    console.log(`[Scryfall] imgUrl:`, imgUrl); // ← LOG
     if (imgUrl) localStorage.setItem(cacheKey, imgUrl);
     return imgUrl;
   } catch (e) {
-    console.error(`[Scryfall] Error fetching "${cardName}":`, e);
+    console.warn(`[Scryfall] Error fetching "${cardName}":`, e);
     return null;
   }
 }
