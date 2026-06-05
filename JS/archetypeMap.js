@@ -62,7 +62,10 @@ export async function getScryfallImage(cardName) {
   if (!cardName) return null;
   const cacheKey = `scryfall_img::${cardName}`;
   const cached = localStorage.getItem(cacheKey);
-  if (cached) return JSON.parse(cached);
+  if (cached) {
+    console.log(`[cache HIT] ${cardName}`, JSON.parse(cached));
+    return JSON.parse(cached);
+  }
   try {
     const res = await fetch(
       `https://api.scryfall.com/cards/named?exact=${encodeURIComponent(cardName)}&format=json`,
@@ -73,18 +76,20 @@ export async function getScryfallImage(cardName) {
         }
       }
     );
-    if (!res.ok) return null;
+    if (!res.ok) {
+      console.warn(`[Scryfall] ${res.status} para "${cardName}"`);
+      return null;
+    }
     const data = await res.json();
     const uris = data.image_uris ?? data.card_faces?.[0]?.image_uris ?? null;
+    console.log(`[Scryfall] "${cardName}" uris:`, uris); // ← LOG
     if (!uris) return null;
-    const result = {
-      art_crop: uris.art_crop ?? null,
-      normal: uris.normal ?? null,
-    };
+    const result = { art_crop: uris.art_crop ?? null, normal: uris.normal ?? null };
+    console.log(`[Scryfall] result:`, result); // ← LOG
     localStorage.setItem(cacheKey, JSON.stringify(result));
     return result;
   } catch (e) {
-    console.warn(`[Scryfall] Error fetching "${cardName}":`, e);
+    console.error(`[Scryfall] Error fetching "${cardName}":`, e);
     return null;
   }
 }
