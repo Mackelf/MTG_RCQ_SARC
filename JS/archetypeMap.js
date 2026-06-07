@@ -57,6 +57,9 @@ export const ARCHETYPE_CARD_MAP = {
   "STD-Orzhov Ketramose": { main: "Ketramose, the New Dawn", key: "Sheoldred, the Apocalypse" },
   "STD-Selesnya Landfall": { main: "Dyadrine, Synthesis Amalgam", key: "Ashaya, Soul of the Wild" },
   "STD-Selesnya Ouroboroid": { main: "Ouroboroid", key: "Deeproot Champion" },
+  // PreModern
+  "PMD-": { main: "stasis", key: "statis" },
+  
 };
 
 export async function getScryfallImage(cardName) {
