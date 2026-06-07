@@ -482,8 +482,10 @@
                 dates: {}, // ← objeto plano, clave = fecha
               };
             }
-            if (p.Fecha && !map[id].dates[p.Fecha]) {
-              map[id].dates[p.Fecha] = {
+            const dateKey = `${p.Fecha}|${p.ID || ""}`;
+            if (p.Fecha && !map[id].dates[dateKey]) {
+              map[id].dates[dateKey] = {
+                fecha: p.Fecha,
                 store: p.STORE,
                 formato: p.FORMATO,
                 idLabel: p.ID || "",
@@ -495,7 +497,7 @@
             ...s,
             dates: Object.entries(s.dates)
               .sort(([a], [b]) => a.localeCompare(b))
-              .map(([fecha, meta]) => ({ fecha, ...meta })),
+              .map(([, meta]) => ({ ...meta })),
           }));
         });
 
@@ -522,7 +524,7 @@
           </template>
             <ul class="store-dates">
               <li v-for="d in s.dates" :key="d.fecha">
-                  <router-link :to="{ path: '/tienda/' + s.id + '/standing', query: { fecha: d.fecha } }">
+                  <router-link :to="{ path: '/tienda/' + s.id + '/standing', query: { fecha: d.fecha, eid: d.idLabel } }">
                     {{ formatDateFriendly(d.fecha) }}
                   </router-link>
                     <span class="store-date__meta">
@@ -547,6 +549,7 @@
         onMounted(loadData);
         const route = VueRouter.useRoute();
         const selectedDate = ref(null);
+        const selectedEventId = ref(null);
 
         const storePlayers = computed(() => {
           if (!store.loaded) return [];
@@ -556,32 +559,39 @@
           );
         });
 
-        const availableDates = computed(() => {
-          const dates = storePlayers.value
-            .map((p) => p.Fecha)
-            .filter(Boolean);
-          const uniqueDates = [...new Set(dates)].sort();
-          return uniqueDates;
+        const availableEvents = computed(() => {
+          const seen = new Set();
+          const events = [];
+          storePlayers.value.forEach((p) => {
+            if (!p.Fecha) return;
+            const key = `${p.Fecha}|${p.ID || ""}`;
+            if (!seen.has(key)) {
+              seen.add(key);
+              events.push({ fecha: p.Fecha, eid: p.ID || "" });
+            }
+          });
+          return events.sort((a, b) => a.fecha.localeCompare(b.fecha));
         });
 
-        Vue.watch(
-          availableDates,
-          (newDates) => {
-            if (!newDates.length) return;
-            const queryFecha = route.query.fecha;
-            if (queryFecha && newDates.includes(queryFecha)) {
-              selectedDate.value = queryFecha;
-            } else if (!newDates.includes(selectedDate.value)) {
-              selectedDate.value = newDates[newDates.length - 1];
-            }
-          },
-          { immediate: true },
-        );
+        Vue.watch(availableEvents, (events) => {
+          if (!events.length) return;
+          const qFecha = route.query.fecha;
+          const qEid = route.query.eid ?? "";
+          const match = events.find(e => e.fecha === qFecha && e.eid === qEid);
+          if (match) {
+            selectedDate.value = match.fecha;
+            selectedEventId.value = match.eid;
+          } else {
+            const last = events[events.length - 1];
+            selectedDate.value = last.fecha;
+            selectedEventId.value = last.eid;
+          }
+        }, { immediate: true });
 
         const filteredPlayers = computed(() => {
           if (!selectedDate.value) return [];
           return storePlayers.value.filter(
-            (p) => p.Fecha === selectedDate.value,
+            (p) => p.Fecha === selectedDate.value && (p.ID || "") === selectedEventId.value
           );
         });
 
@@ -600,7 +610,7 @@
         // Proveemos los jugadores filtrados a los componentes hijos
         Vue.provide("filteredPlayers", filteredPlayers);
 
-        return { selectedDate, availableDates, formatDateFriendly, tournamentMeta };
+        return { selectedDate, selectedEventId, availableEvents, formatDateFriendly, tournamentMeta };
       },
       computed: {
         logoSrc() {
@@ -642,11 +652,16 @@
                 </router-link>
                 
                 <!-- Selector de Fechas -->
-                <div v-if="availableDates.length > 0" class="d-flex align-items-center">
+                <div v-if="availableEvents.length > 0" class="d-flex align-items-center">
                   <label class="me-2 text-muted small fw-bold">Fecha:</label>
-                  <select v-model="selectedDate" class="form-select form-select-sm w-auto" style="min-width: 200px;">
-                    <option v-for="date in availableDates" :key="date" :value="date">
-                      {{ formatDateFriendly(date) }}
+                  <select class="form-select form-select-sm w-auto" style="min-width: 220px;"
+                    @change="e => { const [f, id] = e.target.value.split('|'); selectedDate = f; selectedEventId = id; }">
+                    <option
+                      v-for="ev in availableEvents"
+                      :key="ev.fecha + '|' + ev.eid"
+                      :value="ev.fecha + '|' + ev.eid"
+                      :selected="ev.fecha === selectedDate && ev.eid === selectedEventId">
+                      {{ formatDateFriendly(ev.fecha) }}{{ ev.eid ? ' · ' + ev.eid : '' }}
                     </option>
                   </select>
                 </div>
