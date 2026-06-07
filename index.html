@@ -500,8 +500,18 @@
               .map(([, meta]) => ({ ...meta })),
           }));
         });
+        const EVENT_STARS = {
+          "RCQ": "☆☆",
+          "Regional": "☆☆☆☆",
+          "Store Championship": "☆",
+          "Nacional": "☆☆☆",
+          "Destination Event": "☆☆☆",
+        };
 
-        return { storeGroups, formatDateFriendly };
+        function eventStars(idLabel) {
+          return EVENT_STARS[idLabel] || "";
+        }
+        return { storeGroups, formatDateFriendly, eventStars };
       },
       template: `
   <div class="home-container">
@@ -523,14 +533,15 @@
             </div>
           </template>
             <ul class="store-dates">
-              <li v-for="d in s.dates" :key="d.fecha">
-                  <router-link :to="{ path: '/tienda/' + s.id + '/standing', query: { fecha: d.fecha, eid: d.idLabel } }">
-                    {{ formatDateFriendly(d.fecha) }}
-                  </router-link>
-                    <span class="store-date__meta">
-                      — {{ d.store }} · {{ d.formato }}<template v-if="d.idLabel"> · {{ d.idLabel }}</template>
-                    </span>
-              </li>
+          <li v-for="d in s.dates" :key="d.fecha + d.idLabel">
+            <router-link :to="{ path: '/tienda/' + s.id + '/standing', query: { fecha: d.fecha, eid: d.idLabel } }">
+              {{ formatDateFriendly(d.fecha) }}
+            </router-link>
+            <span class="store-date__meta">
+              — {{ d.store }} · {{ d.formato }}<template v-if="d.idLabel"> · {{ d.idLabel }}</template>
+            </span>
+            <span v-if="eventStars(d.idLabel)" class="ms-1 text-warning">{{ eventStars(d.idLabel) }}</span>
+        </li>
           </ul>
         </div>
       </div>
