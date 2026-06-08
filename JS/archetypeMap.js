@@ -9,6 +9,7 @@ export const ARCHETYPE_CARD_MAP = {
   "MOD-Boros Burn": { main: "Boros Charm", key: "Eidolon of the Great Revel" },
   "MOD-Boros Energy": { main: "Guide of Souls", key: "Ajani, Nacatl Pariah" },
   "MOD-Boros LD": { main: "Price of Freedom", key: "Cleansing Wildfire" },
+  "MOD-Boros Hollow-vine": { main: "Hollow One", key: "Vengevine" },
   "MOD-Dimir Midrange": { main: "Psychic Frog", key: "Kaito, Bane of Nightmares" },
   "MOD-Dimir Oculus": { main: "Abhorrent Oculus", key: "Unearth" },
   "MOD-Domain Zoo": { main: "Leyline Binding", key: "Territorial Kavu" },
@@ -59,7 +60,7 @@ export const ARCHETYPE_CARD_MAP = {
   "STD-Selesnya Ouroboroid": { main: "Ouroboroid", key: "Deeproot Champion" },
   // PreModern
   "PMD-": { main: "stasis", key: "statis" },
-  
+
 };
 
 export async function getScryfallImage(cardName) {

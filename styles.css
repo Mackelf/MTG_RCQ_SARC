@@ -361,14 +361,14 @@ footer {
   border-radius: 50px !important;
   background: white !important;
   color: #000 !important;
-  font-size: 2rem !important;
+  font-size: 1.5 rem !important;
   font-weight: 600 !important;
   text-decoration: none !important;
   transition: all 0.3s ease !important;
 }
 
 .store-button i {
-  font-size: 2rem !important;
+  font-size: 1.5rem !important;
 }
 
 .store-button:hover {
