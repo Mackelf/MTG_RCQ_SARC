@@ -301,12 +301,12 @@
                     :class="badgeClass(badge)"
                   >{{ badge }}</span>
                 </div>
-                <h6 class="card-title mb-0" style="font-size: 0.78rem; line-height: 1.2;">
+                <h4 class="card-title mb-0" style="font-size: 0.78rem; line-height: 1.2;">
                   <a v-if="arch.decklistUrl" :href="arch.decklistUrl" target="_blank" rel="noopener noreferrer">
                     {{ stripPrefix(arch.nombre) }}
                   </a>
                   <span v-else>{{ stripPrefix(arch.nombre) }}</span>
-                </h6>
+                </h4>
               </div>
 
                 <!-- Meta % y Winrate destacados -->
@@ -334,7 +334,7 @@
     </div>
 
   </div>
-  
+
 <br>
 
     <!-- Tabla resumen -->
