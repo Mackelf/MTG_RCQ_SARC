@@ -268,7 +268,7 @@
       },
 
       template: `
-    <div class="row row-cols-1 row-cols-md-3 g-3">
+    <div class="row row-cols-2 row-cols-md-4 g-2">
       <div class="col" v-for="arch in archetypeStats" :key="arch.nombre">
         <div class="card h-100">
 
@@ -288,45 +288,46 @@
 
         
           
-          <!-- Cuerpo -->
-          <div class="card-body">
+                <!-- Cuerpo -->
+              <div class="card-body p-2">
 
-            <!-- Badges + Título -->
-            <div class="d-flex flex-wrap align-items-center gap-1 mb-1">
-              <span
-                v-for="(badge, i) in arch.badges"
-                :key="i"
-                class="badge"
-                :class="badgeClass(badge)"
-              >{{ badge }}</span>
-            </div>
-            <h6 class="card-title mb-3">
-              <a v-if="arch.decklistUrl" :href="arch.decklistUrl" target="_blank" rel="noopener noreferrer">
-                {{ stripPrefix(arch.nombre) }}
-              </a>
-              <span v-else>{{ stripPrefix(arch.nombre) }}</span>
-            </h6>
+                <!-- Badges + Título -->
+                <div class="d-flex flex-wrap align-items-center gap-1 mb-1">
+                  <span
+                    v-for="(badge, i) in arch.badges"
+                    :key="i"
+                    class="badge"
+                    :class="badgeClass(badge)"
+                  >{{ badge }}</span>
+                </div>
+                <h6 class="card-title mb-2" style="font-size: 0.78rem; line-height: 1.2;">
+                  <a v-if="arch.decklistUrl" :href="arch.decklistUrl" target="_blank" rel="noopener noreferrer">
+                    {{ stripPrefix(arch.nombre) }}
+                  </a>
+                  <span v-else>{{ stripPrefix(arch.nombre) }}</span>
+                </h6>
 
-            <!-- Estadísticas -->
-            <p class="card-text mb-1">
-              <small class="text-muted">Copias jugadas</small>
-              <strong class="float-end">{{ arch.copies }}</strong>
-            </p>
-            <p class="card-text mb-1">
-              <small class="text-muted">META %</small>
-              <strong class="float-end">{{ arch.metaPct }}</strong>
-            </p>
-            <p class="card-text mb-1">
-              <small class="text-muted">WIN RATE</small>
-              <strong class="float-end">{{ arch.winRate }}</strong>
-            </p>
-            <p class="card-text mb-0">
-              <small class="text-muted">Partidas (V / D / E)</small>
-              <strong class="float-end">{{ arch.wins }} / {{ arch.losses }} / {{ arch.draws }}</strong>
-            </p>
+                <!-- Meta % y Winrate destacados -->
+                <div class="d-flex justify-content-between mb-2">
+                  <div class="text-center flex-fill">
+                    <div class="meta-stat-label">META</div>
+                    <div class="meta-stat-value">{{ arch.metaPct }}</div>
+                  </div>
+                <div class="vr"></div>
+                  <div class="text-center flex-fill">
+                    <div class="meta-stat-label">WIN</div>
+                    <div class="meta-stat-value meta-stat-value--wr">{{ arch.winRate }}</div>
+                  </div>
+                </div>
 
-          </div>
-        </div>
+                <!-- V / D / E con colores -->
+                <div class="d-flex justify-content-center gap-2">
+                  <span class="vde-pill vde-pill--win">{{ arch.wins }}V</span>
+                  <span class="vde-pill vde-pill--loss">{{ arch.losses }}D</span>
+                  <span class="vde-pill vde-pill--draw">{{ arch.draws }}E</span>
+                </div>
+
+              </div>
       </div>
     </div>
 

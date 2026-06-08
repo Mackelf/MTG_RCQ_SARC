@@ -413,3 +413,40 @@ footer {
   font-size: 0.85rem;
   margin-left: 0.25rem;
 }
+
+/* ── Metagame cards ── */
+.card-img-top {
+  height: 100px;
+  object-fit: cover;
+}
+
+.meta-stat-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #888;
+}
+
+.meta-stat-value {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #1a1a2e;
+  line-height: 1;
+}
+
+.meta-stat-value--wr {
+  color: #2a9d8f;   /* teal destacado para WR */
+}
+
+.vde-pill {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 999px;
+}
+
+.vde-pill--win  { background: #d4edda; color: #1a6630; }
+.vde-pill--loss { background: #f8d7da; color: #842029; }
+.vde-pill--draw { background: #e9ecef; color: #495057; }
