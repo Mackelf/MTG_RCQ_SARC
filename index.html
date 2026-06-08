@@ -291,8 +291,9 @@
                 <!-- Cuerpo -->
               <div class="card-body p-2">
 
-                <!-- Badges + Título -->
-                <div class="d-flex flex-wrap align-items-center gap-1 mb-1">
+                    <!-- Badges + Título en la misma línea -->
+              <div class="d-flex align-items-start gap-1 mb-2">
+                <div class="d-flex flex-wrap gap-1 flex-shrink-0">
                   <span
                     v-for="(badge, i) in arch.badges"
                     :key="i"
@@ -300,12 +301,13 @@
                     :class="badgeClass(badge)"
                   >{{ badge }}</span>
                 </div>
-                <h6 class="card-title mb-2" style="font-size: 0.78rem; line-height: 1.2;">
+                <h6 class="card-title mb-0" style="font-size: 0.78rem; line-height: 1.2;">
                   <a v-if="arch.decklistUrl" :href="arch.decklistUrl" target="_blank" rel="noopener noreferrer">
                     {{ stripPrefix(arch.nombre) }}
                   </a>
                   <span v-else>{{ stripPrefix(arch.nombre) }}</span>
                 </h6>
+              </div>
 
                 <!-- Meta % y Winrate destacados -->
                 <div class="d-flex justify-content-between mb-2">
@@ -330,7 +332,7 @@
               </div>
       </div>
     </div>
-
+<br>
     <!-- Tabla resumen -->
 <div class="table-responsive mt-4">
   <table class="table table-sm table-hover align-middle">
