@@ -218,7 +218,7 @@
           archetypeStats,
           async (stats) => {
             if (!stats?.length) return;
-            const BATCH = 8;
+            const BATCH = 3;
             for (let i = 0; i < stats.length; i += BATCH) {
               const batch = stats.slice(i, i + BATCH);
               await Promise.all(
@@ -239,7 +239,7 @@
                   }
                 })
               );
-              if (i + BATCH < stats.length) await new Promise(r => setTimeout(r, 200));
+              if (i + BATCH < stats.length) await new Promise(r => setTimeout(r, 800));
             }
           },
           { immediate: true }
