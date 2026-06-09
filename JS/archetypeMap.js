@@ -46,7 +46,7 @@ export const ARCHETYPE_CARD_MAP = {
   "MOD-Rhino Domain": { main: "Crashing Footfalls", key: "Leyline of the Guildpact" },
   "MOD-Ruby Storm": { main: "Ral, Monsoon Mage", key: "Ruby Medallion" },
   "MOD-Samwise Combo": { main: "Samwise Gamgee", key: "Rosie Cotton of South Lane" },
-  "MOD-Song Of Creation": { main: "Song of Creation", key: "Jace, Wielder of Mysteries" },
+  "MOD-Song of Creation": { main: "Song of Creation", key: "Jace, Wielder of Mysteries" },
   "MOD-Sultai Midrange": { main: "Psychic Frog", key: "Tarmogoyf" },
   "MOD-Temur Prowess": { main: "Cori-Steel Cutter", key: "Monastery Swiftspear" },
   "MOD-Temur Cascade": { main: "Crashing Footfalls", key: "Violent Outburst" },
@@ -90,10 +90,9 @@ export async function getScryfallImage(cardName) {
   }
   try {
     const res = await fetch(
-      `https://api.scryfall.com/cards/named?exact=${encodeURIComponent(cardName)}&format=json`,
+      `https://api.scryfall.com/cards/named?fuzzy=${encodeURIComponent(cardName)}&format=json`,
       {
         headers: {
-          "User-Agent": "RCQ-Reporter/1.0",
           "Accept": "application/json"
         }
       }
