@@ -420,46 +420,93 @@
             // Get the player in position 1
             return players.find((p) => p.Puesto === 1) || players[0];
           });
-
-          return { tournamentWinner };
+          const topPhotos = Vue.computed(() => {
+            return filteredPlayers.value
+              .filter((p) => p["Social - Top8"] && p["Social - Top8"].trim())
+              .map((p) =>
+                p["Social - Top8"]
+                  .trim()
+                  .replace(/^\.[\\/]/, "")
+                  .replace(/\\/g, "/"),
+              );
+          });
+          return { tournamentWinner, topPhotos };
         },
         template: `
-    <div v-if="tournamentWinner" class="social-container">
-      <h3 class="mb-4">Ganador del Torneo</h3>
-      
-      <div class="winner-card">
-        <div class="winner-card-left">
-          <div class="winner-photo-placeholder">
-            <i class="bi bi-trophy-fill"></i>
-          </div>
+<div>
+  <div v-if="tournamentWinner" class="social-container">
+    <h3 class="mb-4">Ganador del Torneo</h3>
+    
+    <div class="winner-card">
+      <div class="winner-card-left">
+        <div class="winner-photo-placeholder">
+          <i class="bi bi-trophy-fill"></i>
         </div>
-        
-        <div class="winner-card-right">
-          <h2 class="winner-name">{{ tournamentWinner.Nombre }}</h2>
-          
-          <div class="winner-info">
-            <div class="info-row">
-              <span class="info-label">Mazo Jugado:</span>
-              <span class="info-value">{{ tournamentWinner.Arquetipo }}</span>
-            </div>
-            
-            <div class="info-row">
-              <span class="info-label">Logros:</span>
-              <div class="achievements">
-                <span class="achievement-badge">🏆 1st Place</span>
-                <span class="achievement-badge">{{ tournamentWinner.Puntos }} Puntos</span>
-                <span class="achievement-badge">{{ tournamentWinner.V }}-{{ tournamentWinner.D }}-{{ tournamentWinner.E }}</span>
-                <span class="achievement-badge">{{ tournamentWinner['%VPO'] }}% Win Rate</span>
-              </div>
+      </div>
+      <div class="winner-card-right">
+        <h2 class="winner-name">{{ tournamentWinner.Nombre }}</h2>
+        <div class="winner-info">
+          <div class="info-row">
+            <span class="info-label">Mazo Jugado:</span>
+            <span class="info-value">{{ tournamentWinner.Arquetipo }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Logros:</span>
+            <div class="achievements">
+              <span class="achievement-badge">🏆 1st Place</span>
+              <span class="achievement-badge">{{ tournamentWinner.Puntos }} Puntos</span>
+              <span class="achievement-badge">{{ tournamentWinner.V }}-{{ tournamentWinner.D }}-{{ tournamentWinner.E }}</span>
+              <span class="achievement-badge">{{ tournamentWinner['%VPO'] }}% Win Rate</span>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div v-else class="text-center mt-5">
-      <p class="text-muted">No hay datos disponibles</p>
+
+    <!-- Carrusel Top 8 -->
+    <div v-if="topPhotos.length" class="mt-5">
+      <h5 class="mb-3 fw-bold">📸 Top 8</h5>
+      <div id="topCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+          <button
+            v-for="(_, i) in topPhotos"
+            :key="i"
+            type="button"
+            data-bs-target="#topCarousel"
+            :data-bs-slide-to="i"
+            :class="{ active: i === 0 }"
+          ></button>
+        </div>
+        <div class="carousel-inner rounded shadow">
+          <div
+            v-for="(photo, i) in topPhotos"
+            :key="i"
+            class="carousel-item"
+            :class="{ active: i === 0 }"
+          >
+            <img
+              :src="photo"
+              class="d-block w-100"
+              style="max-height: 480px; object-fit: contain; background: #000;"
+              :alt="'Top 8 foto ' + (i + 1)"
+            />
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#topCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#topCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon"></span>
+        </button>
+      </div>
     </div>
-  `,
+
+  </div>
+  <div v-else class="text-center mt-5">
+    <p class="text-muted">No hay datos disponibles</p>
+  </div>
+</div>
+`,
       };
       // ── Vista Home ──────────────────────────────────────────────────────
       const Home = {
@@ -610,23 +657,29 @@
             return events.sort((a, b) => a.fecha.localeCompare(b.fecha));
           });
 
-     const initialized = ref(false);
-Vue.watch(availableEvents, (events) => {
-  if (!events.length) return;
-  if (initialized.value) return; // ← ya inicializado, no sobreescribir
-  const qFecha = route.query.fecha;
-  const qEid   = route.query.eid ?? "";
-  const match  = events.find(e => e.fecha === qFecha && e.eid === qEid);
-  if (match) {
-    selectedDate.value    = match.fecha;
-    selectedEventId.value = match.eid;
-  } else {
-    const last = events[events.length - 1];
-    selectedDate.value    = last.fecha;
-    selectedEventId.value = last.eid;
-  }
-  initialized.value = true;
-}, { immediate: true });
+          const initialized = ref(false);
+          Vue.watch(
+            availableEvents,
+            (events) => {
+              if (!events.length) return;
+              if (initialized.value) return; // ← ya inicializado, no sobreescribir
+              const qFecha = route.query.fecha;
+              const qEid = route.query.eid ?? "";
+              const match = events.find(
+                (e) => e.fecha === qFecha && e.eid === qEid,
+              );
+              if (match) {
+                selectedDate.value = match.fecha;
+                selectedEventId.value = match.eid;
+              } else {
+                const last = events[events.length - 1];
+                selectedDate.value = last.fecha;
+                selectedEventId.value = last.eid;
+              }
+              initialized.value = true;
+            },
+            { immediate: true },
+          );
 
           const filteredPlayers = computed(() => {
             if (!selectedDate.value) return [];
