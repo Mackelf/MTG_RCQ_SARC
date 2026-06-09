@@ -13,11 +13,14 @@ export const ARCHETYPE_CARD_MAP = {
   "MOD-Dimir Midrange": { main: "Psychic Frog", key: "Kaito, Bane of Nightmares" },
   "MOD-Dimir Mill": { main: "Hedron Crab", key: "Tasha's Hideous Laughter" },
   "MOD-Dimir Oculus": { main: "Abhorrent Oculus", key: "Unearth" },
+  "MOD-Dimir Sorin": { main: "Sorin, Imperious Bloodlord", key: "Vein Ripper" },
   "MOD-Domain Zoo": { main: "Leyline Binding", key: "Territorial Kavu" },
   "MOD-Eldrazi Ramp": { main: "Sowing Mycospawn", key: "Ulamog, the Infinite Gyre" },
   "MOD-Eldrazi Tron": { main: "Thought-Knot Seer", key: "Karn, the Great Creator" },
   "MOD-Esper Blink": { main: "Phelia, Exuberant Shepherd", key: "Overlord of the Balemurk" },
   "MOD-Esper Control": { main: "Psychic Frog", key: "Teferi, Hero of Dominaria" },
+  "MOD-Esper Midrange ": { main: "Psychic Frog", key: "Teferi, Hero of Dominaria" },
+  "MOD-Golgari Elves": { main: "Shaman of the Pack", key: "Collected Company" },
   "MOD-Goryo's Vengeance": { main: "Goryo's Vengeance", key: "Griselbrand" },
   "MOD-Grixis Phoenix": { main: "Arclight Phoenix", key: "Preordain" },
   "MOD-Grixis Reanimator": { main: "Archon of Cruelty", key: "Persist" },
@@ -28,19 +31,29 @@ export const ARCHETYPE_CARD_MAP = {
   "MOD-Izzet Prowess": { main: "Slickshot Show-Off", key: "Murmuring Mystic" },
   "MOD-Jeskai Blink": { main: "Phelia, Exuberant Shepherd", key: "Teferi, Time Raveler" },
   "MOD-Jeskai Energy": { main: "Wrath of the Skies", key: "Ocelot Pride" },
+  "MOD-Jundfect": { main: "Venerated Rotpriest", key: "Scale Up" },
+  "MOD-Jund Hollow-vine": { main: "Hollow One", key: "Vengevine" },
   "MOD-Living End": { main: "Living End", key: "Violent Outburst" },
   "MOD-Merfolk": { main: "Lord of Atlantis", key: "Svyelun of Sea and Sky" },
   "MOD-Mono Black Midrange": { main: "Necropotence", key: "Sheoldred, the Apocalypse" },
   "MOD-Mono Blue Belcher": { main: "Goblin Charbelcher", key: "Tameshi, Reality Architect" },
+  "MOD-Mono Green Basking Broodscale Combo": { main: "Basking Broodscale", key: "Blade of the Bloodchief" },
+  "MOD-Mono Red Belcher": { main: "Goblin Charbelcher", key: "Stormscale Scion" },
+  "MOD-Mono Red Burn": { main: "Lightning Bolt", key: "Boltwave" },
   "MOD-Mono White Control": { main: "Solitude", key: "The Wandering Emperor" },
   "MOD-Neobrand": { main: "Neoform", key: "Griselbrand" },
   "MOD-Rakdos Midrange": { main: "Kroxa, Titan of Death's Hunger", key: "Sheoldred, the Apocalypse" },
+  "MOD-Rhino Domain": { main: "Crashing Footfalls", key: "Leyline of the Guildpact" },
   "MOD-Ruby Storm": { main: "Ral, Monsoon Mage", key: "Ruby Medallion" },
   "MOD-Samwise Combo": { main: "Samwise Gamgee", key: "Rosie Cotton of South Lane" },
+  "MOD-Song Of Creation": { main: "Song of Creation", key: "Jace, Wielder of Mysteries" },
   "MOD-Sultai Midrange": { main: "Psychic Frog", key: "Tarmogoyf" },
   "MOD-Temur Prowess": { main: "Cori-Steel Cutter", key: "Monastery Swiftspear" },
   "MOD-Temur Cascade": { main: "Crashing Footfalls", key: "Violent Outburst" },
+  "MOD-Yawgmoth": { main: "Yawgmoth, Thran Physician", key: "Strangleroot Geist" },
   "MOD-Zoo Reanimator": { main: "Leyline Binding", key: "Atraxa, Grand Unifier" },
+
+
   // STANDARD
   "STD-4c Control": { main: "Jeskai Revelation", key: "Atraxa, Grand Unifier" },
   "STD-5c Elementals": { main: "Sunderflock", key: "Omnath, Locus of Creation" },
@@ -60,6 +73,8 @@ export const ARCHETYPE_CARD_MAP = {
   "STD-Orzhov Ketramose": { main: "Ketramose, the New Dawn", key: "Sheoldred, the Apocalypse" },
   "STD-Selesnya Landfall": { main: "Dyadrine, Synthesis Amalgam", key: "Ashaya, Soul of the Wild" },
   "STD-Selesnya Ouroboroid": { main: "Ouroboroid", key: "Deeproot Champion" },
+
+
   // PreModern
   "PMD-": { main: "stasis", key: "statis" },
 
