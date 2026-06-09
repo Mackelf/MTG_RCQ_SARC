@@ -19,7 +19,7 @@ export const ARCHETYPE_CARD_MAP = {
   "MOD-Eldrazi Tron": { main: "Thought-Knot Seer", key: "Karn, the Great Creator" },
   "MOD-Esper Blink": { main: "Phelia, Exuberant Shepherd", key: "Overlord of the Balemurk" },
   "MOD-Esper Control": { main: "Psychic Frog", key: "Teferi, Hero of Dominaria" },
-  "MOD-Esper Midrange ": { main: "Psychic Frog", key: "Teferi, Hero of Dominaria" },
+  "MOD-Esper Midrange": { main: "Psychic Frog", key: "Teferi, Hero of Dominaria" },
   "MOD-Golgari Elves": { main: "Shaman of the Pack", key: "Collected Company" },
   "MOD-Goryo's Vengeance": { main: "Goryo's Vengeance", key: "Griselbrand" },
   "MOD-Grixis Phoenix": { main: "Arclight Phoenix", key: "Preordain" },
