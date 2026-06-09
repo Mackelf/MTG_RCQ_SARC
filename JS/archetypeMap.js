@@ -22,7 +22,7 @@ export const ARCHETYPE_CARD_MAP = {
   "MOD-Grixis Phoenix": { main: "Arclight Phoenix", key: "Preordain" },
   "MOD-Grixis Reanimator": { main: "Archon of Cruelty", key: "Persist" },
   "MOD-Gruul Basking Broodscale Combo": { main: "Basking Broodscale", key: "Disciple of the Vault" },
-  "MOD-GRuul Valakut": { main: "Scapeshift", key: "Valakut, the Molten Pinnacle" },
+  "MOD-Gruul Valakut": { main: "Scapeshift", key: "Valakut, the Molten Pinnacle" },
   "MOD-Hammer Time": { main: "Colossus Hammer", key: "Puresteel Paladin" },
   "MOD-Izzet Affinity": { main: "Kappa Cannoneer", key: "Pinnacle Emissary" },
   "MOD-Izzet Prowess": { main: "Slickshot Show-Off", key: "Murmuring Mystic" },
