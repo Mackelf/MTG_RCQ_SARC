@@ -724,7 +724,8 @@
           },
         },
         template: `
-<div class="d-flex align-items-center gap-3 px-3 py-3 border-bottom" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);">
+<div class="d-flex align-items-center gap-3 px-3 py-3 border-bottom" 
+  style="background: linear-gradient(135deg, #1a3a5c 0%, #1e5080 100%);">
   <img
     v-if="logoSrc"
     :src="logoSrc"
@@ -733,11 +734,13 @@
     style="height: 90px; width: 90px; object-fit: contain; background: #fff; padding: 6px; border-radius: 12px !important;"
   />
   <div v-if="tournamentMeta">
-    <div class="text-white fw-bold" style="font-size: 1.5rem; line-height: 1.1;">
+    <div class="text-white fw-bold" style="font-size: 1.8rem; line-height: 1.1;">
       {{ tournamentMeta.store }}
     </div>
     <div class="mt-1 d-flex flex-wrap gap-2 align-items-center">
-      <span class="badge bg-secondary" style="font-size: 0.75rem;">{{ tournamentMeta.formato }}</span>
+      <span class="badge bg-secondary" style="font-size: 0.75rem; background: #87CEEB !important; color: #000;">
+  {{ tournamentMeta.formato }}
+</span>
       <span v-if="tournamentMeta.idLabel" class="badge bg-warning text-dark" style="font-size: 0.75rem;">
         {{ tournamentMeta.idLabel }}
       </span>
