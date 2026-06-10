@@ -130,6 +130,10 @@ body {
 }
 
 /* ========== Metagame Cards ========== */
+.wr--green  { color: #1a6630; }
+.wr--yellow { color: #856404; }
+.wr--red    { color: #842029; }
+
 .card {
   border: 2px solid #000;
   border-radius: 16px;

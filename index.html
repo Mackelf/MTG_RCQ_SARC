@@ -275,6 +275,13 @@
             if (!name || name.length <= 4) return name;
             return name.slice(4);
           }
+          function wrColor(wr) {
+            if (!wr) return "";
+            const pct = parseFloat(wr);
+            if (pct >= 52) return "wr--green";
+            if (pct >= 41) return "wr--yellow";
+            return "wr--red";
+          }
           return {
             archetypeStats,
             badgeClass,
@@ -283,6 +290,7 @@
             tournamentMeta,
             bestBadge,
             ARCHETYPE_CARD_MAP,
+            wrColor,
           };
         },
 
@@ -337,7 +345,7 @@
                 <div class="vr"></div>
                   <div class="text-center flex-fill">
                     <div class="meta-stat-label">WIN</div>
-                    <div class="meta-stat-value meta-stat-value--wr">{{ arch.winRate }}</div>
+                    <div class="meta-stat-value" :class="wrColor(arch.winRate)">{{ arch.winRate }}</div>
                   </div>
                 </div>
 
