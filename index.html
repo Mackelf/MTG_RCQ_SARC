@@ -289,6 +289,11 @@
             if (!name || name.length <= 4) return name;
             return name.slice(4);
           }
+
+          function displayName(name) {
+            if (!name || !ARCHETYPE_CARD_MAP[name]) return "Otros";
+            return stripPrefix(name);
+          }
           function wrColor(wr) {
             if (!wr) return "";
             const pct = parseFloat(wr);
@@ -305,6 +310,7 @@
             bestBadge,
             ARCHETYPE_CARD_MAP,
             wrColor,
+            displayName,
           };
         },
 
@@ -344,9 +350,9 @@
                 </div>
                 <h6 class="card-title mb-0" style="font-size: 0.8rem; line-height: 1.2;">
                   <a v-if="arch.decklistUrl" :href="arch.decklistUrl" target="_blank" rel="noopener noreferrer">
-                    {{ stripPrefix(arch.nombre) }}
+                    {{ displayName(arch.nombre) }}
                   </a>
-                  <span v-else>{{ stripPrefix(arch.nombre) }}</span>
+                  <span v-else>{{ displayName(arch.nombre) }}</span>
                 </h6>
               </div>
 
@@ -400,9 +406,9 @@
         </td>
         <td>
           <a v-if="arch.decklistUrl" :href="arch.decklistUrl" target="_blank" class="fw-semibold text-decoration-none">
-            {{ stripPrefix(arch.nombre) }}
+            {{ displayName(arch.nombre) }}
           </a>
-          <span v-else class="fw-semibold">{{ stripPrefix(arch.nombre) }}</span>
+          <span v-else class="fw-semibold">{{ displayName(arch.nombre) }}</span>
         </td>
         <td class="text-center">{{ arch.copies }}</td>
         <td class="text-center">{{ arch.winRate }}</td>
