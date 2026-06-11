@@ -77,8 +77,14 @@ export const ARCHETYPE_CARD_MAP = {
 
 
   // PreModern
-  "PMD-": { main: "stasis", key: "statis" },
-
+  "PDM-Burn": { main: "lightning bolt", key: "Black Vise" },
+  "PDM-Contamination": { main: "Contamination", key: "Zombie Infestation" },
+  "PMD-Hermit FEB": { main: "Hermit Druid", key: "Volrath's Shapeshifter" },
+  "PMD-Oath Ponza": { main: "Oath of Druids", key: "Terravore" },
+  "PMD-Stasis": { main: "stasis", key: "Root Maze" },
+  "PDM-Stiflenought": { main: "Phyrexian Dreadnought", key: "Stifle" },
+  
+  
 };
 
 export async function getScryfallImage(cardName) {
