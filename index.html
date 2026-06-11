@@ -43,6 +43,9 @@
         loaded: false,
       });
 
+      // ── Cache global de imágenes Scryfall ───────────────────────────────
+      const archetypeImages = Vue.ref({});
+
       async function loadData() {
         if (store.loaded) return;
         const res = await fetch("./Data/MAIN_RCQ_SC_JSON.json");
@@ -147,8 +150,6 @@
         setup() {
           const filteredPlayers = Vue.inject("filteredPlayers", Vue.ref([]));
 
-          const archetypeImages = Vue.ref({});
-
           function bestBadge(badges) {
             const order = ["1st", "2nd", "T4", "T8"];
             for (const b of order) {
@@ -229,6 +230,8 @@
                 const batch = stats.slice(i, i + BATCH);
                 await Promise.all(
                   batch.map(async (arch) => {
+                    if (archetypeImages.value[arch.nombre]) return; // Ya tenemos la imagen, saltar
+
                     const entry = ARCHETYPE_CARD_MAP[arch.nombre];
                     if (!entry) {
                       // Fallback: Fblthp, Lost on the Range
