@@ -230,7 +230,21 @@
                 await Promise.all(
                   batch.map(async (arch) => {
                     const entry = ARCHETYPE_CARD_MAP[arch.nombre];
-                    if (!entry) return;
+                    if (!entry) {
+                      // Fallback: Fblthp, Lost on the Range
+                      if (!archetypeImages.value[arch.nombre]) {
+                        const fallback = await getScryfallImage(
+                          "Fblthp, Lost on the Range",
+                        );
+                        if (fallback) {
+                          archetypeImages.value[arch.nombre] =
+                            fallback.art_crop;
+                          archetypeImages.value[arch.nombre + "__normal"] =
+                            fallback.normal;
+                        }
+                      }
+                      return;
+                    }
                     const [mainImgs, keyImgs] = await Promise.all([
                       getScryfallImage(entry.main),
                       getScryfallImage(entry.key),
@@ -545,7 +559,7 @@
                 label: "Command Center",
                 social: "https://www.instagram.com/tienda_command_center/",
               },
-              "onplay": {
+              onplay: {
                 label: "OnPlay",
                 social: "https://www.instagram.com/onplay.games/",
               },

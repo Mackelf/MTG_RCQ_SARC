@@ -42,6 +42,7 @@ export const ARCHETYPE_CARD_MAP = {
   "MOD-Mono Red Burn": { main: "Lightning Bolt", key: "Boltwave" },
   "MOD-Mono White Control": { main: "Solitude", key: "The Wandering Emperor" },
   "MOD-Neobrand": { main: "Neoform", key: "Griselbrand" },
+  "MOD-Rakdos Hollow": { main: "Hollow One", key: "Monument to Endurance" },
   "MOD-Rakdos Midrange": { main: "Kroxa, Titan of Death's Hunger", key: "Sheoldred, the Apocalypse" },
   "MOD-Rhino Domain": { main: "Crashing Footfalls", key: "Leyline of the Guildpact" },
   "MOD-Ruby Storm": { main: "Ral, Monsoon Mage", key: "Ruby Medallion" },
