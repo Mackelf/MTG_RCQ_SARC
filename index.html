@@ -660,13 +660,13 @@
       <div v-else class="text-muted text-center">Cargando...</div>
 
     </div>
- 
+      <div class="text-center mt-3">
+      <router-link to="/metagame-ranking" class="btn btn-outline-secondary w-100" style="border-radius: 50px; border: 2px solid #000;">
+        🏅 Ranking de Metagame
+      </router-link>
+    </div>
   </div>
-  <div class="text-center mt-3">
-  <router-link to="/metagame-ranking" class="btn btn-outline-secondary w-100" style="border-radius: 50px; border: 2px solid #000;">
-    🏅 Ranking de Metagame
-  </router-link>
-</div>
+
 `,
       };
 
@@ -924,6 +924,9 @@
         },
 
         template: `
+        <router-link to="/" class="btn btn-outline-secondary btn-sm mb-4" style="border: 2px solid #000; border-radius: 25px;">
+  <i class="bi bi-arrow-left"></i> Inicio
+</router-link>
   <div class="container py-4">
     <h2 class="fw-bold mb-1">🏅 Ranking de Metagame</h2>
     <p class="text-muted mb-4">Puntos acumulados en todos los torneos por Top 8. 1st=4pts · 2nd=3pts · T4=2pts · T8=1pt</p>
