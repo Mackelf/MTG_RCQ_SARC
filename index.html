@@ -659,6 +659,11 @@
     </div>
  
   </div>
+  <div class="text-center mt-3">
+  <router-link to="/metagame-ranking" class="btn btn-outline-secondary w-100" style="border-radius: 50px; border: 2px solid #000;">
+    🏅 Ranking de Metagame
+  </router-link>
+</div>
 `,
       };
 
@@ -837,9 +842,157 @@
       `,
       };
 
+      const MetagameRanking = {
+        setup() {
+          onMounted(loadData);
+
+          const BADGE_PTS = { "1st": 4, "2nd": 3, T4: 2, T8: 1 };
+          const FORMATOS = ["Modern", "Standard", "PreModern"];
+
+          const rankingByFormato = Vue.computed(() => {
+            if (!store.loaded) return {};
+            const result = {};
+
+            FORMATOS.forEach((fmt) => {
+              const ptMap = {};
+              const appMap = {};
+
+              store.allPlayers
+                .filter((p) => p.FORMATO === fmt && BADGE_PTS[p.Badge])
+                .forEach((p) => {
+                  const arq = p.Arquetipo || "Desconocido";
+                  const pts = BADGE_PTS[p.Badge];
+                  ptMap[arq] = (ptMap[arq] || 0) + pts;
+                  if (!appMap[arq])
+                    appMap[arq] = { t1: 0, t2: 0, t4: 0, t8: 0 };
+                  if (p.Badge === "1st") appMap[arq].t1++;
+                  if (p.Badge === "2nd") appMap[arq].t2++;
+                  if (p.Badge === "T4") appMap[arq].t4++;
+                  if (p.Badge === "T8") appMap[arq].t8++;
+                });
+
+              result[fmt] = Object.entries(ptMap)
+                .map(([arq, pts]) => ({ arq, pts, ...appMap[arq] }))
+                .sort((a, b) => b.pts - a.pts)
+                .map((item, i) => ({ ...item, rank: i + 1 }));
+            });
+
+            return result;
+          });
+
+          const archetypeImages = Vue.ref({});
+
+          Vue.watch(
+            rankingByFormato,
+            async (ranking) => {
+              const allArqs = [
+                ...new Set(
+                  Object.values(ranking)
+                    .flat()
+                    .map((r) => r.arq),
+                ),
+              ];
+              const BATCH = 3;
+              for (let i = 0; i < allArqs.length; i += BATCH) {
+                const batch = allArqs.slice(i, i + BATCH);
+                await Promise.all(
+                  batch.map(async (arq) => {
+                    if (archetypeImages.value[arq]) return;
+                    const entry = ARCHETYPE_CARD_MAP[arq];
+                    const cardName = entry?.main || "Fblthp, Lost on the Range";
+                    const imgs = await getScryfallImage(cardName);
+                    if (imgs) archetypeImages.value[arq] = imgs.art_crop;
+                  }),
+                );
+                if (i + BATCH < allArqs.length)
+                  await new Promise((r) => setTimeout(r, 800));
+              }
+            },
+            { immediate: true },
+          );
+
+          return {
+            rankingByFormato,
+            archetypeImages,
+            FORMATOS,
+            displayName,
+            stripPrefix,
+          };
+        },
+
+        template: `
+  <div class="container py-4">
+    <h2 class="fw-bold mb-1">🏅 Ranking de Metagame</h2>
+    <p class="text-muted mb-4">Puntos acumulados en todos los torneos por Top 8. 1st=4pts · 2nd=3pts · T4=2pts · T8=1pt</p>
+
+    <div v-for="fmt in FORMATOS" :key="fmt" class="mb-5">
+      <h4 class="fw-bold border-bottom pb-2 mb-3">{{ fmt }}</h4>
+
+      <template v-if="rankingByFormato[fmt]?.length">
+
+        <!-- Top 10: 5 columnas x 2 filas -->
+        <div class="row row-cols-2 row-cols-md-5 g-3 mb-3">
+          <div class="col" v-for="item in rankingByFormato[fmt].slice(0, 10)" :key="item.arq">
+            <div class="card h-100 text-white position-relative overflow-hidden" style="border: 2px solid #000;">
+              <img
+                v-if="archetypeImages[item.arq]"
+                :src="archetypeImages[item.arq]"
+                class="card-img"
+                style="height: 120px; object-fit: cover; filter: brightness(0.45);"
+              />
+              <div v-else class="card-img bg-dark" style="height: 120px;"></div>
+              <div class="card-img-overlay d-flex flex-column justify-content-between p-2">
+                <div class="fw-bold" style="font-size: 1.1rem; text-shadow: 0 1px 3px #000;">
+                  #{{ item.rank }}
+                </div>
+                <div>
+                  <div class="fw-bold" style="font-size: 0.75rem; text-shadow: 0 1px 3px #000; line-height: 1.2;">
+                    {{ displayName(item.arq) }}
+                  </div>
+                  <div style="font-size: 0.7rem; opacity: 0.85;">{{ item.pts }} pts</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Resto: 3 columnas, cards pequeñas -->
+        <div class="row row-cols-1 row-cols-md-3 g-2" v-if="rankingByFormato[fmt].length > 10">
+          <div class="col" v-for="item in rankingByFormato[fmt].slice(10)" :key="item.arq">
+            <div class="card flex-row align-items-center p-2 gap-2" style="border: 1.5px solid #ccc;">
+              <img
+                v-if="archetypeImages[item.arq]"
+                :src="archetypeImages[item.arq]"
+                class="rounded"
+                style="width: 48px; height: 48px; object-fit: cover; flex-shrink: 0;"
+              />
+              <div v-else class="bg-secondary rounded" style="width: 48px; height: 48px; flex-shrink: 0;"></div>
+              <div class="overflow-hidden">
+                <div class="fw-bold text-muted" style="font-size: 0.7rem;">#{{ item.rank }}</div>
+                <div class="fw-semibold text-truncate" style="font-size: 0.8rem;">{{ displayName(item.arq) }}</div>
+                <div class="text-muted" style="font-size: 0.7rem;">
+                  {{ item.pts }} pts
+                  <span v-if="item.t1">· 🥇{{ item.t1 }}</span>
+                  <span v-if="item.t2">· 🥈{{ item.t2 }}</span>
+                  <span v-if="item.t4">· T4×{{ item.t4 }}</span>
+                  <span v-if="item.t8">· T8×{{ item.t8 }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </template>
+      <p v-else class="text-muted">Sin datos</p>
+    </div>
+  </div>
+  `,
+      };
+
       // ── Router ──────────────────────────────────────────────────────────
       const routes = [
         { path: "/", component: Home },
+        { path: "/metagame-ranking", component: MetagameRanking },
         {
           path: "/tienda/:id",
           component: TournamentLayout,
