@@ -1051,7 +1051,13 @@
             return map[badge] || badge;
           }
 
-          return { rankingByFormato, FORMATOS, badgeCount, badgeLabel };
+          return {
+            rankingByFormato,
+            FORMATOS,
+            badgeCount,
+            badgeLabel,
+            displayName,
+          };
         },
 
         template: `
