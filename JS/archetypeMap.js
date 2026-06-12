@@ -177,10 +177,7 @@ export const ARCHETYPE_CARD_MAP = {
   "PMD-Contamination": { main: "Contamination", key: "Zombie Infestation" },
   "PMD-Goblins": { main: "goblin Piledriver", key: "Siege-Gang Commander" },
   "PMD-Elves": { main: "llanowar Elves", key: "Priest of Titania" },
-  "PMD-Enchantress": {
-    main: "Argothian Enchantress",
-    key: "Verduran Enchantress",
-  },
+  "PMD-Enchantress": { main: "Argothian Enchantress", key: "Verduran Enchantress" },
   "PMD-Hermit FEB": { main: "Hermit Druid", key: "Volrath's Shapeshifter" },
   "PMD-Mono Black": { main: "Hypnotic Specter", key: "Dark Ritual" },
   "PMD-Oath Control": { main: "Oath of Druids", key: "Fact or Fiction" },
