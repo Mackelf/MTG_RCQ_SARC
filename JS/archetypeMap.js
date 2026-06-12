@@ -172,6 +172,7 @@ export const ARCHETYPE_CARD_MAP = {
 
   // PreModern
   "PMD-Aluren": { main: "Aluren", key: "Cavern Harpy" },
+  "PMD-Battle of Wits": { main: "Battle of Wits", key: "Cunning Wish" },
   "PMD-Burn": { main: "lightning bolt", key: "Black Vise" },
   "PMD-Contamination": { main: "Contamination", key: "Zombie Infestation" },
   "PMD-Goblins": { main: "goblin Piledriver", key: "Siege-Gang Commander" },
@@ -186,8 +187,9 @@ export const ARCHETYPE_CARD_MAP = {
   "PMD-Oath Ponza": { main: "Oath of Druids", key: "Terravore" },
   "PMD-Ponza Stax": { main: "Avalance Rider", key: "Smokestack" },
   "PMD-Psychatog": { main: "Psychatog", key: "Wonder" },
-  "PMD-RG Madness": { main: "wild mongrel", key: "Anger" },
-  "PMD-UG Madness": { main: "Wild Mongrel", key: "Wonder" },
+  "PMD-RG Madness": { main: "Wild Mongrel", key: "Anger" },
+  "PMD-RG Survival": { main: "Survival of the Fittest", key: "Wild Mongrel" },
+
   "PMD-Reanimator": { main: "Reanimate", key: "Verdant Force" },
   "PMD-Replenish": { main: "Replenish", key: "Parallax Wave" },
   "PMD-Stasis": { main: "stasis", key: "Root Maze" },
@@ -196,12 +198,14 @@ export const ARCHETYPE_CARD_MAP = {
     main: "Survival of the Fittest",
     key: "Recurring Nightmare",
   },
-  "PMD-Survival RG": { main: "Survival of the Fittest", key: "Wild Mongrel" },
+
   "PMD-Survival Tradewind": {
     main: "Survival of the Fittest",
     key: "Tradewind Rider",
   },
+  "PMD-Terrageddon": { main: "terravore", key: "armageddon" },
   "PMD-The Rock": { main: "Spiritmonger", key: "Ravenous Baloth" },
+  "PMD-UG Madness": { main: "Wild Mongrel", key: "Wonder" },
   "PMD-WBG Control": { main: "pernicious deed", key: "Exalted Angel" },
   "PMD-White Weenie": { main: "Glorious Anthem", key: "Silver Knight" },
 };
