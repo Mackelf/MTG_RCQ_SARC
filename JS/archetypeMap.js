@@ -80,6 +80,7 @@ export const ARCHETYPE_CARD_MAP = {
     main: "Basking Broodscale",
     key: "Blade of the Bloodchief",
   },
+  "MOD-Mono Green Fight Rigging": { main: "Fight Rigging", key: "Slumbering Trudge" }, 
   "MOD-Mono Red Belcher": {
     main: "Goblin Charbelcher",
     key: "Stormscale Scion",
@@ -105,6 +106,7 @@ export const ARCHETYPE_CARD_MAP = {
     main: "Song of Creation",
     key: "Jace, Wielder of Mysteries",
   },
+  "MOD-Simic Infect": { main: "Venerated Rotpriest", key: "Dismember" },
   "MOD-Sultai Midrange": { main: "Psychic Frog", key: "Tarmogoyf" },
   "MOD-Temur Prowess": {
     main: "Cori-Steel Cutter",
