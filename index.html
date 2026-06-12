@@ -956,9 +956,15 @@
                   #{{ item.rank }}
                 </div>
                 <div>
-                  <div class="fw-bold" style="font-size: 0.75rem; text-shadow: 0 1px 3px #000; line-height: 1.2;">
-                    {{ displayName(item.arq) }}
-                  </div>
+                    <div class="fw-bold" style="font-size: 0.75rem; text-shadow: 0 1px 3px #000; line-height: 1.2;">
+                      {{ displayName(item.arq) }}
+                    </div>
+                    <div class="d-flex flex-wrap gap-1 mt-1">
+                      <span v-if="item.t1" class="badge bg-warning text-dark" style="font-size: 0.6rem;">🥇×{{ item.t1 }}</span>
+                      <span v-if="item.t2" class="badge bg-light text-dark" style="font-size: 0.6rem;">🥈×{{ item.t2 }}</span>
+                      <span v-if="item.t4" class="badge bg-secondary" style="font-size: 0.6rem;">🏅×{{ item.t4 }}</span>
+                      <span v-if="item.t8" class="badge bg-dark" style="font-size: 0.6rem;">⭐×{{ item.t8 }}</span>
+                    </div>
                   <div style="font-size: 0.7rem; opacity: 0.85;">{{ item.pts }} pts</div>
                 </div>
               </div>
@@ -980,12 +986,14 @@
               <div class="overflow-hidden">
                 <div class="fw-bold text-muted" style="font-size: 0.7rem;">#{{ item.rank }}</div>
                 <div class="fw-semibold text-truncate" style="font-size: 0.8rem;">{{ displayName(item.arq) }}</div>
-                <div class="text-muted" style="font-size: 0.7rem;">
+                  <div class="text-muted" style="font-size: 0.7rem;">
                   {{ item.pts }} pts
-                  <span v-if="item.t1">· 🥇{{ item.t1 }}</span>
-                  <span v-if="item.t2">· 🥈{{ item.t2 }}</span>
-                  <span v-if="item.t4">· T4×{{ item.t4 }}</span>
-                  <span v-if="item.t8">· T8×{{ item.t8 }}</span>
+                </div>
+                <div class="d-flex flex-wrap gap-1 mt-1">
+                  <span v-if="item.t1" class="badge bg-warning text-dark" style="font-size: 0.6rem;">🥇×{{ item.t1 }}</span>
+                  <span v-if="item.t2" class="badge bg-light text-dark border" style="font-size: 0.6rem;">🥈×{{ item.t2 }}</span>
+                  <span v-if="item.t4" class="badge bg-secondary" style="font-size: 0.6rem;">🏅×{{ item.t4 }}</span>
+                  <span v-if="item.t8" class="badge bg-dark" style="font-size: 0.6rem;">⭐×{{ item.t8 }}</span>
                 </div>
               </div>
             </div>
