@@ -173,8 +173,12 @@ export const ARCHETYPE_CARD_MAP = {
   // PreModern
   "PMD-Burn": { main: "lightning bolt", key: "Black Vise" },
   "PMD-Contamination": { main: "Contamination", key: "Zombie Infestation" },
+  "PMD-Goblins": { main: "goblin Piledriver", key: "Siege-Gang Commander" },
   "PMD-Hermit FEB": { main: "Hermit Druid", key: "Volrath's Shapeshifter" },
+  "PMD-Mono Black": { main: "Hypnotic Specter", key: "Dark Ritual" },
   "PMD-Oath Ponza": { main: "Oath of Druids", key: "Terravore" },
+  "PMD-Psychatog": { main: "Psychatog", key: "Wonder" },
+  "PMD-Replenish": { main: "Replenish", key: "Parallax Wave" },
   "PMD-Stasis": { main: "stasis", key: "Root Maze" },
   "PMD-Stiflenought": { main: "Phyrexian Dreadnought", key: "Stifle" },
 };
