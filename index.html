@@ -933,7 +933,13 @@
 </router-link>
   <div class="container py-4">
     <h2 class="fw-bold mb-1">🏅 Ranking de Metagame</h2>
-    <p class="text-muted mb-4">Puntos acumulados en todos los torneos por Top 8. 1st=4pts · 2nd=3pts · T4=2pts · T8=1pt</p>
+        <p class="text-muted mb-4">
+      Puntos acumulados en todos los torneos por Top 8.
+      <span class="ms-2">🥇 1st = 4pts</span>
+      <span class="ms-2">🥈 2nd = 3pts</span>
+      <span class="ms-2">🏅 T4 = 2pts</span>
+      <span class="ms-2">⭐ T8 = 1pt</span>
+    </p>
 
     <div v-for="fmt in FORMATOS" :key="fmt" class="mb-5">
       <h4 class="fw-bold border-bottom pb-2 mb-3">{{ fmt }}</h4>
