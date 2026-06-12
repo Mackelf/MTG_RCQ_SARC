@@ -171,16 +171,39 @@ export const ARCHETYPE_CARD_MAP = {
   "STD-Selesnya Ouroboroid": { main: "Ouroboroid", key: "Deeproot Champion" },
 
   // PreModern
+  "PMD-Aluren": { main: "Aluren", key: "Cavern Harpy" },
   "PMD-Burn": { main: "lightning bolt", key: "Black Vise" },
   "PMD-Contamination": { main: "Contamination", key: "Zombie Infestation" },
   "PMD-Goblins": { main: "goblin Piledriver", key: "Siege-Gang Commander" },
+  "PMD-Elves": { main: "llanowar Elves", key: "Priest of Titania" },
+  "PMD-Enchantress": {
+    main: "Argothian Enchantress",
+    key: "Verduran Enchantress",
+  },
   "PMD-Hermit FEB": { main: "Hermit Druid", key: "Volrath's Shapeshifter" },
   "PMD-Mono Black": { main: "Hypnotic Specter", key: "Dark Ritual" },
+  "PMD-Oath Control": { main: "Oath of Druids", key: "Fact or Fiction" },
   "PMD-Oath Ponza": { main: "Oath of Druids", key: "Terravore" },
+  "PMD-Ponza Stax": { main: "Avalance Rider", key: "Smokestack" },
   "PMD-Psychatog": { main: "Psychatog", key: "Wonder" },
+  "PMD-RG Madness": { main: "wild mongrel", key: "Anger" },
+  "PMD-UG Madness": { main: "Wild Mongrel", key: "Wonder" },
+  "PMD-Reanimator": { main: "Reanimate", key: "Verdant Force" },
   "PMD-Replenish": { main: "Replenish", key: "Parallax Wave" },
   "PMD-Stasis": { main: "stasis", key: "Root Maze" },
   "PMD-Stiflenought": { main: "Phyrexian Dreadnought", key: "Stifle" },
+  "PMD-Survival Recurring": {
+    main: "Survival of the Fittest",
+    key: "Recurring Nightmare",
+  },
+  "PMD-Survival RG": { main: "Survival of the Fittest", key: "Wild Mongrel" },
+  "PMD-Survival Tradewind": {
+    main: "Survival of the Fittest",
+    key: "Tradewind Rider",
+  },
+  "PMD-The Rock": { main: "Spiritmonger", key: "Ravenous Baloth" },
+  "PMD-WBG Control": { main: "pernicious deed", key: "Exalted Angel" },
+  "PMD-White Weenie": { main: "Glorious Anthem", key: "Silver Knight" },
 };
 
 export async function getScryfallImage(cardName) {
