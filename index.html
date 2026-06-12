@@ -662,7 +662,11 @@
         <router-link to="/metagame-ranking" class="btn btn-outline-secondary w-100" style="border-radius: 50px; border: 2px solid #000;">
           🏅 Ranking de Metagame
         </router-link>
+        <router-link to="/jugadores-ranking" class="btn btn-outline-secondary w-100 mt-2" style="border-radius: 50px; border: 2px solid #000;">
+  👤 Ranking de Jugadores
+        </router-link>
       </div>
+      
     </div>
    
   </div>
@@ -994,11 +998,128 @@
   </div>
   `,
       };
+      const JugadoresRanking = {
+        setup() {
+          onMounted(loadData);
 
+          const BADGE_PTS = { "1st": 4, "2nd": 3, T4: 2, T8: 1 };
+          const FORMATOS = ["Modern", "Standard", "PreModern"];
+
+          const rankingByFormato = Vue.computed(() => {
+            if (!store.loaded) return {};
+            const result = {};
+
+            FORMATOS.forEach((fmt) => {
+              const playerMap = {};
+
+              store.allPlayers
+                .filter((p) => p.FORMATO === fmt && p.Nombre)
+                .forEach((p) => {
+                  const nombre = p.Nombre.trim();
+                  if (!playerMap[nombre]) {
+                    playerMap[nombre] = {
+                      nombre,
+                      pts: 0,
+                      badges: [],
+                      mazos: new Set(),
+                    };
+                  }
+                  playerMap[nombre].pts += p.Puntos ? parseFloat(p.Puntos) : 0;
+                  if (p.Badge) playerMap[nombre].badges.push(p.Badge);
+                  if (p.Arquetipo) playerMap[nombre].mazos.add(p.Arquetipo);
+                });
+
+              result[fmt] = Object.values(playerMap)
+                .map((p) => ({ ...p, mazos: [...p.mazos] }))
+                .sort((a, b) => b.pts - a.pts)
+                .map((p, i) => ({ ...p, rank: i + 1 }));
+            });
+
+            return result;
+          });
+
+          function badgeCount(badges) {
+            const count = {};
+            badges.forEach((b) => {
+              if (b) count[b] = (count[b] || 0) + 1;
+            });
+            return count;
+          }
+
+          function badgeLabel(badge) {
+            const map = { "1st": "🥇", "2nd": "🥈", T4: "🏅", T8: "⭐" };
+            return map[badge] || badge;
+          }
+
+          return { rankingByFormato, FORMATOS, badgeCount, badgeLabel };
+        },
+
+        template: `
+  <div class="container py-4">
+    <router-link to="/" class="btn btn-outline-secondary btn-sm mb-4" style="border: 2px solid #000; border-radius: 25px;">
+      <i class="bi bi-arrow-left"></i> Inicio
+    </router-link>
+
+    <h2 class="fw-bold mb-1">👤 Ranking de Jugadores</h2>
+    <p class="text-muted mb-4">Puntos acumulados en todos los torneos de la temporada.</p>
+
+    <div v-for="fmt in FORMATOS" :key="fmt" class="mb-5">
+      <h4 class="fw-bold border-bottom pb-2 mb-3">{{ fmt }}</h4>
+
+      <template v-if="rankingByFormato[fmt]?.length">
+        <div class="table-responsive">
+          <table class="table table-sm table-hover align-middle">
+            <thead class="table-dark">
+              <tr>
+                <th style="width: 3rem;">#</th>
+                <th>Jugador</th>
+                <th class="text-center">Puntos</th>
+                <th>Logros</th>
+                <th>Mazos jugados</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="p in rankingByFormato[fmt]" :key="p.nombre">
+                <td class="fw-bold text-muted">{{ p.rank }}</td>
+                <td class="fw-semibold">{{ p.nombre }}</td>
+                <td class="text-center fw-bold">{{ p.pts }}</td>
+                <td>
+                  <div class="d-flex flex-wrap gap-1">
+                    <span
+                      v-for="(count, badge) in badgeCount(p.badges)"
+                      :key="badge"
+                      class="badge bg-light text-dark border"
+                      style="font-size: 0.75rem;">
+                      {{ badgeLabel(badge) }} {{ badge }}<template v-if="count > 1"> ×{{ count }}</template>
+                    </span>
+                  </div>
+                </td>
+                <td>
+                  <div class="d-flex flex-wrap gap-1">
+                    <span
+                      v-for="mazo in p.mazos"
+                      :key="mazo"
+                      class="badge bg-light text-dark border"
+                      style="font-size: 0.7rem;">
+                      {{ displayName(mazo) }}
+                    </span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </template>
+      <p v-else class="text-muted">Sin datos</p>
+    </div>
+  </div>
+  `,
+      };
       // ── Router ──────────────────────────────────────────────────────────
       const routes = [
         { path: "/", component: Home },
         { path: "/metagame-ranking", component: MetagameRanking },
+        { path: "/jugadores-ranking", component: JugadoresRanking },
         {
           path: "/tienda/:id",
           component: TournamentLayout,
