@@ -70,6 +70,17 @@
         });
       }
 
+      // Scope global — junto a formatDateFriendly y normalizeStoreId
+      function stripPrefix(name) {
+        if (!name || name.length <= 4) return name;
+        return name.slice(4);
+      }
+
+      function displayName(name) {
+        if (!name || !ARCHETYPE_CARD_MAP[name]) return "Otros";
+        return stripPrefix(name);
+      }
+
       // ── Vista Standing ──────────────────────────────────────────────────
       const Standing = {
         template: `
@@ -288,15 +299,7 @@
             };
             return map[badge] || "";
           }
-          function stripPrefix(name) {
-            if (!name || name.length <= 4) return name;
-            return name.slice(4);
-          }
 
-          function displayName(name) {
-            if (!name || !ARCHETYPE_CARD_MAP[name]) return "Otros";
-            return stripPrefix(name);
-          }
           function wrColor(wr) {
             if (!wr) return "";
             const pct = parseFloat(wr);
