@@ -127,18 +127,18 @@ export const ARCHETYPE_CARD_MAP = {
 
   // STANDARD
   "STD-Allies": { main: "Earth King's Lieutenant ", key: " Aang, at the Crossroads" },
-  "STD-4c Control": { main: "Jeskai Revelation", key: "Atraxa, Grand Unifier" },
+  "STD-4c Control": { main: "Jeskai Revelation", key: "Inevitable Defeat" },
   "STD-5c Elementals": {
     main: "Sunderflock",
-    key: "Omnath, Locus of Creation",
+    key: "Vibrance",
   },
   "STD-Azorius Tempo": {
     main: "Aang, Swift Savior",
-    key: "Loran of the Third Path",
+    key: "Momo, Friendly Flier",
   },
   "STD-Bant Tortuga": {
     main: "Smuggler's Surprise",
-    key: "Overlord of the Haemtusk",
+    key: "Raph & Mikey, Troublemakers",
   },
   "STD-Boros Burn": { main: "Boros Charm", key: "Eidolon of the Great Revel" },
   "STD-Boros Dragons": {
@@ -147,7 +147,7 @@ export const ARCHETYPE_CARD_MAP = {
   },
   "STD-Dimir Excruciator": {
     main: "Doomsday Excruciator",
-    key: "Psychic Frog",
+    key: "Superior Spider-Man",
   },
   "STD-Dimir Midrange": {
     main: "kaito, bane of nightmares",
@@ -157,8 +157,8 @@ export const ARCHETYPE_CARD_MAP = {
     main: "Stormchaser's Talent",
     key: "Slickshot Show-Off",
   },
-  "STD-Izzet Spellementals": { main: "Eddymurk Crab", key: "Risen Wetlands" },
-  "STD-Jeskai Control": { main: "Jeskai Revelation", key: "Sunfall" },
+  "STD-Izzet Spellementals": { main: "Eddymurk Crab", key: "Sunderflock" },
+  "STD-Jeskai Control": { main: "Jeskai Revelation", key: "Tablet of Discovery" },
   "STD-Jeskai Lessons": { main: "Gran-Gran", key: "Jeskai Revelation" },
   "STD-Mardu Discard": { main: "Marauding Mako", key: "Orcish Bowmasters" },
   "STD-Mono Green Landfall": {
