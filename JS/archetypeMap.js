@@ -126,6 +126,7 @@ export const ARCHETYPE_CARD_MAP = {
   },
 
   // STANDARD
+  "STD-Allies": { main: "Earth King's Lieutenant ", key: " Aang, at the Crossroads" },
   "STD-4c Control": { main: "Jeskai Revelation", key: "Atraxa, Grand Unifier" },
   "STD-5c Elementals": {
     main: "Sunderflock",
