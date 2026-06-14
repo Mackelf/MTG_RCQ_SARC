@@ -80,7 +80,10 @@ export const ARCHETYPE_CARD_MAP = {
     main: "Basking Broodscale",
     key: "Blade of the Bloodchief",
   },
-  "MOD-Mono Green Fight Rigging": { main: "Fight Rigging", key: "Slumbering Trudge" }, 
+  "MOD-Mono Green Fight Rigging": {
+    main: "Fight Rigging",
+    key: "Slumbering Trudge",
+  },
   "MOD-Mono Red Belcher": {
     main: "Goblin Charbelcher",
     key: "Stormscale Scion",
@@ -145,22 +148,39 @@ export const ARCHETYPE_CARD_MAP = {
     main: "Doomsday Excruciator",
     key: "Psychic Frog",
   },
+  "STD-Dimir Midrange": {
+    main: "kaito, bane of nightmares",
+    key: "Enduring Curiosity",
+  },
   "STD-Izzet Prowess": {
     main: "Stormchaser's Talent",
     key: "Slickshot Show-Off",
   },
   "STD-Izzet Spellementals": { main: "Eddymurk Crab", key: "Risen Wetlands" },
   "STD-Jeskai Control": { main: "Jeskai Revelation", key: "Sunfall" },
+  "STD-Jeskai Lessons": { main: "Gran-Gran", key: "Jeskai Revelation" },
   "STD-Mardu Discard": { main: "Marauding Mako", key: "Orcish Bowmasters" },
   "STD-Mono Green Landfall": {
     main: "Sazh's Chocobo",
     key: "Ashaya, Soul of the Wild",
   },
   "STD-Mono Red Aggro": { main: "Nova Hellkite", key: "Witchstalker Frenzy" },
+  "STD-Mono Red Ojer": {
+    main: "Ojer Axonil, Deepest Might",
+    key: "Scalding Viper",
+  },
   "STD-MonoRedU": { main: "Scalding Viper", key: "Slickshot Show-Off" },
+  "STD-Mono White Angels": {
+    main: "Giada, Font of Hope",
+    key: "Lyra Dawnbringer",
+  },
   "STD-Naya Yuna": {
     main: "Yuna, Hope of Spira",
     key: "Jetmir, Nexus of Revels",
+  },
+  "STD-Orzhov Self-bounce": {
+    main: "Sunpearl Kirin",
+    key: "Tinybones Joins Up",
   },
   "STD-Orzhov Ketramose": {
     main: "Ketramose, the New Dawn",
@@ -179,7 +199,10 @@ export const ARCHETYPE_CARD_MAP = {
   "PMD-Contamination": { main: "Contamination", key: "Zombie Infestation" },
   "PMD-Goblins": { main: "goblin Piledriver", key: "Siege-Gang Commander" },
   "PMD-Elves": { main: "llanowar Elves", key: "Priest of Titania" },
-  "PMD-Enchantress": { main: "Argothian Enchantress", key: "Verduran Enchantress" },
+  "PMD-Enchantress": {
+    main: "Argothian Enchantress",
+    key: "Verduran Enchantress",
+  },
   "PMD-Hermit FEB": { main: "Hermit Druid", key: "Volrath's Shapeshifter" },
   "PMD-Mono Black": { main: "Hypnotic Specter", key: "Dark Ritual" },
   "PMD-Oath Control": { main: "Oath of Druids", key: "Fact or Fiction" },
