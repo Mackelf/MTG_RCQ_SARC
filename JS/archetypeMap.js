@@ -116,6 +116,7 @@ export const ARCHETYPE_CARD_MAP = {
     key: "Monastery Swiftspear",
   },
   "MOD-Temur Cascade": { main: "Crashing Footfalls", key: "Violent Outburst" },
+  "MOD- Titan Breach": { main: "Through the Breach", key: "Primeval Titan" },
   "MOD-Yawgmoth": {
     main: "Yawgmoth, Thran Physician",
     key: "Strangleroot Geist",
