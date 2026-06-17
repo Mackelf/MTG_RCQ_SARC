@@ -994,6 +994,30 @@
                     .map((r) => r.arq),
                 ),
               ];
+              Vue.watch(
+                modernMetaStats,
+                async (stats) => {
+                  if (!stats?.length) return;
+                  const BATCH = 3;
+                  for (let i = 0; i < stats.length; i += BATCH) {
+                    const batch = stats.slice(i, i + BATCH);
+                    await Promise.all(
+                      batch.map(async (arch) => {
+                        if (archetypeImages.value[arch.nombre]) return; // ya cacheado
+                        const entry = ARCHETYPE_CARD_MAP[arch.nombre];
+                        const cardName =
+                          entry?.main || "Fblthp, Lost on the Range";
+                        const imgs = await getScryfallImage(cardName);
+                        if (imgs)
+                          archetypeImages.value[arch.nombre] = imgs.art_crop;
+                      }),
+                    );
+                    if (i + BATCH < stats.length)
+                      await new Promise((r) => setTimeout(r, 800));
+                  }
+                },
+                { immediate: true },
+              );
               const BATCH = 3;
               for (let i = 0; i < allArqs.length; i += BATCH) {
                 const batch = allArqs.slice(i, i + BATCH);
