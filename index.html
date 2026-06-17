@@ -926,7 +926,17 @@
               map[arq].wins += parseInt(p.V || 0);
               map[arq].losses += parseInt(p.D || 0);
               map[arq].draws += parseInt(p.E || 0);
-              const badge = p.Badge || inferBadge(p.Puesto);
+              const badge =
+                p.Badge ||
+                (p.Puesto == 1
+                  ? "1st"
+                  : p.Puesto == 2
+                    ? "2nd"
+                    : p.Puesto <= 4
+                      ? "T4"
+                      : p.Puesto <= 8
+                        ? "T8"
+                        : null);
               if (badge) map[arq].badges.push(badge);
               if (!map[arq].decklistUrl && p["URL Decklist"])
                 map[arq].decklistUrl = p["URL Decklist"];
