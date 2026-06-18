@@ -874,17 +874,43 @@
               const ptMap = {};
               const appMap = {};
               store.allPlayers
-                .filter((p) => p.FORMATO === fmt && BADGE_PTS[p.Badge])
+                .filter((p) => {
+                  if (p.FORMATO !== fmt) return false;
+                  const badge =
+                    p.Badge ||
+                    (p.Puesto == 1
+                      ? "1st"
+                      : p.Puesto == 2
+                        ? "2nd"
+                        : p.Puesto <= 4
+                          ? "T4"
+                          : p.Puesto <= 8
+                            ? "T8"
+                            : null);
+                  return !!badge;
+                })
                 .forEach((p) => {
                   const arq = p.Arquetipo || "Desconocido";
-                  const pts = BADGE_PTS[p.Badge];
+                  const badge =
+                    p.Badge ||
+                    (p.Puesto == 1
+                      ? "1st"
+                      : p.Puesto == 2
+                        ? "2nd"
+                        : p.Puesto <= 4
+                          ? "T4"
+                          : p.Puesto <= 8
+                            ? "T8"
+                            : null);
+                  if (!badge) return;
+                  const pts = BADGE_PTS[badge];
                   ptMap[arq] = (ptMap[arq] || 0) + pts;
                   if (!appMap[arq])
                     appMap[arq] = { t1: 0, t2: 0, t4: 0, t8: 0 };
-                  if (p.Badge === "1st") appMap[arq].t1++;
-                  if (p.Badge === "2nd") appMap[arq].t2++;
-                  if (p.Badge === "T4") appMap[arq].t4++;
-                  if (p.Badge === "T8") appMap[arq].t8++;
+                  if (badge === "1st") appMap[arq].t1++;
+                  if (badge === "2nd") appMap[arq].t2++;
+                  if (badge === "T4") appMap[arq].t4++;
+                  if (badge === "T8") appMap[arq].t8++;
                 });
               result[fmt] = Object.entries(ptMap)
                 .map(([arq, pts]) => ({ arq, pts, ...appMap[arq] }))
