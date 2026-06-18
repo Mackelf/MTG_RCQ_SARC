@@ -865,7 +865,6 @@
           const BADGE_PTS = { "1st": 4, "2nd": 3, T4: 2, T8: 1 };
           const FORMATOS = ["Modern", "Standard", "PreModern"];
           const CORTE = new Date("2026-05-18T00:00:00.000Z");
-
           const fechaFiltro = Vue.ref("todas");
 
           const rankingByFormato = Vue.computed(() => {
@@ -895,52 +894,15 @@
             return result;
           });
 
-          // ── Modern metagame cards con filtro de fecha ──
-          const modernMetaStats = Vue.computed(() => {
+          function buildMetaStats(fmt, filtro) {
             if (!store.loaded) return [];
             const jugadores = store.allPlayers.filter((p) => {
-              if (p.FORMATO !== "Modern") return false;
+              if (p.FORMATO !== fmt) return false;
               if (!p.Fecha) return false;
-              if (fechaFiltro.value === "antes")
-                return new Date(p.Fecha) < CORTE;
-              if (fechaFiltro.value === "despues")
-                return new Date(p.Fecha) >= CORTE;
+              if (filtro === "antes") return new Date(p.Fecha) < CORTE;
+              if (filtro === "despues") return new Date(p.Fecha) >= CORTE;
               return true;
             });
-function buildMetaStats(fmt, filtro) {
-  if (!store.loaded) return [];
-  const jugadores = store.allPlayers.filter(p => {
-    if (p.FORMATO !== fmt) return false;
-    if (!p.Fecha) return false;
-    if (filtro === "antes") return new Date(p.Fecha) < CORTE;
-    if (filtro === "despues") return new Date(p.Fecha) >= CORTE;
-    return true;
-  });
-  const map = {};
-  const total = jugadores.length;
-  jugadores.forEach(p => {
-    const arq = p.Arquetipo || "Desconocido";
-    if (!map[arq]) map[arq] = { nombre: arq, copies: 0, wins: 0, losses: 0, draws: 0, badges: [], decklistUrl: null };
-    map[arq].copies++;
-    map[arq].wins   += parseInt(p.V  || 0);
-    map[arq].losses += parseInt(p.D  || 0);
-    map[arq].draws  += parseInt(p.E  || 0);
-    const badge = p.Badge || (p.Puesto == 1 ? "1st" : p.Puesto == 2 ? "2nd" : p.Puesto <= 4 ? "T4" : p.Puesto <= 8 ? "T8" : null);
-    if (badge) map[arq].badges.push(badge);
-    if (!map[arq].decklistUrl && p["URL Decklist"]) map[arq].decklistUrl = p["URL Decklist"];
-  });
-  return Object.values(map).map(entry => {
-    const totalGames = entry.wins + entry.losses + entry.draws;
-    const wr = totalGames ? ((entry.wins / totalGames) * 100).toFixed(1) + "%" : "N/A";
-    return { ...entry, metaPct: total ? ((entry.copies / total) * 100).toFixed(1) + "%" : "0%", winRate: wr };
-  }).sort((a, b) => b.copies - a.copies);
-}
-
-const modernMetaStats = Vue.computed(() => buildMetaStats("Modern", fechaFiltro.value));
-const standardMetaStats = Vue.computed(() => buildMetaStats("Standard", "todas"));
-const premodernMetaStats = Vue.computed(() => buildMetaStats("PreModern", "todas"));
-         
-
             const map = {};
             const total = jugadores.length;
             jugadores.forEach((p) => {
@@ -974,7 +936,6 @@ const premodernMetaStats = Vue.computed(() => buildMetaStats("PreModern", "todas
               if (!map[arq].decklistUrl && p["URL Decklist"])
                 map[arq].decklistUrl = p["URL Decklist"];
             });
-
             return Object.values(map)
               .map((entry) => {
                 const totalGames = entry.wins + entry.losses + entry.draws;
@@ -990,7 +951,17 @@ const premodernMetaStats = Vue.computed(() => buildMetaStats("PreModern", "todas
                 };
               })
               .sort((a, b) => b.copies - a.copies);
-          });
+          }
+
+          const modernMetaStats = Vue.computed(() =>
+            buildMetaStats("Modern", fechaFiltro.value),
+          );
+          const standardMetaStats = Vue.computed(() =>
+            buildMetaStats("Standard", "todas"),
+          );
+          const premodernMetaStats = Vue.computed(() =>
+            buildMetaStats("PreModern", "todas"),
+          );
 
           function wrColor(wr) {
             if (!wr || wr === "N/A") return "";
@@ -1016,89 +987,42 @@ const premodernMetaStats = Vue.computed(() => buildMetaStats("PreModern", "todas
           }
 
           const archetypeImages = Vue.ref({});
-          Vue.watch(standardMetaStats, async (stats) => {
-  if (!stats?.length) return;
-  const BATCH = 3;
-  for (let i = 0; i < stats.length; i += BATCH) {
-    const batch = stats.slice(i, i + BATCH);
-    await Promise.all(batch.map(async (arch) => {
-      if (archetypeImages.value[arch.nombre]) return;
-      const entry = ARCHETYPE_CARD_MAP[arch.nombre];
-      const imgs = await getScryfallImage(entry?.main || "Fblthp, Lost on the Range");
-      if (imgs) archetypeImages.value[arch.nombre] = imgs.art_crop;
-    }));
-    if (i + BATCH < stats.length) await new Promise(r => setTimeout(r, 800));
-  }
-}, { immediate: true });
 
-Vue.watch(premodernMetaStats, async (stats) => {
-  if (!stats?.length) return;
-  const BATCH = 3;
-  for (let i = 0; i < stats.length; i += BATCH) {
-    const batch = stats.slice(i, i + BATCH);
-    await Promise.all(batch.map(async (arch) => {
-      if (archetypeImages.value[arch.nombre]) return;
-      const entry = ARCHETYPE_CARD_MAP[arch.nombre];
-      const imgs = await getScryfallImage(entry?.main || "Fblthp, Lost on the Range");
-      if (imgs) archetypeImages.value[arch.nombre] = imgs.art_crop;
-    }));
-    if (i + BATCH < stats.length) await new Promise(r => setTimeout(r, 800));
-  }
-}, { immediate: true });
-
+          async function fetchImages(stats, nameKey) {
+            if (!stats?.length) return;
+            const BATCH = 3;
+            for (let i = 0; i < stats.length; i += BATCH) {
+              const batch = stats.slice(i, i + BATCH);
+              await Promise.all(
+                batch.map(async (item) => {
+                  const nombre = nameKey ? item[nameKey] : item.arq;
+                  if (archetypeImages.value[nombre]) return;
+                  const entry = ARCHETYPE_CARD_MAP[nombre];
+                  const imgs = await getScryfallImage(
+                    entry?.main || "Fblthp, Lost on the Range",
+                  );
+                  if (imgs) archetypeImages.value[nombre] = imgs.art_crop;
+                }),
+              );
+              if (i + BATCH < stats.length)
+                await new Promise((r) => setTimeout(r, 800));
+            }
+          }
 
           Vue.watch(
             rankingByFormato,
-            async (ranking) => {
-              const allArqs = [
-                ...new Set(
-                  Object.values(ranking)
-                    .flat()
-                    .map((r) => r.arq),
-                ),
-              ];
-              Vue.watch(
-                modernMetaStats,
-                async (stats) => {
-                  if (!stats?.length) return;
-                  const BATCH = 3;
-                  for (let i = 0; i < stats.length; i += BATCH) {
-                    const batch = stats.slice(i, i + BATCH);
-                    await Promise.all(
-                      batch.map(async (arch) => {
-                        if (archetypeImages.value[arch.nombre]) return; // ya cacheado
-                        const entry = ARCHETYPE_CARD_MAP[arch.nombre];
-                        const cardName =
-                          entry?.main || "Fblthp, Lost on the Range";
-                        const imgs = await getScryfallImage(cardName);
-                        if (imgs)
-                          archetypeImages.value[arch.nombre] = imgs.art_crop;
-                      }),
-                    );
-                    if (i + BATCH < stats.length)
-                      await new Promise((r) => setTimeout(r, 800));
-                  }
-                },
-                { immediate: true },
-              );
-              const BATCH = 3;
-              for (let i = 0; i < allArqs.length; i += BATCH) {
-                const batch = allArqs.slice(i, i + BATCH);
-                await Promise.all(
-                  batch.map(async (arq) => {
-                    if (archetypeImages.value[arq]) return;
-                    const entry = ARCHETYPE_CARD_MAP[arq];
-                    const cardName = entry?.main || "Fblthp, Lost on the Range";
-                    const imgs = await getScryfallImage(cardName);
-                    if (imgs) archetypeImages.value[arq] = imgs.art_crop;
-                  }),
-                );
-                if (i + BATCH < allArqs.length)
-                  await new Promise((r) => setTimeout(r, 800));
-              }
-            },
+            (r) => fetchImages(Object.values(r).flat(), "arq"),
             { immediate: true },
           );
+          Vue.watch(modernMetaStats, (s) => fetchImages(s, "nombre"), {
+            immediate: true,
+          });
+          Vue.watch(standardMetaStats, (s) => fetchImages(s, "nombre"), {
+            immediate: true,
+          });
+          Vue.watch(premodernMetaStats, (s) => fetchImages(s, "nombre"), {
+            immediate: true,
+          });
 
           return {
             rankingByFormato,
@@ -1113,11 +1037,10 @@ Vue.watch(premodernMetaStats, async (stats) => {
             wrColor,
             badgeClass,
             bestBadge,
-
           };
         },
 
-      template: `
+        template: `
 <router-link to="/" class="btn btn-outline-secondary btn-sm mb-4" style="border: 2px solid #000; border-radius: 25px;">
   <i class="bi bi-arrow-left"></i> Inicio
 </router-link>
