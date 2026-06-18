@@ -907,6 +907,39 @@
                 return new Date(p.Fecha) >= CORTE;
               return true;
             });
+function buildMetaStats(fmt, filtro) {
+  if (!store.loaded) return [];
+  const jugadores = store.allPlayers.filter(p => {
+    if (p.FORMATO !== fmt) return false;
+    if (!p.Fecha) return false;
+    if (filtro === "antes") return new Date(p.Fecha) < CORTE;
+    if (filtro === "despues") return new Date(p.Fecha) >= CORTE;
+    return true;
+  });
+  const map = {};
+  const total = jugadores.length;
+  jugadores.forEach(p => {
+    const arq = p.Arquetipo || "Desconocido";
+    if (!map[arq]) map[arq] = { nombre: arq, copies: 0, wins: 0, losses: 0, draws: 0, badges: [], decklistUrl: null };
+    map[arq].copies++;
+    map[arq].wins   += parseInt(p.V  || 0);
+    map[arq].losses += parseInt(p.D  || 0);
+    map[arq].draws  += parseInt(p.E  || 0);
+    const badge = p.Badge || (p.Puesto == 1 ? "1st" : p.Puesto == 2 ? "2nd" : p.Puesto <= 4 ? "T4" : p.Puesto <= 8 ? "T8" : null);
+    if (badge) map[arq].badges.push(badge);
+    if (!map[arq].decklistUrl && p["URL Decklist"]) map[arq].decklistUrl = p["URL Decklist"];
+  });
+  return Object.values(map).map(entry => {
+    const totalGames = entry.wins + entry.losses + entry.draws;
+    const wr = totalGames ? ((entry.wins / totalGames) * 100).toFixed(1) + "%" : "N/A";
+    return { ...entry, metaPct: total ? ((entry.copies / total) * 100).toFixed(1) + "%" : "0%", winRate: wr };
+  }).sort((a, b) => b.copies - a.copies);
+}
+
+const modernMetaStats = Vue.computed(() => buildMetaStats("Modern", fechaFiltro.value));
+const standardMetaStats = Vue.computed(() => buildMetaStats("Standard", "todas"));
+const premodernMetaStats = Vue.computed(() => buildMetaStats("PreModern", "todas"));
+         
 
             const map = {};
             const total = jugadores.length;
@@ -983,6 +1016,36 @@
           }
 
           const archetypeImages = Vue.ref({});
+          Vue.watch(standardMetaStats, async (stats) => {
+  if (!stats?.length) return;
+  const BATCH = 3;
+  for (let i = 0; i < stats.length; i += BATCH) {
+    const batch = stats.slice(i, i + BATCH);
+    await Promise.all(batch.map(async (arch) => {
+      if (archetypeImages.value[arch.nombre]) return;
+      const entry = ARCHETYPE_CARD_MAP[arch.nombre];
+      const imgs = await getScryfallImage(entry?.main || "Fblthp, Lost on the Range");
+      if (imgs) archetypeImages.value[arch.nombre] = imgs.art_crop;
+    }));
+    if (i + BATCH < stats.length) await new Promise(r => setTimeout(r, 800));
+  }
+}, { immediate: true });
+
+Vue.watch(premodernMetaStats, async (stats) => {
+  if (!stats?.length) return;
+  const BATCH = 3;
+  for (let i = 0; i < stats.length; i += BATCH) {
+    const batch = stats.slice(i, i + BATCH);
+    await Promise.all(batch.map(async (arch) => {
+      if (archetypeImages.value[arch.nombre]) return;
+      const entry = ARCHETYPE_CARD_MAP[arch.nombre];
+      const imgs = await getScryfallImage(entry?.main || "Fblthp, Lost on the Range");
+      if (imgs) archetypeImages.value[arch.nombre] = imgs.art_crop;
+    }));
+    if (i + BATCH < stats.length) await new Promise(r => setTimeout(r, 800));
+  }
+}, { immediate: true });
+
 
           Vue.watch(
             rankingByFormato,
@@ -1045,13 +1108,16 @@
             stripPrefix,
             fechaFiltro,
             modernMetaStats,
+            standardMetaStats,
+            premodernMetaStats,
             wrColor,
             badgeClass,
             bestBadge,
+
           };
         },
 
-        template: `
+      template: `
 <router-link to="/" class="btn btn-outline-secondary btn-sm mb-4" style="border: 2px solid #000; border-radius: 25px;">
   <i class="bi bi-arrow-left"></i> Inicio
 </router-link>
@@ -1065,111 +1131,246 @@
     <span class="ms-2">⭐ T8 = 1pt</span>
   </p>
 
-  <div v-for="fmt in FORMATOS" :key="fmt" class="mb-5">
-    <h4 class="fw-bold border-bottom pb-2 mb-3">{{ fmt }}</h4>
+  <!-- ═══════════ MODERN ═══════════ -->
+  <h4 class="fw-bold border-bottom pb-2 mb-3">Modern</h4>
+  <template v-if="rankingByFormato['Modern']?.length">
 
-    <template v-if="rankingByFormato[fmt]?.length">
-      <!-- Top 10 -->
-      <div class="row row-cols-2 row-cols-md-5 g-3 mb-3">
-        <div class="col" v-for="item in rankingByFormato[fmt].slice(0, 10)" :key="item.arq">
-          <div class="card h-100 text-white position-relative overflow-hidden" style="border: 2px solid #000;">
-            <img v-if="archetypeImages[item.arq]" :src="archetypeImages[item.arq]" class="card-img" style="height: 120px; object-fit: cover; filter: brightness(0.45);" />
-            <div v-else class="card-img bg-dark" style="height: 120px;"></div>
-            <div class="card-img-overlay d-flex flex-column justify-content-between p-2">
-              <div class="fw-bold" style="font-size: 1.1rem; text-shadow: 0 1px 3px #000;">#{{ item.rank }}</div>
-              <div>
-                <div class="fw-bold" style="font-size: 0.75rem; text-shadow: 0 1px 3px #000; line-height: 1.2;">{{ displayName(item.arq) }}</div>
-                <div class="d-flex flex-wrap gap-1 mt-1">
-                  <span v-if="item.t1" class="badge bg-warning text-dark" style="font-size: 0.6rem;">🥇×{{ item.t1 }}</span>
-                  <span v-if="item.t2" class="badge bg-light text-dark" style="font-size: 0.6rem;">🥈×{{ item.t2 }}</span>
-                  <span v-if="item.t4" class="badge bg-secondary" style="font-size: 0.6rem;">🏅×{{ item.t4 }}</span>
-                  <span v-if="item.t8" class="badge bg-dark" style="font-size: 0.6rem;">⭐×{{ item.t8 }}</span>
-                </div>
-                <div style="font-size: 0.7rem; opacity: 0.85;">{{ item.pts }} pts</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Resto -->
-      <div class="row row-cols-1 row-cols-md-3 g-2" v-if="rankingByFormato[fmt].length > 10">
-        <div class="col" v-for="item in rankingByFormato[fmt].slice(10)" :key="item.arq">
-          <div class="card flex-row align-items-center p-2 gap-2" style="border: 1.5px solid #ccc;">
-            <img v-if="archetypeImages[item.arq]" :src="archetypeImages[item.arq]" class="rounded" style="width: 48px; height: 48px; object-fit: cover; flex-shrink: 0;" />
-            <div v-else class="bg-secondary rounded" style="width: 48px; height: 48px; flex-shrink: 0;"></div>
-            <div class="overflow-hidden">
-              <div class="fw-bold text-muted" style="font-size: 0.7rem;">#{{ item.rank }}</div>
-              <div class="fw-semibold text-truncate" style="font-size: 0.8rem;">{{ displayName(item.arq) }}</div>
-              <div class="text-muted" style="font-size: 0.7rem;">{{ item.pts }} pts</div>
+    <!-- Top 10 -->
+    <div class="row row-cols-2 row-cols-md-5 g-3 mb-3">
+      <div class="col" v-for="item in rankingByFormato['Modern'].slice(0, 10)" :key="item.arq">
+        <div class="card h-100 text-white position-relative overflow-hidden" style="border: 2px solid #000;">
+          <img v-if="archetypeImages[item.arq]" :src="archetypeImages[item.arq]" class="card-img" style="height: 120px; object-fit: cover; filter: brightness(0.45);" />
+          <div v-else class="card-img bg-dark" style="height: 120px;"></div>
+          <div class="card-img-overlay d-flex flex-column justify-content-between p-2">
+            <div class="fw-bold" style="font-size: 1.1rem; text-shadow: 0 1px 3px #000;">#{{ item.rank }}</div>
+            <div>
+              <div class="fw-bold" style="font-size: 0.75rem; text-shadow: 0 1px 3px #000; line-height: 1.2;">{{ displayName(item.arq) }}</div>
               <div class="d-flex flex-wrap gap-1 mt-1">
                 <span v-if="item.t1" class="badge bg-warning text-dark" style="font-size: 0.6rem;">🥇×{{ item.t1 }}</span>
-                <span v-if="item.t2" class="badge bg-light text-dark border" style="font-size: 0.6rem;">🥈×{{ item.t2 }}</span>
+                <span v-if="item.t2" class="badge bg-light text-dark" style="font-size: 0.6rem;">🥈×{{ item.t2 }}</span>
                 <span v-if="item.t4" class="badge bg-secondary" style="font-size: 0.6rem;">🏅×{{ item.t4 }}</span>
                 <span v-if="item.t8" class="badge bg-dark" style="font-size: 0.6rem;">⭐×{{ item.t8 }}</span>
               </div>
+              <div style="font-size: 0.7rem; opacity: 0.85;">{{ item.pts }} pts</div>
             </div>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- ── Metagame cards Modern con filtro ── -->
-      <template v-if="fmt === 'Modern'">
-        <hr class="my-4">
-        <div class="d-flex align-items-center justify-content-between mb-3">
-          <h5 class="fw-bold mb-0">📊 Metagame Modern</h5>
-          <div class="btn-group btn-group-sm" role="group">
-            <input type="radio" class="btn-check" name="fechaFiltro" id="todas" value="todas" v-model="fechaFiltro" autocomplete="off">
-            <label class="btn btn-outline-secondary" for="todas">Todas</label>
-            <input type="radio" class="btn-check" name="fechaFiltro" id="antes" value="antes" v-model="fechaFiltro" autocomplete="off">
-            <label class="btn btn-outline-secondary" for="antes">Antes 18 May</label>
-            <input type="radio" class="btn-check" name="fechaFiltro" id="despues" value="despues" v-model="fechaFiltro" autocomplete="off">
-            <label class="btn btn-outline-secondary" for="despues">18 May en adelante</label>
-          </div>
-        </div>
-
-        <div class="row row-cols-2 row-cols-md-4 g-2">
-          <div class="col" v-for="arch in modernMetaStats" :key="arch.nombre">
-            <div class="card h-100">
-              <img v-if="archetypeImages[arch.nombre]" :src="archetypeImages[arch.nombre]" class="card-img-top" />
-              <div v-else class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 100px;">
-                <span class="text-white small">Sin imagen</span>
-              </div>
-              <div class="card-body p-2">
-                <div class="d-flex align-items-start gap-1 mb-2">
-                  <div class="d-flex flex-wrap gap-1 flex-shrink-0">
-                    <span v-for="(badge, i) in arch.badges" :key="i" class="badge" :class="badgeClass(badge)">{{ badge }}</span>
-                  </div>
-                  <h6 class="card-title mb-0" style="font-size: 0.78rem; line-height: 1.2;">
-                    <a v-if="arch.decklistUrl" :href="arch.decklistUrl" target="_blank" rel="noopener noreferrer">{{ displayName(arch.nombre) }}</a>
-                    <span v-else>{{ displayName(arch.nombre) }}</span>
-                  </h6>
-                </div>
-                <div class="d-flex justify-content-between mb-2">
-                  <div class="text-center flex-fill">
-                    <div class="meta-stat-label">META</div>
-                    <div class="meta-stat-value">{{ arch.metaPct }} ({{ arch.copies }})</div>
-                  </div>
-                  <div class="vr"></div>
-                  <div class="text-center flex-fill">
-                    <div class="meta-stat-label">WIN</div>
-                    <div class="meta-stat-value" :class="wrColor(arch.winRate)">{{ arch.winRate }}</div>
-                  </div>
-                </div>
-                <div class="d-flex justify-content-center gap-2">
-                  <span class="vde-pill vde-pill--win">{{ arch.wins }}V</span>
-                  <span class="vde-pill vde-pill--loss">{{ arch.losses }}D</span>
-                  <span class="vde-pill vde-pill--draw">{{ arch.draws }}E</span>
-                </div>
-              </div>
+    <!-- Resto ranking Modern -->
+    <div class="row row-cols-1 row-cols-md-3 g-2 mb-5" v-if="rankingByFormato['Modern'].length > 10">
+      <div class="col" v-for="item in rankingByFormato['Modern'].slice(10)" :key="item.arq">
+        <div class="card flex-row align-items-center p-2 gap-2" style="border: 1.5px solid #ccc;">
+          <img v-if="archetypeImages[item.arq]" :src="archetypeImages[item.arq]" class="rounded" style="width: 48px; height: 48px; object-fit: cover; flex-shrink: 0;" />
+          <div v-else class="bg-secondary rounded" style="width: 48px; height: 48px; flex-shrink: 0;"></div>
+          <div class="overflow-hidden">
+            <div class="fw-bold text-muted" style="font-size: 0.7rem;">#{{ item.rank }}</div>
+            <div class="fw-semibold text-truncate" style="font-size: 0.8rem;">{{ displayName(item.arq) }}</div>
+            <div class="text-muted" style="font-size: 0.7rem;">{{ item.pts }} pts</div>
+            <div class="d-flex flex-wrap gap-1 mt-1">
+              <span v-if="item.t1" class="badge bg-warning text-dark" style="font-size: 0.6rem;">🥇×{{ item.t1 }}</span>
+              <span v-if="item.t2" class="badge bg-light text-dark border" style="font-size: 0.6rem;">🥈×{{ item.t2 }}</span>
+              <span v-if="item.t4" class="badge bg-secondary" style="font-size: 0.6rem;">🏅×{{ item.t4 }}</span>
+              <span v-if="item.t8" class="badge bg-dark" style="font-size: 0.6rem;">⭐×{{ item.t8 }}</span>
             </div>
           </div>
         </div>
-      </template>
+      </div>
+    </div>
 
-    </template>
-    <p v-else class="text-muted">Sin datos</p>
-  </div>
+    <!-- Metagame Modern con filtro -->
+    <hr class="my-4">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+      <h5 class="fw-bold mb-0">📊 Metagame Modern</h5>
+      <div class="btn-group btn-group-sm" role="group">
+        <input type="radio" class="btn-check" name="fechaFiltro" id="todas" value="todas" v-model="fechaFiltro" autocomplete="off">
+        <label class="btn btn-outline-secondary" for="todas">Todas</label>
+        <input type="radio" class="btn-check" name="fechaFiltro" id="antes" value="antes" v-model="fechaFiltro" autocomplete="off">
+        <label class="btn btn-outline-secondary" for="antes">Antes 18 May</label>
+        <input type="radio" class="btn-check" name="fechaFiltro" id="despues" value="despues" v-model="fechaFiltro" autocomplete="off">
+        <label class="btn btn-outline-secondary" for="despues">18 May en adelante</label>
+      </div>
+    </div>
+    <div class="row row-cols-2 row-cols-md-4 g-2 mb-5">
+      <div class="col" v-for="arch in modernMetaStats" :key="arch.nombre">
+        <div class="card h-100">
+          <img v-if="archetypeImages[arch.nombre]" :src="archetypeImages[arch.nombre]" class="card-img-top" />
+          <div v-else class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 100px;">
+            <span class="text-white small">Sin imagen</span>
+          </div>
+          <div class="card-body p-2">
+            <div class="d-flex align-items-start gap-1 mb-2">
+              <div class="d-flex flex-wrap gap-1 flex-shrink-0">
+                <span v-for="(badge, i) in arch.badges" :key="i" class="badge" :class="badgeClass(badge)">{{ badge }}</span>
+              </div>
+              <h6 class="card-title mb-0" style="font-size: 0.78rem; line-height: 1.2;">
+                <a v-if="arch.decklistUrl" :href="arch.decklistUrl" target="_blank" rel="noopener noreferrer">{{ displayName(arch.nombre) }}</a>
+                <span v-else>{{ displayName(arch.nombre) }}</span>
+              </h6>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+              <div class="text-center flex-fill">
+                <div class="meta-stat-label">META</div>
+                <div class="meta-stat-value">{{ arch.metaPct }} ({{ arch.copies }})</div>
+              </div>
+              <div class="vr"></div>
+              <div class="text-center flex-fill">
+                <div class="meta-stat-label">WIN</div>
+                <div class="meta-stat-value" :class="wrColor(arch.winRate)">{{ arch.winRate }}</div>
+              </div>
+            </div>
+            <div class="d-flex justify-content-center gap-2">
+              <span class="vde-pill vde-pill--win">{{ arch.wins }}V</span>
+              <span class="vde-pill vde-pill--loss">{{ arch.losses }}D</span>
+              <span class="vde-pill vde-pill--draw">{{ arch.draws }}E</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </template>
+  <p v-else class="text-muted mb-5">Sin datos para Modern</p>
+
+  <!-- ═══════════ STANDARD ═══════════ -->
+  <h4 class="fw-bold border-bottom pb-2 mb-3">Standard</h4>
+  <template v-if="rankingByFormato['Standard']?.length">
+
+    <!-- Resumen Top ranking Standard -->
+    <div class="row row-cols-1 row-cols-md-3 g-2 mb-4">
+      <div class="col" v-for="item in rankingByFormato['Standard']" :key="item.arq">
+        <div class="card flex-row align-items-center p-2 gap-2" style="border: 1.5px solid #ccc;">
+          <img v-if="archetypeImages[item.arq]" :src="archetypeImages[item.arq]" class="rounded" style="width: 48px; height: 48px; object-fit: cover; flex-shrink: 0;" />
+          <div v-else class="bg-secondary rounded" style="width: 48px; height: 48px; flex-shrink: 0;"></div>
+          <div class="overflow-hidden">
+            <div class="fw-bold text-muted" style="font-size: 0.7rem;">#{{ item.rank }}</div>
+            <div class="fw-semibold text-truncate" style="font-size: 0.8rem;">{{ displayName(item.arq) }}</div>
+            <div class="text-muted" style="font-size: 0.7rem;">{{ item.pts }} pts</div>
+            <div class="d-flex flex-wrap gap-1 mt-1">
+              <span v-if="item.t1" class="badge bg-warning text-dark" style="font-size: 0.6rem;">🥇×{{ item.t1 }}</span>
+              <span v-if="item.t2" class="badge bg-light text-dark border" style="font-size: 0.6rem;">🥈×{{ item.t2 }}</span>
+              <span v-if="item.t4" class="badge bg-secondary" style="font-size: 0.6rem;">🏅×{{ item.t4 }}</span>
+              <span v-if="item.t8" class="badge bg-dark" style="font-size: 0.6rem;">⭐×{{ item.t8 }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Metagame Standard completo sin filtro -->
+    <hr class="my-4">
+    <h5 class="fw-bold mb-3">📊 Metagame Standard</h5>
+    <div class="row row-cols-2 row-cols-md-4 g-2 mb-5">
+      <div class="col" v-for="arch in standardMetaStats" :key="arch.nombre">
+        <div class="card h-100">
+          <img v-if="archetypeImages[arch.nombre]" :src="archetypeImages[arch.nombre]" class="card-img-top" />
+          <div v-else class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 100px;">
+            <span class="text-white small">Sin imagen</span>
+          </div>
+          <div class="card-body p-2">
+            <div class="d-flex align-items-start gap-1 mb-2">
+              <div class="d-flex flex-wrap gap-1 flex-shrink-0">
+                <span v-for="(badge, i) in arch.badges" :key="i" class="badge" :class="badgeClass(badge)">{{ badge }}</span>
+              </div>
+              <h6 class="card-title mb-0" style="font-size: 0.78rem; line-height: 1.2;">
+                <a v-if="arch.decklistUrl" :href="arch.decklistUrl" target="_blank" rel="noopener noreferrer">{{ displayName(arch.nombre) }}</a>
+                <span v-else>{{ displayName(arch.nombre) }}</span>
+              </h6>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+              <div class="text-center flex-fill">
+                <div class="meta-stat-label">META</div>
+                <div class="meta-stat-value">{{ arch.metaPct }} ({{ arch.copies }})</div>
+              </div>
+              <div class="vr"></div>
+              <div class="text-center flex-fill">
+                <div class="meta-stat-label">WIN</div>
+                <div class="meta-stat-value" :class="wrColor(arch.winRate)">{{ arch.winRate }}</div>
+              </div>
+            </div>
+            <div class="d-flex justify-content-center gap-2">
+              <span class="vde-pill vde-pill--win">{{ arch.wins }}V</span>
+              <span class="vde-pill vde-pill--loss">{{ arch.losses }}D</span>
+              <span class="vde-pill vde-pill--draw">{{ arch.draws }}E</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </template>
+  <p v-else class="text-muted mb-5">Sin datos para Standard</p>
+
+  <!-- ═══════════ PREMODERN ═══════════ -->
+  <h4 class="fw-bold border-bottom pb-2 mb-3">PreModern</h4>
+  <template v-if="rankingByFormato['PreModern']?.length">
+
+    <!-- Resumen Top ranking PreModern -->
+    <div class="row row-cols-1 row-cols-md-3 g-2 mb-4">
+      <div class="col" v-for="item in rankingByFormato['PreModern']" :key="item.arq">
+        <div class="card flex-row align-items-center p-2 gap-2" style="border: 1.5px solid #ccc;">
+          <img v-if="archetypeImages[item.arq]" :src="archetypeImages[item.arq]" class="rounded" style="width: 48px; height: 48px; object-fit: cover; flex-shrink: 0;" />
+          <div v-else class="bg-secondary rounded" style="width: 48px; height: 48px; flex-shrink: 0;"></div>
+          <div class="overflow-hidden">
+            <div class="fw-bold text-muted" style="font-size: 0.7rem;">#{{ item.rank }}</div>
+            <div class="fw-semibold text-truncate" style="font-size: 0.8rem;">{{ displayName(item.arq) }}</div>
+            <div class="text-muted" style="font-size: 0.7rem;">{{ item.pts }} pts</div>
+            <div class="d-flex flex-wrap gap-1 mt-1">
+              <span v-if="item.t1" class="badge bg-warning text-dark" style="font-size: 0.6rem;">🥇×{{ item.t1 }}</span>
+              <span v-if="item.t2" class="badge bg-light text-dark border" style="font-size: 0.6rem;">🥈×{{ item.t2 }}</span>
+              <span v-if="item.t4" class="badge bg-secondary" style="font-size: 0.6rem;">🏅×{{ item.t4 }}</span>
+              <span v-if="item.t8" class="badge bg-dark" style="font-size: 0.6rem;">⭐×{{ item.t8 }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Metagame PreModern completo sin filtro -->
+    <hr class="my-4">
+    <h5 class="fw-bold mb-3">📊 Metagame PreModern</h5>
+    <div class="row row-cols-2 row-cols-md-4 g-2 mb-5">
+      <div class="col" v-for="arch in premodernMetaStats" :key="arch.nombre">
+        <div class="card h-100">
+          <img v-if="archetypeImages[arch.nombre]" :src="archetypeImages[arch.nombre]" class="card-img-top" />
+          <div v-else class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 100px;">
+            <span class="text-white small">Sin imagen</span>
+          </div>
+          <div class="card-body p-2">
+            <div class="d-flex align-items-start gap-1 mb-2">
+              <div class="d-flex flex-wrap gap-1 flex-shrink-0">
+                <span v-for="(badge, i) in arch.badges" :key="i" class="badge" :class="badgeClass(badge)">{{ badge }}</span>
+              </div>
+              <h6 class="card-title mb-0" style="font-size: 0.78rem; line-height: 1.2;">
+                <a v-if="arch.decklistUrl" :href="arch.decklistUrl" target="_blank" rel="noopener noreferrer">{{ displayName(arch.nombre) }}</a>
+                <span v-else>{{ displayName(arch.nombre) }}</span>
+              </h6>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+              <div class="text-center flex-fill">
+                <div class="meta-stat-label">META</div>
+                <div class="meta-stat-value">{{ arch.metaPct }} ({{ arch.copies }})</div>
+              </div>
+              <div class="vr"></div>
+              <div class="text-center flex-fill">
+                <div class="meta-stat-label">WIN</div>
+                <div class="meta-stat-value" :class="wrColor(arch.winRate)">{{ arch.winRate }}</div>
+              </div>
+            </div>
+            <div class="d-flex justify-content-center gap-2">
+              <span class="vde-pill vde-pill--win">{{ arch.wins }}V</span>
+              <span class="vde-pill vde-pill--loss">{{ arch.losses }}D</span>
+              <span class="vde-pill vde-pill--draw">{{ arch.draws }}E</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </template>
+  <p v-else class="text-muted mb-5">Sin datos para PreModern</p>
+
 </div>
 `,
       };
