@@ -878,6 +878,7 @@
             FORMATOS.forEach((fmt) => {
               const ptMap = {};
               const appMap = {};
+
               store.allPlayers
                 .filter((p) => {
                   if (p.FORMATO !== fmt) return false;
@@ -892,7 +893,15 @@
                           : p.Puesto <= 8
                             ? "T8"
                             : null);
-                  return !!badge;
+                  if (!badge) return false;
+                  // Aplicar filtro de fecha solo a Modern
+                  if (fmt === "Modern") {
+                    if (fechaFiltro.value === "antes")
+                      return new Date(p.Fecha) < CORTE;
+                    if (fechaFiltro.value === "despues")
+                      return new Date(p.Fecha) >= CORTE;
+                  }
+                  return true;
                 })
                 .forEach((p) => {
                   const arq = p.Arquetipo || "Desconocido";
@@ -907,7 +916,6 @@
                           : p.Puesto <= 8
                             ? "T8"
                             : null);
-                  if (!badge) return;
                   const pts = BADGE_PTS[badge];
                   ptMap[arq] = (ptMap[arq] || 0) + pts;
                   if (!appMap[arq])
@@ -917,6 +925,7 @@
                   if (badge === "T4") appMap[arq].t4++;
                   if (badge === "T8") appMap[arq].t8++;
                 });
+
               result[fmt] = Object.entries(ptMap)
                 .map(([arq, pts]) => ({ arq, pts, ...appMap[arq] }))
                 .sort((a, b) => b.pts - a.pts)
