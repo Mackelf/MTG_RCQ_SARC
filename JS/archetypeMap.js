@@ -127,7 +127,10 @@ export const ARCHETYPE_CARD_MAP = {
   },
 
   // STANDARD
-  "STD-Allies": { main: "Earth King's Lieutenant ", key: " Aang, at the Crossroads" },
+  "STD-Allies": {
+    main: "Earth King's Lieutenant ",
+    key: " Aang, at the Crossroads",
+  },
   "STD-4c Control": { main: "Jeskai Revelation", key: "Inevitable Defeat" },
   "STD-5c Elementals": {
     main: "Sunderflock",
@@ -154,12 +157,19 @@ export const ARCHETYPE_CARD_MAP = {
     main: "kaito, bane of nightmares",
     key: "Enduring Curiosity",
   },
+  "STD-Golgari Cub": {
+    main: "Professor Dellian Fel",
+    key: "Badgermole Cub",
+  },
   "STD-Izzet Prowess": {
     main: "Stormchaser's Talent",
     key: "Slickshot Show-Off",
   },
   "STD-Izzet Spellementals": { main: "Eddymurk Crab", key: "Sunderflock" },
-  "STD-Jeskai Control": { main: "Jeskai Revelation", key: "Tablet of Discovery" },
+  "STD-Jeskai Control": {
+    main: "Jeskai Revelation",
+    key: "Tablet of Discovery",
+  },
   "STD-Jeskai Lessons": { main: "Gran-Gran", key: "Jeskai Revelation" },
   "STD-Mardu Discard": { main: "Marauding Mako", key: "Orcish Bowmasters" },
   "STD-Mono Green Landfall": {
