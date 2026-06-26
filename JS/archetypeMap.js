@@ -58,7 +58,7 @@ export const ARCHETYPE_CARD_MAP = {
   },
   "MOD-Hammer Time": { main: "Colossus Hammer", key: "Puresteel Paladin" },
   "MOD-Izzet Affinity": { main: "Kappa Cannoneer", key: "Pinnacle Emissary" },
-  "MOD-Izzet Prowess": { main: "Slickshot Show-Off", key: "Murmuring Mystic" },
+  "MOD-Izzet Prowess": { main: "Slickshot Show-Off", key: "Cori-Steel Cutter" },
   "MOD-Jeskai Blink": {
     main: "Phelia, Exuberant Shepherd",
     key: "Teferi, Time Raveler",
