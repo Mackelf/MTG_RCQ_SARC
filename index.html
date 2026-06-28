@@ -1165,9 +1165,16 @@
           </div>
           <div class="card-body p-2">
             <div class="d-flex align-items-start gap-1 mb-2">
-              <div class="d-flex flex-wrap gap-1 flex-shrink-0">
-                <span v-for="(badge, i) in arch.badges" :key="i" class="badge" :class="badgeClass(badge)">{{ badge }}</span>
-              </div>
+            <div class="d-flex flex-wrap gap-1 flex-shrink-0">
+  <span
+    v-for="(count, badge) in arch.badges.reduce((acc, b) => { acc[b] = (acc[b]||0)+1; return acc; }, {})"
+    :key="badge"
+    class="badge"
+    :class="badgeClass(badge)"
+    style="font-size: 0.65rem;">
+    {{ badge }}<template v-if="count > 1"> ×{{ count }}</template>
+  </span>
+</div>
               <h6 class="card-title mb-0" style="font-size: 0.78rem; line-height: 1.2;">
                 <a v-if="arch.decklistUrl" :href="arch.decklistUrl" target="_blank" rel="noopener noreferrer">{{ displayName(arch.nombre) }}</a>
                 <span v-else>{{ displayName(arch.nombre) }}</span>
@@ -1257,9 +1264,16 @@
           </div>
           <div class="card-body p-2">
             <div class="d-flex align-items-start gap-1 mb-2">
-              <div class="d-flex flex-wrap gap-1 flex-shrink-0">
-                <span v-for="(badge, i) in arch.badges" :key="i" class="badge" :class="badgeClass(badge)">{{ badge }}</span>
-              </div>
+             <div class="d-flex flex-wrap gap-1 flex-shrink-0">
+  <span
+    v-for="(count, badge) in arch.badges.reduce((acc, b) => { acc[b] = (acc[b]||0)+1; return acc; }, {})"
+    :key="badge"
+    class="badge"
+    :class="badgeClass(badge)"
+    style="font-size: 0.65rem;">
+    {{ badge }}<template v-if="count > 1"> ×{{ count }}</template>
+  </span>
+</div>
               <h6 class="card-title mb-0" style="font-size: 0.78rem; line-height: 1.2;">
                 <a v-if="arch.decklistUrl" :href="arch.decklistUrl" target="_blank" rel="noopener noreferrer">{{ displayName(arch.nombre) }}</a>
                 <span v-else>{{ displayName(arch.nombre) }}</span>
@@ -1349,9 +1363,16 @@
           </div>
           <div class="card-body p-2">
             <div class="d-flex align-items-start gap-1 mb-2">
-              <div class="d-flex flex-wrap gap-1 flex-shrink-0">
-                <span v-for="(badge, i) in arch.badges" :key="i" class="badge" :class="badgeClass(badge)">{{ badge }}</span>
-              </div>
+             <div class="d-flex flex-wrap gap-1 flex-shrink-0">
+  <span
+    v-for="(count, badge) in arch.badges.reduce((acc, b) => { acc[b] = (acc[b]||0)+1; return acc; }, {})"
+    :key="badge"
+    class="badge"
+    :class="badgeClass(badge)"
+    style="font-size: 0.65rem;">
+    {{ badge }}<template v-if="count > 1"> ×{{ count }}</template>
+  </span>
+</div>
               <h6 class="card-title mb-0" style="font-size: 0.78rem; line-height: 1.2;">
                 <a v-if="arch.decklistUrl" :href="arch.decklistUrl" target="_blank" rel="noopener noreferrer">{{ displayName(arch.nombre) }}</a>
                 <span v-else>{{ displayName(arch.nombre) }}</span>
