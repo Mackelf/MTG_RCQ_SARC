@@ -266,20 +266,20 @@ export const ARCHETYPE_CARD_MAP = {
     key: "pestilence",  
   },
   "PAU-Mono Red Tron": {
-    main: "Fblthp, the Lost",
-    key: "Fblthp, the Lost",
+    main: "Crimson Fleet Commodore",
+    key: "Rolling Thunder",
   },
   "PAU-Grixis Affinity": {
-    main: "Fblthp, the Lost",
-    key: "Fblthp, the Lost",
+    main: "Refurbished Familiar",
+    key: "Utrom Monitor",
   },
   "PAU-Familiar Combo": {
-    main: "Fblthp, the Lost",
-    key: "Fblthp, the Lost",
+    main: "Sunscape Familiar",
+    key: "Sage's Row Denizen",
   },
   "PAU-Flicker Tron": {
-    main: "Fblthp, the Lost",
-    key: "Fblthp, the Lost",
+    main: "Moment's Peace",
+    key: "Ghostly Flicker",
   },
   "PAU-Jeskai Ephemerate": {
     main: "Mulldrifter",
@@ -294,24 +294,21 @@ export const ARCHETYPE_CARD_MAP = {
     key: "Blood fountain",
   },
   "PAU-Altar Tron": {
-    main: "Fblthp, the Lost",
-    key: "Fblthp, the Lost",
+    main: "Ashnod's Altar",
+    key: "Myr Retriever",
   },
   "PAU-Skred": {
-    main: "Fblthp, the Lost",
-    key: "Fblthp, the Lost",
+    main: "Skred",
+    key: "Murmuring Mystic ",
   },
-  "PAU-Grixis Affinity": {
-    main: "Fblthp, the Lost",
-    key: "Fblthp, the Lost",
-  },
+
   "PAU-Mono Blue Terror": {
     main: "Tolarian Terror",
     key: "Mental note",
   },
   "PAU-Monster Tron": {
-    main: "Fblthp, the Lost",
-    key: "Fblthp, the Lost",
+    main: "Maelstrom Colossus",
+    key: "Bramble Wurm",
   },
 
 
