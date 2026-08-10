@@ -242,6 +242,18 @@ export const ARCHETYPE_CARD_MAP = {
   "PMD-UG Madness": { main: "Wild Mongrel", key: "Wonder" },
   "PMD-WBG Control": { main: "pernicious deed", key: "Exalted Angel" },
   "PMD-White Weenie": { main: "Glorious Anthem", key: "Silver Knight" },
+
+  
+  //Pauper
+  "PAU-Mono Black Sacrifice": {
+    main: "Fblthp, The Lost",
+    key: "Fblthp, The Lost",
+  },
+  "PAU-Mono Green Elves": {
+    main: "Fblthp, the Lost",
+    key: "Fblthp, the Lost",
+     },
+  
 };
 
 export async function getScryfallImage(cardName) {
