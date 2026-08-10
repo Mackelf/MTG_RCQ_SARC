@@ -301,7 +301,6 @@ export const ARCHETYPE_CARD_MAP = {
     main: "Skred",
     key: "Murmuring Mystic ",
   },
-
   "PAU-Mono Blue Terror": {
     main: "Tolarian Terror",
     key: "Mental note",
@@ -310,10 +309,6 @@ export const ARCHETYPE_CARD_MAP = {
     main: "Maelstrom Colossus",
     key: "Bramble Wurm",
   },
-
-
-
-
   
 };
 
