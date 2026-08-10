@@ -261,7 +261,7 @@ export const ARCHETYPE_CARD_MAP = {
     main: "Spellstutter Sprite",
     key: "Ninja of the deep hours",
   },
-  "PAU-Golgari Gardens pestilence": {
+  "PAU-Golgari Gardens": {
     main: "Khalni gardens",
     key: "pestilence",  
   },
