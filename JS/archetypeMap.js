@@ -254,11 +254,11 @@ export const ARCHETYPE_CARD_MAP = {
     key: "Fblthp, the Lost",
      },
   "PAU-Mono Red Rally": {
-    main: "Fblthp, the Lost",
+    main: "Rally at the Hornburg",
     key: "Fblthp, the Lost",
   },
   "PAU-Mono Blue Faeries": {
-    main: "Fblthp, the Lost",
+    main: "Spellstutter Sprite",
     key: "Fblthp, the Lost",
   },
   "PAU-Golgari Gardens": {
@@ -306,13 +306,15 @@ export const ARCHETYPE_CARD_MAP = {
     key: "Fblthp, the Lost",
   },
   "PAU-Mono Blue Terror": {
-    main: "Fblthp, the Lost",
+    main: "Tolarian Terror",
     key: "Fblthp, the Lost",
   },
   "PAU-Monster Tron": {
     main: "Fblthp, the Lost",
     key: "Fblthp, the Lost",
   },
+
+
   
 };
 
