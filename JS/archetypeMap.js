@@ -243,7 +243,7 @@ export const ARCHETYPE_CARD_MAP = {
   "PMD-WBG Control": { main: "pernicious deed", key: "Exalted Angel" },
   "PMD-White Weenie": { main: "Glorious Anthem", key: "Silver Knight" },
 
-  
+
   //Pauper
   "PAU-Mono Black Sacrifice": {
     main: "Fblthp, The Lost",
@@ -253,6 +253,66 @@ export const ARCHETYPE_CARD_MAP = {
     main: "Fblthp, the Lost",
     key: "Fblthp, the Lost",
      },
+  "PAU-Mono Red Rally": {
+    main: "Fblthp, the Lost",
+    key: "Fblthp, the Lost",
+  },
+  "PAU-Mono Blue Faeries": {
+    main: "Fblthp, the Lost",
+    key: "Fblthp, the Lost",
+  },
+  "PAU-Golgari Gardens": {
+    main: "Fblthp, the Lost",
+    key: "Fblthp, the Lost",  
+  },
+  "PAU-Mono Red Tron": {
+    main: "Fblthp, the Lost",
+    key: "Fblthp, the Lost",
+  },
+  "PAU-Grixis Affinity": {
+    main: "Fblthp, the Lost",
+    key: "Fblthp, the Lost",
+  },
+  "PAU-Familiar Combo": {
+    main: "Fblthp, the Lost",
+    key: "Fblthp, the Lost",
+  },
+  "PAU-Flicker Tron": {
+    main: "Fblthp, the Lost",
+    key: "Fblthp, the Lost",
+  },
+  "PAU-Jeskai Ephemerate": {
+    main: "Fblthp, the Lost",
+    key: "Fblthp, the Lost",
+  },
+  "PAU-Mono Red Madness": {
+    main: "Fblthp, the Lost",
+    key: "Fblthp, the Lost",
+  },
+  "PAU-Rakdos Madness": {
+    main: "Fblthp, the Lost",
+    key: "Fblthp, the Lost",
+  },
+  "PAU-Altar Tron": {
+    main: "Fblthp, the Lost",
+    key: "Fblthp, the Lost",
+  },
+  "PAU-Skred": {
+    main: "Fblthp, the Lost",
+    key: "Fblthp, the Lost",
+  },
+  "PAU-Grixis Affinity": {
+    main: "Fblthp, the Lost",
+    key: "Fblthp, the Lost",
+  },
+  "PAU-Mono Blue Terror": {
+    main: "Fblthp, the Lost",
+    key: "Fblthp, the Lost",
+  },
+  "PAU-Monster Tron": {
+    main: "Fblthp, the Lost",
+    key: "Fblthp, the Lost",
+  },
   
 };
 
