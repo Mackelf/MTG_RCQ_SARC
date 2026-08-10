@@ -246,24 +246,24 @@ export const ARCHETYPE_CARD_MAP = {
 
   //Pauper
   "PAU-Mono Black Sacrifice": {
-    main: "Fblthp, The Lost",
-    key: "Fblthp, The Lost",
+    main: "Bloodthrone vampire",
+    key: "Shambling ghast",
   },
   "PAU-Mono Green Elves": {
-    main: "Fblthp, the Lost",
-    key: "Fblthp, the Lost",
+    main: "llanowar elves",
+    key: "priest of titania",
      },
   "PAU-Mono Red Rally": {
     main: "Rally at the Hornburg",
-    key: "Fblthp, the Lost",
+    key: "goblin bushwacker",
   },
   "PAU-Mono Blue Faeries": {
     main: "Spellstutter Sprite",
-    key: "Fblthp, the Lost",
+    key: "Ninja of the deep hours",
   },
-  "PAU-Golgari Gardens": {
-    main: "Fblthp, the Lost",
-    key: "Fblthp, the Lost",  
+  "PAU-Golgari Gardens pestilence": {
+    main: "Khalni gardens",
+    key: "pestilence",  
   },
   "PAU-Mono Red Tron": {
     main: "Fblthp, the Lost",
@@ -282,16 +282,16 @@ export const ARCHETYPE_CARD_MAP = {
     key: "Fblthp, the Lost",
   },
   "PAU-Jeskai Ephemerate": {
-    main: "Fblthp, the Lost",
-    key: "Fblthp, the Lost",
+    main: "Mulldrifter",
+    key: "Ephemerate",
   },
   "PAU-Mono Red Madness": {
-    main: "Fblthp, the Lost",
-    key: "Fblthp, the Lost",
+    main: "Sneaky Snacker",
+    key: "Voldaren epicure",
   },
   "PAU-Rakdos Madness": {
-    main: "Fblthp, the Lost",
-    key: "Fblthp, the Lost",
+    main: "Sneaky snacker",
+    key: "Blood fountain",
   },
   "PAU-Altar Tron": {
     main: "Fblthp, the Lost",
@@ -307,12 +307,14 @@ export const ARCHETYPE_CARD_MAP = {
   },
   "PAU-Mono Blue Terror": {
     main: "Tolarian Terror",
-    key: "Fblthp, the Lost",
+    key: "Mental note",
   },
   "PAU-Monster Tron": {
     main: "Fblthp, the Lost",
     key: "Fblthp, the Lost",
   },
+
+
 
 
   
