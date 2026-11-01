@@ -243,7 +243,6 @@ export const ARCHETYPE_CARD_MAP = {
   "PMD-WBG Control": { main: "pernicious deed", key: "Exalted Angel" },
   "PMD-White Weenie": { main: "Glorious Anthem", key: "Silver Knight" },
 
-
   //Pauper
   "PAU-Mono Black Sacrifice": {
     main: "Bloodthrone vampire",
@@ -252,7 +251,7 @@ export const ARCHETYPE_CARD_MAP = {
   "PAU-Mono Green Elves": {
     main: "llanowar elves",
     key: "priest of titania",
-     },
+  },
   "PAU-Mono Red Rally": {
     main: "Rally at the Hornburg",
     key: "goblin bushwacker",
@@ -263,7 +262,7 @@ export const ARCHETYPE_CARD_MAP = {
   },
   "PAU-Golgari Gardens": {
     main: "Khalni gardens",
-    key: "pestilence",  
+    key: "pestilence",
   },
   "PAU-Mono Red Tron": {
     main: "Crimson Fleet Commodore",
@@ -309,7 +308,43 @@ export const ARCHETYPE_CARD_MAP = {
     main: "Maelstrom Colossus",
     key: "Bramble Wurm",
   },
-  
+
+  "PAU-Gruul Monsters": {
+    main: "Utopia Sprawl",
+    key: "Writhing Chrysalis",
+  },
+  "PAU-Advisors": {
+    main: "Persistent Petitioners",
+    key: "Winding Way",
+  },
+  "PAU-Azorius Familiars": {
+    main: "Sunscape Familiar",
+    key: "Mulldrifter",
+  },
+  "PAU-Dimir Faeries": {
+    main: "Spellstutter Sprite",
+    key: "Snuff Out",
+  },
+  "PAU-Slimes Against Humanity": {
+    main: "Slime Against Humanity",
+    key: "Thought Scour",
+  },
+  "PAU-Gruul Ponza": {
+    main: "Thermokarst",
+    key: "Mwonvuli Acid-Moss",
+  },
+  "PAU-Simic Terror": {
+    main: "Tolarian Terror",
+    key: "Malevolent Rumble",
+  },
+  "PAU-Mono White Convoke": {
+    main: "Novice Inspector",
+    key: "Martyr's Soul",
+  },
+  "PAU-Izzet Blitz": {
+    main: "Kiln Fiend",
+    key: "Temur Battle Rage",
+  },
 };
 
 export async function getScryfallImage(cardName) {
