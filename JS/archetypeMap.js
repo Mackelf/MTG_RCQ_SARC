@@ -327,7 +327,7 @@ export const ARCHETYPE_CARD_MAP = {
   },
   "PAU-Slimes Against Humanity": {
     main: "Slime Against Humanity",
-    key: "Thought Scour",
+    key: "Satyr Wayfinder",
   },
   "PAU-Gruul Ponza": {
     main: "Thermokarst",
@@ -335,7 +335,7 @@ export const ARCHETYPE_CARD_MAP = {
   },
   "PAU-Simic Terror": {
     main: "Tolarian Terror",
-    key: "Malevolent Rumble",
+    key: "Forest",
   },
   "PAU-Mono White Convoke": {
     main: "Novice Inspector",
